@@ -1,0 +1,1686 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "$$hashKey": "object:333",
+          "builtIn": 1,
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "华为无线控制器设备",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "gnetId": 14634,
+    "graphTooltip": 0,
+    "id": 19,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 33,
+        "panels": [],
+        "title": "AP核心信息",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "发送的数据总量变化情况",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "decbytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 1
+        },
+        "id": 45,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "expr": "increase(hwWlanIDIndexedApUpPortSendBytes{job=\"$Job\", instance=\"$IP\"}[$__range])",
+            "legendFormat": "{{hwWlanIDIndexedApName}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "上行数据变化",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "AP接收数据的变化情况",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "decbytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 1
+        },
+        "id": 43,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "expr": "increase(hwWlanIDIndexedApUpPortRecvBytes{job=\"$Job\", instance=\"$IP\"}[$__range])",
+            "legendFormat": "{{hwWlanIDIndexedApName}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "下行数据量变化趋势",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "AP的实时温度监控",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "max": 70,
+            "min": 30,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 50
+                },
+                {
+                  "color": "red",
+                  "value": 60
+                }
+              ]
+            },
+            "unit": "celsius"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 13,
+          "w": 24,
+          "x": 0,
+          "y": 9
+        },
+        "id": 35,
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "expr": "hwWlanIDIndexedApTemperature{job=\"$Job\", instance=\"$IP\"}",
+            "legendFormat": "{{hwWlanIDIndexedApName}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "AP实时温度",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "AP上承载的终端数量",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "max": 80,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 50
+                },
+                {
+                  "color": "red",
+                  "value": 70
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 12,
+          "x": 0,
+          "y": 22
+        },
+        "id": 31,
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "expr": "hwWlanIDIndexedApOnlineUserNum{job=\"$Job\", instance=\"$IP\"}",
+            "interval": "",
+            "legendFormat": "{{hwWlanIDIndexedApName}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "AP实时在线终端",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "AP的状态和在线时长",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "center",
+              "displayMode": "auto",
+              "filterable": true,
+              "inspect": true
+            },
+            "displayName": "在线时长",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "s"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "AP运行状态"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 119
+                },
+                {
+                  "id": "unit",
+                  "value": "none"
+                },
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "1": {
+                          "color": "red",
+                          "index": 1,
+                          "text": "闲置"
+                        },
+                        "3": {
+                          "color": "purple",
+                          "index": 3,
+                          "text": "类型不支持"
+                        },
+                        "4": {
+                          "color": "red",
+                          "index": 4,
+                          "text": "上线失败"
+                        },
+                        "7": {
+                          "color": "blue",
+                          "index": 6,
+                          "text": "升级中"
+                        },
+                        "8": {
+                          "color": "green",
+                          "index": 0,
+                          "text": "正常"
+                        },
+                        "12": {
+                          "color": "orange",
+                          "index": 2,
+                          "text": "版本不匹配"
+                        },
+                        "13": {
+                          "color": "text",
+                          "index": 7,
+                          "text": "名称重名冲突"
+                        },
+                        "15": {
+                          "color": "yellow",
+                          "index": 5,
+                          "text": "国家码不匹配"
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ]
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "thresholds"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "AP名称"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 120
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 130
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 12,
+          "x": 12,
+          "y": 22
+        },
+        "id": 37,
+        "options": {
+          "footer": {
+            "enablePagination": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "frameIndex": 1,
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "hwWlanIDIndexedApOnlineTime{job=\"$Job\", instance=\"$IP\"}",
+            "format": "table",
+            "instant": true,
+            "legendFormat": "{{hwWlanIDIndexedApName}}",
+            "range": false,
+            "refId": "A"
+          }
+        ],
+        "title": "AP在线状态",
+        "transformations": [
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Time": true,
+                "__name__": true,
+                "brand": true,
+                "hostname": true,
+                "hwWlanIDIndexedApId": true,
+                "hwWlanIDIndexedApTypeInfo": true,
+                "instance": true,
+                "job": true,
+                "mib": true,
+                "model": true
+              },
+              "indexByName": {
+                "Time": 0,
+                "Value": 14,
+                "__name__": 1,
+                "brand": 2,
+                "hostname": 3,
+                "hwWlanIDIndexedApId": 5,
+                "hwWlanIDIndexedApIpAddress": 6,
+                "hwWlanIDIndexedApMac": 7,
+                "hwWlanIDIndexedApName": 4,
+                "hwWlanIDIndexedApRunState": 8,
+                "hwWlanIDIndexedApTypeInfo": 9,
+                "instance": 10,
+                "job": 11,
+                "mib": 12,
+                "model": 13
+              },
+              "renameByName": {
+                "Time": "",
+                "__name__": "",
+                "hwWlanIDIndexedApId": "",
+                "hwWlanIDIndexedApIpAddress": "AP地址",
+                "hwWlanIDIndexedApMac": "AP物理地址",
+                "hwWlanIDIndexedApName": "AP名称",
+                "hwWlanIDIndexedApRunState": "AP运行状态",
+                "hwWlanIDIndexedApTypeInfo": ""
+              }
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "AP实时CPU利用率",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "max": 50,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 30
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 32
+        },
+        "id": 41,
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "expr": "hwWlanIDIndexedApCpuUseRate{job=\"$Job\", instance=\"$IP\"}",
+            "legendFormat": "{{hwWlanIDIndexedApName}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "AP实时CPU利用率",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "AP内存使用率",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "max": 100,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 70
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 32
+        },
+        "id": 39,
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "expr": "hwWlanIDIndexedApMemoryUseRate{job=\"$Job\", instance=\"$IP\"}",
+            "legendFormat": "{{hwWlanIDIndexedApName}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "AP内存使用率",
+        "type": "gauge"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 40
+        },
+        "id": 29,
+        "panels": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "description": "无线控制器名称",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [
+                  {
+                    "options": {
+                      "match": "null",
+                      "result": {
+                        "text": "N/A"
+                      }
+                    },
+                    "type": "special"
+                  }
+                ],
+                "max": 2,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "#37872D"
+                    },
+                    {
+                      "color": "#E0B400",
+                      "value": 100
+                    },
+                    {
+                      "color": "#C4162A",
+                      "value": 150
+                    }
+                  ]
+                },
+                "unit": "string"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 3,
+              "w": 7,
+              "x": 0,
+              "y": 2
+            },
+            "id": 2,
+            "links": [],
+            "maxDataPoints": 100,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "none",
+              "justifyMode": "auto",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "mean"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "text": {
+                "valueSize": 30
+              },
+              "textMode": "name"
+            },
+            "pluginVersion": "9.2.2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "5ELfyWvVk"
+                },
+                "editorMode": "code",
+                "expr": "sysName{job=\"$Job\", instance=\"$IP\"}",
+                "format": "time_series",
+                "instant": true,
+                "interval": "",
+                "legendFormat": "{{sysName}}",
+                "refId": "A"
+              }
+            ],
+            "title": "无线控制器名",
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "description": "内存使用率展示",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "max": 100,
+                "min": 0.1,
+                "thresholds": {
+                  "mode": "percentage",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "orange",
+                      "value": 70
+                    },
+                    {
+                      "color": "red",
+                      "value": 85
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 3,
+              "w": 4,
+              "x": 7,
+              "y": 2
+            },
+            "id": 8,
+            "options": {
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showThresholdLabels": false,
+              "showThresholdMarkers": true,
+              "text": {}
+            },
+            "pluginVersion": "9.2.2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "5ELfyWvVk"
+                },
+                "editorMode": "code",
+                "expr": "hwEntityMemUsage{instance=\"$IP\"} > 0",
+                "interval": "",
+                "legendFormat": "Mem",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "内存使用率",
+            "type": "gauge"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "description": "CPU使用率展示",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "max": 100,
+                "min": 0.1,
+                "thresholds": {
+                  "mode": "percentage",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "orange",
+                      "value": 70
+                    },
+                    {
+                      "color": "red",
+                      "value": 85
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 3,
+              "w": 3,
+              "x": 11,
+              "y": 2
+            },
+            "id": 10,
+            "links": [],
+            "options": {
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showThresholdLabels": false,
+              "showThresholdMarkers": true,
+              "text": {}
+            },
+            "pluginVersion": "9.2.2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "5ELfyWvVk"
+                },
+                "expr": "hwEntityCpuUsage{instance=\"$IP\"} > 0",
+                "interval": "",
+                "legendFormat": "CPU",
+                "refId": "A"
+              }
+            ],
+            "title": "CPU使用率",
+            "type": "gauge"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "description": "设备温度展示",
+            "fieldConfig": {
+              "defaults": {
+                "mappings": [],
+                "max": 96,
+                "min": 1,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "orange",
+                      "value": 70
+                    },
+                    {
+                      "color": "red",
+                      "value": 85
+                    }
+                  ]
+                },
+                "unit": "celsius"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 3,
+              "w": 5,
+              "x": 14,
+              "y": 2
+            },
+            "id": 6,
+            "options": {
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showThresholdLabels": false,
+              "showThresholdMarkers": true
+            },
+            "pluginVersion": "9.2.2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "5ELfyWvVk"
+                },
+                "editorMode": "code",
+                "exemplar": false,
+                "expr": "hwEntityTemperature{instance=\"$IP\"} < 100",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Temperature",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "设备温度",
+            "type": "gauge"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "description": "AC启动时长",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [
+                  {
+                    "options": {
+                      "match": "null",
+                      "result": {
+                        "text": "N/A"
+                      }
+                    },
+                    "type": "special"
+                  }
+                ],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "#299c46"
+                    },
+                    {
+                      "color": "#FADE2A",
+                      "value": ""
+                    }
+                  ]
+                },
+                "unit": "s"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 3,
+              "w": 5,
+              "x": 19,
+              "y": 2
+            },
+            "id": 4,
+            "links": [],
+            "maxDataPoints": 100,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "none",
+              "justifyMode": "auto",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "text": {},
+              "textMode": "auto"
+            },
+            "pluginVersion": "9.2.2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "5ELfyWvVk"
+                },
+                "editorMode": "code",
+                "expr": "hwEntityUpTime{instance=\"$IP\"} > 0",
+                "interval": "",
+                "legendFormat": "In",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "启动时长",
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "decimals": 2,
+                "mappings": [
+                  {
+                    "options": {
+                      "match": "null",
+                      "result": {
+                        "text": "N/A"
+                      }
+                    },
+                    "type": "special"
+                  }
+                ],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "decbytes"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 3,
+              "w": 6,
+              "x": 0,
+              "y": 5
+            },
+            "id": 16,
+            "links": [],
+            "maxDataPoints": 100,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "none",
+              "justifyMode": "auto",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "text": {},
+              "textMode": "auto"
+            },
+            "pluginVersion": "9.2.2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "5ELfyWvVk"
+                },
+                "expr": "max(delta(ifHCOutOctets{instance=\"$IP\"}[$__range]))",
+                "interval": "",
+                "legendFormat": "Out",
+                "refId": "A"
+              }
+            ],
+            "title": "Total Out",
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "decimals": 2,
+                "mappings": [
+                  {
+                    "options": {
+                      "match": "null",
+                      "result": {
+                        "text": "N/A"
+                      }
+                    },
+                    "type": "special"
+                  }
+                ],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "decbytes"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 3,
+              "w": 5,
+              "x": 6,
+              "y": 5
+            },
+            "id": 18,
+            "links": [],
+            "maxDataPoints": 100,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "none",
+              "justifyMode": "auto",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "text": {},
+              "textMode": "auto"
+            },
+            "pluginVersion": "9.2.2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "5ELfyWvVk"
+                },
+                "expr": "max(delta(ifHCInOctets{instance=\"$IP\"}[$__range]))",
+                "interval": "",
+                "legendFormat": "In",
+                "refId": "A"
+              }
+            ],
+            "title": "Total In",
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "decimals": 2,
+                "mappings": [
+                  {
+                    "options": {
+                      "match": "null",
+                      "result": {
+                        "text": "N/A"
+                      }
+                    },
+                    "type": "special"
+                  }
+                ],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "Bps"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 3,
+              "w": 6,
+              "x": 11,
+              "y": 5
+            },
+            "id": 12,
+            "links": [],
+            "maxDataPoints": 100,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "none",
+              "justifyMode": "auto",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "text": {},
+              "textMode": "auto"
+            },
+            "pluginVersion": "9.2.2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "5ELfyWvVk"
+                },
+                "editorMode": "code",
+                "expr": "max(irate(ifHCOutOctets{instance=\"$IP\"}[$__range]))",
+                "interval": "",
+                "legendFormat": "Out",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Max Out (Current)",
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "decimals": 2,
+                "mappings": [
+                  {
+                    "options": {
+                      "match": "null",
+                      "result": {
+                        "text": "N/A"
+                      }
+                    },
+                    "type": "special"
+                  }
+                ],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "Bps"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 3,
+              "w": 7,
+              "x": 17,
+              "y": 5
+            },
+            "id": 14,
+            "links": [],
+            "maxDataPoints": 100,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "none",
+              "justifyMode": "auto",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "text": {},
+              "textMode": "auto"
+            },
+            "pluginVersion": "9.2.2",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "5ELfyWvVk"
+                },
+                "editorMode": "code",
+                "expr": "max(irate(ifHCInOctets{instance=\"$IP\"}[$__range]))",
+                "interval": "",
+                "legendFormat": "In",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Max In (Current)",
+            "type": "stat"
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "description": "接口上下行流量变化",
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 2,
+            "gridPos": {
+              "h": 10,
+              "w": 24,
+              "x": 0,
+              "y": 8
+            },
+            "hiddenSeries": false,
+            "id": 27,
+            "legend": {
+              "alignAsTable": true,
+              "avg": true,
+              "current": true,
+              "hideEmpty": false,
+              "hideZero": true,
+              "max": true,
+              "min": true,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "9.2.2",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "5ELfyWvVk"
+                },
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "irate(ifHCInOctets{job=\"$Job\",instance=\"$IP\",ifDescr=~\"$Interface\"}[$__range])",
+                "interval": "",
+                "intervalFactor": 1,
+                "legendFormat": "In: {{ifName}} ({{ifAlias}})",
+                "range": true,
+                "refId": "B"
+              },
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "5ELfyWvVk"
+                },
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "-irate(ifHCOutOctets{job=\"$Job\",instance=\"$IP\",ifDescr=~\"$Interface\"}[$__range])",
+                "instant": false,
+                "interval": "",
+                "intervalFactor": 1,
+                "legendFormat": "Out: {{ifName}} ({{ifAlias}})",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "上行 / 下行-指定接口",
+            "tooltip": {
+              "shared": true,
+              "sort": 2,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "$$hashKey": "object:39",
+                "format": "decbytes",
+                "logBase": 1,
+                "show": true
+              },
+              {
+                "$$hashKey": "object:40",
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": false
+            }
+          }
+        ],
+        "title": "AC核心信息",
+        "type": "row"
+      }
+    ],
+    "refresh": false,
+    "schemaVersion": 37,
+    "style": "dark",
+    "tags": [
+      "prometheus",
+      "huawei",
+      "ac6000"
+    ],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "huawei_wireless",
+            "value": "huawei_wireless"
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "5ELfyWvVk"
+          },
+          "definition": "label_values(hwWlanIDIndexedApOnlineUserNum,  job)",
+          "hide": 0,
+          "includeAll": false,
+          "multi": false,
+          "name": "Job",
+          "options": [],
+          "query": {
+            "query": "label_values(hwWlanIDIndexedApOnlineUserNum,  job)",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "172.18.112.5",
+            "value": "172.18.112.5"
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "5ELfyWvVk"
+          },
+          "definition": "label_values(hwWlanIDIndexedApOnlineUserNum, instance)",
+          "hide": 0,
+          "includeAll": false,
+          "label": "无线控制器IP",
+          "multi": false,
+          "name": "IP",
+          "options": [],
+          "query": {
+            "query": "label_values(hwWlanIDIndexedApOnlineUserNum, instance)",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "GigabitEthernet0/0/8",
+            "value": "GigabitEthernet0/0/8"
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "5ELfyWvVk"
+          },
+          "definition": "ifHCOutOctets{job=\"$Job\",instance=\"$IP\"}",
+          "hide": 0,
+          "includeAll": false,
+          "multi": false,
+          "name": "Interface",
+          "options": [],
+          "query": {
+            "query": "ifHCOutOctets{job=\"$Job\",instance=\"$IP\"}",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 1,
+          "regex": "/ifDescr=\"(.*)\",ifIndex/",
+          "skipUrlSync": false,
+          "sort": 2,
+          "type": "query"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "5ELfyWvVk"
+          },
+          "filters": [],
+          "hide": 0,
+          "label": "",
+          "name": "Filters",
+          "skipUrlSync": false,
+          "type": "adhoc"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-5m",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "",
+    "title": "华为无线AC&AP监控",
+    "uid": "vUIrJo54z",
+    "version": 25,
+    "weekStart": ""
+  }
