@@ -3,6 +3,12 @@
 - 适配品牌：华为、华三、锐捷，后续持续更新其他品牌，欢迎有相关品牌的无线产品资源的联系我
 - snmp_exporter版本：0.24.1
 
+#### 更新日志
+
+版本更新日志：
+
+[更新日志](UPDATE.md)
+
 #### 目录介绍
 
 - wireless_monitor顶级目录，下面是各品牌的英文名称，如：h3c、huawei、ruijie等
@@ -111,3 +117,5 @@ systemctl restart snmp_exporter
 查看目录中prometheus.yml文件中配置案例
 
 grafana.json只是根据案例中的指标写出的json模版，适配每个环境下的监控需要做一定的修改.
+
+grafana模版针对AP上的在线终端数，AP的CPU利用率和内存利用率做了排序，前20优先显示在Grafana中。

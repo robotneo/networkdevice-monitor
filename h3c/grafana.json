@@ -1,1180 +1,1184 @@
 {
-    "annotations": {
-      "list": [
-        {
-          "builtIn": 1,
-          "datasource": {
-            "type": "grafana",
-            "uid": "-- Grafana --"
-          },
-          "enable": true,
-          "hide": true,
-          "iconColor": "rgba(0, 211, 255, 1)",
-          "name": "Annotations & Alerts",
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
           "type": "dashboard"
-        }
-      ]
-    },
-    "description": "",
-    "editable": true,
-    "fiscalYearStartMonth": 0,
-    "graphTooltip": 0,
-    "id": 25,
-    "links": [],
-    "liveNow": false,
-    "panels": [
-      {
-        "collapsed": false,
-        "gridPos": {
-          "h": 1,
-          "w": 24,
-          "x": 0,
-          "y": 0
         },
-        "id": 3,
-        "panels": [],
-        "title": "AP信息",
-        "type": "row"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "mappings": [],
-            "max": 60,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "#EAB839",
-                  "value": 40
-                },
-                {
-                  "color": "red",
-                  "value": 60
-                }
-              ]
-            },
-            "unit": "none"
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byValue",
-                "options": {
-                  "op": "gte",
-                  "reducer": "lastNotNull",
-                  "value": 60
-                }
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "red",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byValue",
-                "options": {
-                  "op": "gte",
-                  "reducer": "lastNotNull",
-                  "value": 40
-                }
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "yellow",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        "gridPos": {
-          "h": 16,
-          "w": 12,
-          "x": 0,
-          "y": 1
-        },
-        "id": 9,
-        "options": {
-          "orientation": "auto",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showThresholdLabels": false,
-          "showThresholdMarkers": true
-        },
-        "pluginVersion": "10.1.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-            },
-            "editorMode": "code",
-            "exemplar": false,
-            "expr": "hh3cDot11CurrAPStationAssocCount{job=\"$Job\", instance=\"$IP\"}",
-            "format": "time_series",
-            "instant": false,
-            "legendFormat": "{{hh3cDot11APTemplateNameOfAP}}",
-            "range": true,
-            "refId": "A"
-          }
-        ],
-        "title": "AP实时在线终端",
-        "type": "gauge"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "custom": {
-              "align": "center",
-              "cellOptions": {
-                "type": "auto"
-              },
-              "filterable": true,
-              "inspect": true
-            },
-            "displayName": "在线时长",
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "unit": "s"
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "AP运行状态"
-              },
-              "properties": [
-                {
-                  "id": "custom.width",
-                  "value": 120
-                },
-                {
-                  "id": "unit",
-                  "value": "none"
-                },
-                {
-                  "id": "mappings",
-                  "value": [
-                    {
-                      "options": {
-                        "1": {
-                          "color": "red",
-                          "index": 0,
-                          "text": "加入中"
-                        },
-                        "2": {
-                          "color": "orange",
-                          "index": 1,
-                          "text": "加入确认中"
-                        },
-                        "3": {
-                          "color": "yellow",
-                          "index": 2,
-                          "text": "固件下载中"
-                        },
-                        "4": {
-                          "color": "purple",
-                          "index": 3,
-                          "text": "配置中"
-                        },
-                        "5": {
-                          "color": "green",
-                          "index": 4,
-                          "text": "运行中"
-                        }
-                      },
-                      "type": "value"
-                    }
-                  ]
-                },
-                {
-                  "id": "color",
-                  "value": {
-                    "mode": "thresholds"
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        "gridPos": {
-          "h": 16,
-          "w": 12,
-          "x": 12,
-          "y": 1
-        },
-        "id": 10,
-        "options": {
-          "cellHeight": "sm",
-          "footer": {
-            "countRows": false,
-            "enablePagination": true,
-            "fields": [],
-            "reducer": [
-              "sum"
-            ],
-            "show": false
-          },
-          "showHeader": true
-        },
-        "pluginVersion": "10.1.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-            },
-            "editorMode": "code",
-            "exemplar": false,
-            "expr": "hh3cDot11APSysUpTime2{job=\"$Job\", instance=\"$IP\"} / 100",
-            "format": "table",
-            "instant": true,
-            "legendFormat": "{{hh3cDot11APTemplateNameOfAP}}",
-            "range": false,
-            "refId": "A"
-          }
-        ],
-        "title": "AP在线状态",
-        "transformations": [
-          {
-            "id": "organize",
-            "options": {
-              "excludeByName": {
-                "Time": true,
-                "__name__": true,
-                "brand": true,
-                "hh3cDot11APCPURTUsage2": true,
-                "hh3cDot11APMemRTUsage2": true,
-                "hh3cDot11CurrAPModelName": true,
-                "hostname": true,
-                "instance": true,
-                "job": true,
-                "mib": true,
-                "model": true
-              },
-              "indexByName": {
-                "Time": 0,
-                "Value": 15,
-                "__name__": 1,
-                "brand": 2,
-                "hh3cDot11APCPURTUsage2": 3,
-                "hh3cDot11APMemRTUsage2": 4,
-                "hh3cDot11APOperationStatus": 8,
-                "hh3cDot11APTemplateNameOfAP": 5,
-                "hh3cDot11CurrAPIPAddress": 6,
-                "hh3cDot11CurrAPMacAddress": 7,
-                "hh3cDot11CurrAPModelName": 9,
-                "hostname": 10,
-                "instance": 11,
-                "job": 12,
-                "mib": 13,
-                "model": 14
-              },
-              "renameByName": {
-                "hh3cDot11APOperationStatus": "AP运行状态",
-                "hh3cDot11APTemplateNameOfAP": "AP名称",
-                "hh3cDot11CurrAPIPAddress": "AP地址",
-                "hh3cDot11CurrAPMacAddress": "AP物理地址",
-                "hh3cDot11CurrAPModelName": ""
-              }
-            }
-          }
-        ],
-        "type": "table"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "mappings": [],
-            "max": 50,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 30
-                }
-              ]
-            },
-            "unit": "percent"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 14,
-          "w": 12,
-          "x": 0,
-          "y": 17
-        },
-        "id": 11,
-        "options": {
-          "orientation": "auto",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showThresholdLabels": false,
-          "showThresholdMarkers": true
-        },
-        "pluginVersion": "10.1.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-            },
-            "editorMode": "code",
-            "exemplar": false,
-            "expr": "hh3cDot11APCPURTUsage2{job=\"$Job\", instance=\"$IP\"}",
-            "instant": true,
-            "legendFormat": "{{hh3cDot11APTemplateNameOfAP}}",
-            "range": false,
-            "refId": "A"
-          }
-        ],
-        "title": "AP CPU实时利用率",
-        "type": "gauge"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "mappings": [],
-            "max": 100,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 70
-                }
-              ]
-            },
-            "unit": "percent"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 14,
-          "w": 12,
-          "x": 12,
-          "y": 17
-        },
-        "id": 12,
-        "options": {
-          "orientation": "auto",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showThresholdLabels": false,
-          "showThresholdMarkers": true
-        },
-        "pluginVersion": "10.1.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-            },
-            "editorMode": "code",
-            "expr": "hh3cDot11APMemRTUsage2{job=\"$Job\", instance=\"$IP\"}",
-            "instant": false,
-            "legendFormat": "{{hh3cDot11APTemplateNameOfAP}}",
-            "range": true,
-            "refId": "A"
-          }
-        ],
-        "title": "AP 内存实时利用率",
-        "type": "gauge"
-      },
-      {
-        "collapsed": false,
-        "gridPos": {
-          "h": 1,
-          "w": 24,
-          "x": 0,
-          "y": 31
-        },
-        "id": 8,
-        "panels": [],
-        "title": "AC信息",
-        "type": "row"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-        },
-        "description": "描述AC启动时长",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 300000000
-                }
-              ]
-            },
-            "unit": "s"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 0,
-          "y": 32
-        },
-        "id": 6,
-        "options": {
-          "orientation": "auto",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showThresholdLabels": false,
-          "showThresholdMarkers": true
-        },
-        "pluginVersion": "10.1.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-            },
-            "disableTextWrap": false,
-            "editorMode": "code",
-            "exemplar": false,
-            "expr": "sysUpTime{instance=\"$IP\"} / 100",
-            "fullMetaSearch": false,
-            "includeNullMetadata": true,
-            "instant": false,
-            "legendFormat": "__auto",
-            "range": true,
-            "refId": "A",
-            "useBackend": false
-          }
-        ],
-        "title": "AC在线时长",
-        "type": "gauge"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-        },
-        "description": "AC的CPU实时利用率",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 25,
-              "gradientMode": "opacity",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineStyle": {
-                "fill": "solid"
-              },
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 32
-        },
-        "id": 4,
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "tooltip": {
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "10.1.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-            },
-            "disableTextWrap": false,
-            "editorMode": "code",
-            "exemplar": false,
-            "expr": "hh3cEntityExtCpuUsage{job=\"$Job\",instance=\"$IP\",hh3cEntityExtPhysicalIndex=\"97\"}",
-            "format": "time_series",
-            "fullMetaSearch": false,
-            "includeNullMetadata": true,
-            "instant": false,
-            "legendFormat": "{{hostname}}",
-            "range": true,
-            "refId": "A",
-            "useBackend": false
-          }
-        ],
-        "title": "AC CPU利用率",
-        "type": "timeseries"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-        },
-        "description": "AC的内存实时利用率",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "max": 100,
-            "min": 1,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "percent"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 0,
-          "y": 40
-        },
-        "id": 5,
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "tooltip": {
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "10.1.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-            },
-            "disableTextWrap": false,
-            "editorMode": "code",
-            "exemplar": false,
-            "expr": "hh3cEntityExtMemUsage{job=\"$Job\",instance=\"$IP\",hh3cEntityExtPhysicalIndex=\"97\"}",
-            "fullMetaSearch": false,
-            "includeNullMetadata": true,
-            "instant": false,
-            "legendFormat": "{{hostname}}",
-            "range": true,
-            "refId": "A",
-            "useBackend": false
-          }
-        ],
-        "title": "AC内存利用率",
-        "type": "timeseries"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-        },
-        "description": "当前所有AP在线终端总数",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 16,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 40
-        },
-        "id": 2,
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "tooltip": {
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-            },
-            "disableTextWrap": false,
-            "editorMode": "code",
-            "expr": "hh3cDot11StationConnectCount{job=\"$Job\",instance=\"$IP\"}",
-            "fullMetaSearch": false,
-            "includeNullMetadata": true,
-            "instant": false,
-            "legendFormat": "{{hostname}}",
-            "range": true,
-            "refId": "A",
-            "useBackend": false
-          }
-        ],
-        "title": "实时在线终端数",
-        "type": "timeseries"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-        },
-        "description": "当前AC连接的AP总数量",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "unit": "none"
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byValue",
-                "options": {
-                  "op": "gte",
-                  "reducer": "lastNotNull",
-                  "value": 37
-                }
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "green",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byValue",
-                "options": {
-                  "op": "lte",
-                  "reducer": "lastNotNull",
-                  "value": 36
-                }
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "red",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 0,
-          "y": 48
-        },
-        "id": 1,
-        "options": {
-          "colorMode": "value",
-          "graphMode": "area",
-          "justifyMode": "auto",
-          "orientation": "auto",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "textMode": "auto"
-        },
-        "pluginVersion": "10.1.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-            },
-            "disableTextWrap": false,
-            "editorMode": "code",
-            "expr": "hh3cDot11APConnectCount{job=\"$Job\",instance=\"$IP\"}",
-            "fullMetaSearch": false,
-            "includeNullMetadata": true,
-            "instant": false,
-            "legendFormat": "{{hostname}}",
-            "range": true,
-            "refId": "A",
-            "useBackend": false
-          }
-        ],
-        "title": "AP在线数",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "binBps"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 48
-        },
-        "id": 7,
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "tooltip": {
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "10.1.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-            },
-            "editorMode": "code",
-            "expr": "irate(ifHCInOctets{job=\"$Job\",instance=\"$IP\",ifDescr=~\"GigabitEthernet1/0/4\"}[$__range])",
-            "instant": false,
-            "legendFormat": "{{ifDescr}} - 下行",
-            "range": true,
-            "refId": "A"
-          },
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-            },
-            "editorMode": "code",
-            "expr": "-irate(ifHCOutOctets{job=\"$Job\",instance=\"$IP\",ifDescr=~\"GigabitEthernet1/0/4\"}[$__range])",
-            "hide": false,
-            "instant": false,
-            "legendFormat": "{{ifDescr}} - 上行",
-            "range": true,
-            "refId": "B"
-          }
-        ],
-        "title": "AC上联口-下行/上行",
-        "type": "timeseries"
+        "type": "dashboard"
       }
-    ],
-    "refresh": "",
-    "schemaVersion": 38,
-    "style": "dark",
-    "tags": [],
-    "templating": {
-      "list": [
-        {
-          "current": {
-            "selected": false,
-            "text": "H3C",
-            "value": "H3C"
+    ]
+  },
+  "description": "H3C无线AC&AP监控模版",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 29,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 3,
+      "panels": [],
+      "title": "AP信息",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
           },
-          "datasource": {
-            "type": "prometheus",
-            "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+          "mappings": [],
+          "max": 60,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 40
+              },
+              {
+                "color": "red",
+                "value": 60
+              }
+            ]
           },
-          "definition": "label_values(sysUpTime,job)",
-          "description": "",
-          "hide": 0,
-          "includeAll": false,
-          "multi": false,
-          "name": "Job",
-          "options": [],
-          "query": {
-            "query": "label_values(sysUpTime,job)",
-            "refId": "PrometheusVariableQueryEditor-VariableQuery"
-          },
-          "refresh": 1,
-          "regex": "",
-          "skipUrlSync": false,
-          "sort": 0,
-          "type": "query"
+          "unit": "none"
         },
-        {
-          "current": {
-            "selected": false,
-            "text": "192.168.200.2",
-            "value": "192.168.200.2"
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byValue",
+              "options": {
+                "op": "gte",
+                "reducer": "lastNotNull",
+                "value": 60
+              }
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
           },
-          "datasource": {
-            "type": "prometheus",
-            "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-          },
-          "definition": "label_values(sysUpTime,instance)",
-          "hide": 0,
-          "includeAll": false,
-          "multi": false,
-          "name": "IP",
-          "options": [],
-          "query": {
-            "query": "label_values(sysUpTime,instance)",
-            "refId": "PrometheusVariableQueryEditor-VariableQuery"
-          },
-          "refresh": 1,
-          "regex": "",
-          "skipUrlSync": false,
-          "sort": 0,
-          "type": "query"
+          {
+            "matcher": {
+              "id": "byValue",
+              "options": {
+                "op": "gte",
+                "reducer": "lastNotNull",
+                "value": 40
+              }
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 12,
+        "x": 0,
+        "y": 1
+      },
+      "id": 9,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
         },
-        {
-          "current": {
-            "selected": false,
-            "text": "GigabitEthernet1/0/1",
-            "value": "GigabitEthernet1/0/1"
-          },
-          "datasource": {
-            "type": "prometheus",
-            "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
-          },
-          "definition": "query_result(ifHCOutOctets{job=\"$Job\",instance=\"$IP\"})",
-          "hide": 0,
-          "includeAll": false,
-          "multi": false,
-          "name": "Interface",
-          "options": [],
-          "query": {
-            "query": "query_result(ifHCOutOctets{job=\"$Job\",instance=\"$IP\"})",
-            "refId": "PrometheusVariableQueryEditor-VariableQuery"
-          },
-          "refresh": 1,
-          "regex": "/ifDescr=\"(.*)\",ifIndex/",
-          "skipUrlSync": false,
-          "sort": 0,
-          "type": "query"
-        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.2.2",
+      "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
           },
-          "filters": [],
-          "hide": 0,
-          "name": "Filters",
-          "skipUrlSync": false,
-          "type": "adhoc"
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "topk(20, sort_desc(hh3cDot11CurrAPStationAssocCount{job=\"$Job\", instance=\"$IP\"}))",
+          "format": "time_series",
+          "instant": true,
+          "legendFormat": "{{hh3cDot11APTemplateNameOfAP}}",
+          "range": false,
+          "refId": "A"
         }
-      ]
+      ],
+      "title": "AP 实时在线终端-TOP20",
+      "type": "gauge"
     },
-    "time": {
-      "from": "now-5m",
-      "to": "now"
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "filterable": true,
+            "inspect": true
+          },
+          "displayName": "在线时长",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AP运行状态"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "color": "red",
+                        "index": 0,
+                        "text": "加入中"
+                      },
+                      "2": {
+                        "color": "orange",
+                        "index": 1,
+                        "text": "加入确认中"
+                      },
+                      "3": {
+                        "color": "yellow",
+                        "index": 2,
+                        "text": "固件下载中"
+                      },
+                      "4": {
+                        "color": "purple",
+                        "index": 3,
+                        "text": "配置中"
+                      },
+                      "5": {
+                        "color": "green",
+                        "index": 4,
+                        "text": "运行中"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 12,
+        "x": 12,
+        "y": 1
+      },
+      "id": 10,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": [],
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "hh3cDot11APSysUpTime2{job=\"$Job\", instance=\"$IP\"} / 100",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "{{hh3cDot11APTemplateNameOfAP}}",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "AP在线状态",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "brand": true,
+              "hh3cDot11APCPURTUsage2": true,
+              "hh3cDot11APMemRTUsage2": true,
+              "hh3cDot11CurrAPModelName": true,
+              "hostname": true,
+              "instance": true,
+              "job": true,
+              "mib": true,
+              "model": true
+            },
+            "indexByName": {
+              "Time": 0,
+              "Value": 15,
+              "__name__": 1,
+              "brand": 2,
+              "hh3cDot11APCPURTUsage2": 3,
+              "hh3cDot11APMemRTUsage2": 4,
+              "hh3cDot11APOperationStatus": 8,
+              "hh3cDot11APTemplateNameOfAP": 5,
+              "hh3cDot11CurrAPIPAddress": 6,
+              "hh3cDot11CurrAPMacAddress": 7,
+              "hh3cDot11CurrAPModelName": 9,
+              "hostname": 10,
+              "instance": 11,
+              "job": 12,
+              "mib": 13,
+              "model": 14
+            },
+            "renameByName": {
+              "hh3cDot11APOperationStatus": "AP运行状态",
+              "hh3cDot11APTemplateNameOfAP": "AP名称",
+              "hh3cDot11CurrAPIPAddress": "AP地址",
+              "hh3cDot11CurrAPMacAddress": "AP物理地址",
+              "hh3cDot11CurrAPModelName": ""
+            }
+          }
+        }
+      ],
+      "type": "table"
     },
-    "timepicker": {},
-    "timezone": "",
-    "title": "H3C_AC",
-    "uid": "fae98948-1f0c-4692-ae77-78c4d3a2eff9",
-    "version": 28,
-    "weekStart": ""
-  }
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 50,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 30
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 12,
+        "x": 0,
+        "y": 17
+      },
+      "id": 11,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "topk(20, sort_desc(hh3cDot11APCPURTUsage2{job=\"$Job\", instance=\"$IP\"}))",
+          "instant": true,
+          "legendFormat": "{{hh3cDot11APTemplateNameOfAP}}",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "AP CPU实时利用率-TOP20",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 70
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 12,
+        "x": 12,
+        "y": 17
+      },
+      "id": 12,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+          },
+          "editorMode": "code",
+          "expr": "topk(20, sort_desc(hh3cDot11APMemRTUsage2{job=\"$Job\", instance=\"$IP\"}))",
+          "instant": true,
+          "legendFormat": "{{hh3cDot11APTemplateNameOfAP}}",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "AP 内存实时利用率-TOP20",
+      "type": "gauge"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 31
+      },
+      "id": 8,
+      "panels": [],
+      "title": "AC信息",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+      },
+      "description": "描述AC启动时长",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 300000000
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 32
+      },
+      "id": 6,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sysUpTime{instance=\"$IP\"} / 100",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "AC在线时长",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+      },
+      "description": "AC的CPU实时利用率",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 25,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 32
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "hh3cEntityExtCpuUsage{job=\"$Job\",instance=\"$IP\",hh3cEntityExtPhysicalIndex=\"97\"}",
+          "format": "time_series",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "{{hostname}}",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "AC CPU利用率",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+      },
+      "description": "AC的内存实时利用率",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 40
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "hh3cEntityExtMemUsage{job=\"$Job\",instance=\"$IP\",hh3cEntityExtPhysicalIndex=\"97\"}",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "{{hostname}}",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "AC内存利用率",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+      },
+      "description": "当前所有AP在线终端总数",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 16,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 40
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "hh3cDot11StationConnectCount{job=\"$Job\",instance=\"$IP\"}",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "{{hostname}}",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "实时在线终端数",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+      },
+      "description": "当前AC连接的AP总数量",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byValue",
+              "options": {
+                "op": "gte",
+                "reducer": "lastNotNull",
+                "value": 37
+              }
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byValue",
+              "options": {
+                "op": "lte",
+                "reducer": "lastNotNull",
+                "value": 36
+              }
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 48
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "hh3cDot11APConnectCount{job=\"$Job\",instance=\"$IP\"}",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "{{hostname}}",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "AP在线数",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 48
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+          },
+          "editorMode": "code",
+          "expr": "irate(ifHCInOctets{job=\"$Job\",instance=\"$IP\",ifDescr=~\"GigabitEthernet1/0/4\"}[$__range])",
+          "instant": false,
+          "legendFormat": "{{ifDescr}} - 下行",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+          },
+          "editorMode": "code",
+          "expr": "-irate(ifHCOutOctets{job=\"$Job\",instance=\"$IP\",ifDescr=~\"GigabitEthernet1/0/4\"}[$__range])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{ifDescr}} - 上行",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "AC上联口-下行/上行",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 37,
+  "style": "dark",
+  "tags": [
+    "h3c",
+    "wireless",
+    "snmp"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "H3C",
+          "value": "H3C"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+        },
+        "definition": "label_values(sysUpTime,job)",
+        "description": "",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "Job",
+        "options": [],
+        "query": {
+          "query": "label_values(sysUpTime,job)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "192.168.200.2",
+          "value": "192.168.200.2"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+        },
+        "definition": "label_values(sysUpTime,instance)",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "IP",
+        "options": [],
+        "query": {
+          "query": "label_values(sysUpTime,instance)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "GigabitEthernet1/0/1",
+          "value": "GigabitEthernet1/0/1"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+        },
+        "definition": "query_result(ifHCOutOctets{job=\"$Job\",instance=\"$IP\"})",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "Interface",
+        "options": [],
+        "query": {
+          "query": "query_result(ifHCOutOctets{job=\"$Job\",instance=\"$IP\"})",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "/ifDescr=\"(.*)\",ifIndex/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
+        },
+        "filters": [],
+        "hide": 0,
+        "name": "Filters",
+        "skipUrlSync": false,
+        "type": "adhoc"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "H3C无线AC&AP监控",
+  "uid": "fae98948-1f0c-4692-ae77-78c4d3a2eff9",
+  "version": 2,
+  "weekStart": ""
+}
