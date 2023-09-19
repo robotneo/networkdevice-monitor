@@ -103,7 +103,8 @@ mv snmp.yml ../
 systemctl restart snmp_exporter
 ```
 ##### ./generator generate 案例
-![generate](image.png)
+
+![generate](generator.png)
 
 ##### Prometheus.yml如何添加Job
 
