@@ -13,7 +13,7 @@ scrape_configs:
   # ......
   
   # 采集华为AC信息
-  - job_name: "h3c_ac"
+  - job_name: "sangfor_ad"
     scrape_interval: 15s
     scrape_timeout: 10s
     # file_sd_configs:  # 可启动文件自动发现机制
@@ -22,12 +22,12 @@ scrape_configs:
     #    refresh_interval: 2m
     static_configs:
       - targets:
-        - 192.168.1.2  # SNMP设备IP 如AC的管理IP
+        - 192.168.1.2  # 深信服设备管理IP 如深信服AD的管理IP
         # - tcp://192.168.1.3:1161  # SNMP设备使用自定义的TCP端口传输
     metrics_path: /snmp
     params:
       auth: [public_v2]   # generator.yml中自定义的认证模块名称
-      module: [H3C_AC]    # generator.yml中自定义的指标模块名称
+      module: [sangfor_ad]    # generator.yml中自定义的指标模块名称
     relabel_configs:
     - source_labels: ["__address__"]
       target_label: __param_target

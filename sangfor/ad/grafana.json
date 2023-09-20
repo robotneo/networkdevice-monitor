@@ -1,0 +1,2422 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "$$hashKey": "object:333",
+          "builtIn": 1,
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "深信服AD监控",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "gnetId": 14634,
+    "graphTooltip": 0,
+    "id": 15,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "设备名称",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "text": "N/A"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "max": 2,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#37872D",
+                  "value": null
+                },
+                {
+                  "color": "#E0B400",
+                  "value": 100
+                },
+                {
+                  "color": "#C4162A",
+                  "value": 150
+                }
+              ]
+            },
+            "unit": "string"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 0,
+          "y": 0
+        },
+        "id": 2,
+        "links": [],
+        "maxDataPoints": 100,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "mean"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {
+            "valueSize": 30
+          },
+          "textMode": "name"
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "expr": "adSysName{job=\"$Job\", instance=\"$IP\"}",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "{{adSysName}}",
+            "refId": "A"
+          }
+        ],
+        "title": "设备名称",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "CPU使用率展示",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "max": 100,
+            "min": 0.1,
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "orange",
+                  "value": 70
+                },
+                {
+                  "color": "red",
+                  "value": 85
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 3,
+          "x": 4,
+          "y": 0
+        },
+        "id": 10,
+        "links": [],
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "text": {}
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "expr": "adCpuCostRate{instance=\"$IP\"} > 0",
+            "interval": "",
+            "legendFormat": "CPU",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "CPU使用率",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "内存使用率展示",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "max": 100,
+            "min": 0.1,
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "orange",
+                  "value": 70
+                },
+                {
+                  "color": "red",
+                  "value": 85
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 3,
+          "x": 7,
+          "y": 0
+        },
+        "id": 8,
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "text": {}
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "expr": "adMemCostRate{instance=\"$IP\"} > 0",
+            "interval": "",
+            "legendFormat": "Mem",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "内存使用率",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "磁盘使用率展示",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "max": 100,
+            "min": 0.1,
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "orange",
+                  "value": 70
+                },
+                {
+                  "color": "red",
+                  "value": 85
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 3,
+          "x": 10,
+          "y": 0
+        },
+        "id": 226,
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "text": {}
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "expr": "adDiskCostRate{instance=\"$IP\"} > 0",
+            "interval": "",
+            "legendFormat": "Mem",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "磁盘使用率",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [],
+            "max": 96,
+            "min": 1,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "orange",
+                  "value": 70
+                },
+                {
+                  "color": "red",
+                  "value": 85
+                }
+              ]
+            },
+            "unit": "celsius"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 3,
+          "x": 13,
+          "y": 0
+        },
+        "id": 6,
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "sfIntCpuTemp{instance=\"$IP\"} > 0",
+            "format": "time_series",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Temperature",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "设备温度",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "磁盘温度展示",
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [],
+            "max": 96,
+            "min": 1,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "orange",
+                  "value": 70
+                },
+                {
+                  "color": "red",
+                  "value": 85
+                }
+              ]
+            },
+            "unit": "celsius"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 3,
+          "x": 16,
+          "y": 0
+        },
+        "id": 227,
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "sfDiskTemp{instance=\"$IP\", diskIndex=\"1\"} > 0",
+            "format": "time_series",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Temperature",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "磁盘温度",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "深信服AD启动天数",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "text": "N/A"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#299c46",
+                  "value": null
+                },
+                {
+                  "color": "#FADE2A",
+                  "value": 90000000
+                }
+              ]
+            },
+            "unit": "s"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 5,
+          "x": 19,
+          "y": 0
+        },
+        "id": 4,
+        "links": [],
+        "maxDataPoints": 100,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "expr": "adUptime{instance=\"$IP\"}",
+            "interval": "",
+            "legendFormat": "In",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "启动时间",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "所有链路上行流量(当前)",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "text": "N/A"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 1258291200
+                }
+              ]
+            },
+            "unit": "decbits"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 5,
+          "x": 0,
+          "y": 3
+        },
+        "id": 16,
+        "links": [],
+        "maxDataPoints": 100,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "expr": "adUplinkThroughput{instance=\"$IP\"} * 1024",
+            "interval": "",
+            "legendFormat": "Out",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "所有链路上行流量(当前)",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "所有链路下行流量(当前)",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "text": "N/A"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 1258291200
+                }
+              ]
+            },
+            "unit": "decbits"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 5,
+          "x": 5,
+          "y": 3
+        },
+        "id": 18,
+        "links": [],
+        "maxDataPoints": 100,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "expr": "adDownlinkThroughput{instance=\"$IP\"} * 1024",
+            "interval": "",
+            "legendFormat": "In",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "所有链路下行流量(当前)",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "系统并发连接数",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "rgb(31, 120, 193)",
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "blue",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 500000
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 10,
+          "y": 3
+        },
+        "id": 30,
+        "links": [],
+        "maxDataPoints": 100,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": true,
+            "expr": "adConns{job=~\"$Job\", instance=~\"$IP\"}",
+            "interval": "",
+            "legendFormat": "",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "系统并发连接数",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "新建并发连接数",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "orange",
+              "mode": "fixed"
+            },
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "text": "N/A"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "orange",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 100000
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 14,
+          "y": 3
+        },
+        "id": 228,
+        "links": [],
+        "maxDataPoints": 100,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": true,
+            "expr": "adNewConns{job=~\"$Job\", instance=~\"$IP\"}",
+            "interval": "",
+            "legendFormat": "",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "新建并发连接数",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "AD运行模式",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "index": 0,
+                    "text": "主备"
+                  },
+                  "1": {
+                    "index": 1,
+                    "text": "集群"
+                  },
+                  "3": {
+                    "index": 2,
+                    "text": "单机"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "purple",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 3,
+          "x": 18,
+          "y": 3
+        },
+        "id": 224,
+        "links": [],
+        "maxDataPoints": 100,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": true,
+            "expr": "adDevicePattern{job=~\"$Job\", instance=~\"$IP\"}",
+            "interval": "",
+            "legendFormat": "主备模式",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "AD运行模式",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "设备状态",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "index": 1,
+                    "text": "警告"
+                  },
+                  "1": {
+                    "index": 0,
+                    "text": "正常"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "transparent",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 0
+                },
+                {
+                  "color": "green",
+                  "value": 1
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 3,
+          "x": 21,
+          "y": 3
+        },
+        "id": 223,
+        "interval": "15s",
+        "links": [],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "sfDeviceStatus{job=\"$Job\", instance=\"$IP\"} == 1",
+            "hide": false,
+            "instant": false,
+            "legendFormat": "设备状态",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "设备状态",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "双机主备状态",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "index": 1,
+                    "text": "备机"
+                  },
+                  "1": {
+                    "index": 0,
+                    "text": "主机"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "transparent",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 0
+                },
+                {
+                  "color": "green",
+                  "value": 1
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 9,
+          "x": 0,
+          "y": 6
+        },
+        "id": 225,
+        "interval": "15s",
+        "links": [],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "adStandByState{job=\"$Job\", instance=\"$IP\"} == 1",
+            "hide": false,
+            "instant": false,
+            "legendFormat": "双机主备状态",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "双机主备状态",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "风扇状态",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "风扇1"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "transparent",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 0
+                      },
+                      {
+                        "color": "green",
+                        "value": 1
+                      },
+                      {
+                        "color": "#EAB839",
+                        "value": 2
+                      },
+                      {
+                        "color": "orange",
+                        "value": 3
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "0": {
+                          "index": 1,
+                          "text": "警告"
+                        },
+                        "1": {
+                          "index": 0,
+                          "text": "正常"
+                        },
+                        "2": {
+                          "index": 2,
+                          "text": "高速"
+                        },
+                        "3": {
+                          "index": 3,
+                          "text": "飞速"
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "风扇2"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "transparent",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 0
+                      },
+                      {
+                        "color": "green",
+                        "value": 1
+                      },
+                      {
+                        "color": "#EAB839",
+                        "value": 2
+                      },
+                      {
+                        "color": "orange",
+                        "value": 3
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "0": {
+                          "index": 1,
+                          "text": "警告"
+                        },
+                        "1": {
+                          "index": 0,
+                          "text": "正常"
+                        },
+                        "2": {
+                          "index": 2,
+                          "text": "高速"
+                        },
+                        "3": {
+                          "index": 3,
+                          "text": "飞速"
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "风扇3"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "transparent",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 0
+                      },
+                      {
+                        "color": "green",
+                        "value": 1
+                      },
+                      {
+                        "color": "#EAB839",
+                        "value": 2
+                      },
+                      {
+                        "color": "orange",
+                        "value": 3
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "0": {
+                          "index": 1,
+                          "text": "警告"
+                        },
+                        "1": {
+                          "index": 0,
+                          "text": "正常"
+                        },
+                        "2": {
+                          "index": 2,
+                          "text": "高速"
+                        },
+                        "3": {
+                          "index": 3,
+                          "text": "飞速"
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 8,
+          "x": 9,
+          "y": 6
+        },
+        "id": 218,
+        "interval": "15s",
+        "links": [],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "center",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "sfFanState{job=\"$Job\", instance=\"$IP\", fanIndex=\"1\"} == 1",
+            "hide": false,
+            "instant": false,
+            "legendFormat": "风扇{{fanIndex}}",
+            "range": true,
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "expr": "sfFanState{job=\"$Job\", instance=\"$IP\", fanIndex=\"2\"} == 1",
+            "hide": false,
+            "legendFormat": "风扇{{fanIndex}}",
+            "range": true,
+            "refId": "B"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "expr": "sfFanState{job=\"$Job\", instance=\"$IP\", fanIndex=\"3\"} == 1",
+            "hide": false,
+            "legendFormat": "风扇{{fanIndex}}",
+            "range": true,
+            "refId": "C"
+          }
+        ],
+        "title": "风扇状态",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "风扇转速",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 7,
+          "x": 17,
+          "y": 6
+        },
+        "id": 229,
+        "interval": "15s",
+        "links": [],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "center",
+          "orientation": "vertical",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "value_and_name"
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "sfFanSpeed{job=\"$Job\", instance=\"$IP\", fanIndex=\"1\"}",
+            "hide": false,
+            "instant": true,
+            "legendFormat": "风扇{{fanIndex}}",
+            "range": false,
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "sfFanSpeed{job=\"$Job\", instance=\"$IP\", fanIndex=\"2\"}",
+            "hide": false,
+            "instant": true,
+            "legendFormat": "风扇{{fanIndex}}",
+            "range": false,
+            "refId": "B"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "sfFanSpeed{job=\"$Job\", instance=\"$IP\", fanIndex=\"3\"}",
+            "hide": false,
+            "instant": true,
+            "legendFormat": "风扇{{fanIndex}}",
+            "range": false,
+            "refId": "C"
+          }
+        ],
+        "title": "风扇转速",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 20,
+              "gradientMode": "opacity",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "links": [],
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "bps"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 24,
+          "x": 0,
+          "y": 9
+        },
+        "id": 27,
+        "options": {
+          "legend": {
+            "calcs": [
+              "mean",
+              "lastNotNull",
+              "max",
+              "min"
+            ],
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": true,
+            "expr": "adLinkBitOut{job=\"$Job\",instance=\"$IP\",adLinkName=~\"$Interface\"}",
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "下行: {{adLinkIfName}} ({{adLinkName}})",
+            "range": true,
+            "refId": "B"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": true,
+            "expr": "adLinkBitIn{job=\"$Job\",instance=\"$IP\",adLinkName=~\"$Interface\"}",
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "上行: {{adLinkIfName}} ({{adLinkName}})",
+            "refId": "A"
+          }
+        ],
+        "title": "上行 / 下行-指定接口",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 20,
+              "gradientMode": "opacity",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "links": [],
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "decbits"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 24,
+          "x": 0,
+          "y": 19
+        },
+        "id": 29,
+        "options": {
+          "legend": {
+            "calcs": [
+              "mean",
+              "lastNotNull",
+              "max",
+              "min"
+            ],
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": true,
+            "expr": "adLinkBitOut{job=\"$Job\",instance=\"$IP\"}",
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "下行: {{adLinkIfName}} ({{adLinkName}})",
+            "range": true,
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": true,
+            "expr": "adLinkBitIn{job=\"$Job\",instance=\"$IP\"}",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "上行: {{adLinkIfName}} ({{adLinkName}})",
+            "range": true,
+            "refId": "B"
+          }
+        ],
+        "title": "上行 / 下行-所有接口",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "上行流量  (当前)  根据查询时间定义",
+        "fieldConfig": {
+          "defaults": {
+            "decimals": 2,
+            "mappings": [],
+            "max": 100000000,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "decbits"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "上行: (sf)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "decbits"
+                },
+                {
+                  "id": "max",
+                  "value": 104857600
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 83886080
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "上行: (CMCC-Office)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "decbits"
+                },
+                {
+                  "id": "max",
+                  "value": 1048576000
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 943718400
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "上行: (内网口)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "decbits"
+                },
+                {
+                  "id": "max",
+                  "value": 1258291200
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 1048576000
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "上行: (CTCC-Office)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "decbits"
+                },
+                {
+                  "id": "max",
+                  "value": 104857600
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 83886080
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "上行: (CUCC-Office)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "decbits"
+                },
+                {
+                  "id": "max",
+                  "value": 524288000
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 419430400
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "上行: (CTCC-Server)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "decbits"
+                },
+                {
+                  "id": "max",
+                  "value": 104857598
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 83886080
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 29
+        },
+        "id": 24,
+        "options": {
+          "displayMode": "lcd",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "last"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true,
+          "text": {}
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": true,
+            "expr": "adLinkBitIn{job=\"$Job\",instance=\"$IP\"}",
+            "interval": "",
+            "legendFormat": "上行: ({{adLinkName}})",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "上行流量  (当前)",
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "5ELfyWvVk"
+        },
+        "description": "下行流量 (当前)  根据查询区间变化",
+        "fieldConfig": {
+          "defaults": {
+            "decimals": 2,
+            "mappings": [],
+            "max": 99999997,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "blue",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "Bps"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "下行: (sf)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "decbits"
+                },
+                {
+                  "id": "max",
+                  "value": 104857600
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "blue",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 83886080
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "下行: (CMCC-Office)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "decbits"
+                },
+                {
+                  "id": "max",
+                  "value": 1048576000
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "blue",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 943718400
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "下行: (内网口)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "decbits"
+                },
+                {
+                  "id": "max",
+                  "value": 1258291200
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "blue",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 1048576000
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "下行: (CTCC-Office)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "decbits"
+                },
+                {
+                  "id": "max",
+                  "value": 104857600
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "blue",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 83886080
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "下行: (CUCC-Office)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "decbits"
+                },
+                {
+                  "id": "max",
+                  "value": 524288000
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "blue",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 419430400
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "下行: (CTCC-Server)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "decbits"
+                },
+                {
+                  "id": "max",
+                  "value": 104857598
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "blue",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 83886080
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 29
+        },
+        "id": 25,
+        "options": {
+          "displayMode": "lcd",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "last"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true,
+          "text": {}
+        },
+        "pluginVersion": "9.2.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "5ELfyWvVk"
+            },
+            "editorMode": "code",
+            "exemplar": true,
+            "expr": "adLinkBitOut{job=\"$Job\",instance=\"$IP\"}",
+            "interval": "",
+            "legendFormat": "下行: ({{adLinkName}})",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "下行流量 (当前)",
+        "type": "bargauge"
+      }
+    ],
+    "refresh": false,
+    "schemaVersion": 37,
+    "style": "dark",
+    "tags": [
+      "sangfor",
+      "snmp",
+      "ad"
+    ],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "sangfor",
+            "value": "sangfor"
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "5ELfyWvVk"
+          },
+          "definition": "label_values(adLinkBitIn,  job)",
+          "hide": 0,
+          "includeAll": false,
+          "multi": false,
+          "name": "Job",
+          "options": [],
+          "query": {
+            "query": "label_values(adLinkBitIn,  job)",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "192.168.2.1",
+            "value": "192.168.2.1"
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "5ELfyWvVk"
+          },
+          "definition": "label_values(adConns,instance)",
+          "hide": 0,
+          "includeAll": false,
+          "label": "设备IP",
+          "multi": false,
+          "name": "IP",
+          "options": [],
+          "query": {
+            "query": "label_values(adConns,instance)",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "CTCC-Server",
+            "value": "CTCC-Server"
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "5ELfyWvVk"
+          },
+          "definition": "adLinkBitIn{job=\"$Job\",instance=\"$IP\"}",
+          "description": "深信服AD链路接口",
+          "hide": 0,
+          "includeAll": false,
+          "label": "链路接口",
+          "multi": false,
+          "name": "Interface",
+          "options": [],
+          "query": {
+            "query": "adLinkBitIn{job=\"$Job\",instance=\"$IP\"}",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 1,
+          "regex": "/adLinkName=\"(.*)\",adLinkType/",
+          "skipUrlSync": false,
+          "sort": 2,
+          "type": "query"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "5ELfyWvVk"
+          },
+          "filters": [],
+          "hide": 0,
+          "label": "",
+          "name": "Filters",
+          "skipUrlSync": false,
+          "type": "adhoc"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-5m",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "",
+    "title": "深信服AD",
+    "uid": "VUfBfzF4k",
+    "version": 27,
+    "weekStart": ""
+  }

@@ -48,13 +48,16 @@ wget http://mirror.city-fan.org/ftp/contrib/yum-repo/rhel7/x86_64/city-fan.org-r
 rpm -ivh city-fan.org-release-3-9.rhel7.noarch.rpm
 
 vim /etc/yum.repos.d/city-fan.org.repo
+
+# 把enabled=0修改为enabled=1
 [city-fan.org]
 name=city-fan.org repository for Red Hat Enterprise Linux (and clones) $releasever ($basearch)
 #baseurl=http://mirror.city-fan.org/ftp/contrib/yum-repo/rhel$releasever/$basearch
 mirrorlist=http://mirror.city-fan.org/ftp/contrib/yum-repo/mirrorlist-rhel$releasever
 enabled=1
 gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-city-fan.org
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-city-fan.org file:///etc/pki/rpm-gpg/RPM-GPG-KEY-city-fan.org-rhel-7
+
 
 yum update curl --enablerepo=city-fan.org -y
 curl --version

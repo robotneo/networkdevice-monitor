@@ -1,0 +1,68 @@
+auths:  # 认证模块
+  public_v2:  # 认证模块名称 可自定义 在prometheus.yml中需要配置参数auth对应这个名称
+    version: 2  # 定义SNMP Agent的版本为v2c 支持v3
+    community: public   # SNMP Agent的团体名设置和AC中设置的团体名需一致
+
+modules:  # 指标模块
+  # 深信服AD设备信息抓取
+  sangfor_ad: # 指标模块名称 可自定义
+    walk:
+      - adSysName
+      - adCpuCostRate         # 深信服AD CPU使用率
+      - adMemCostRate         # 深信服AD 内存使用率
+      - sfIntCpuTemp          # 深信服 设备温度
+      - sfDiskTemp            # 深信服 磁盘
+      - sfFanSpeed            # 深信服 设备风扇
+      - adDiskCostRate        # 深信服AD 磁盘使用率
+      - sfDeviceStatus        # 深信服 磁盘状态 1为正常
+      - sfFanState            # 深信服 风扇状态 2 3为正常
+      - sfPowerState          # 深信服 电源状态 2为正常
+      - adConns               # AD系统并发连接数
+      - adNewConns            # AD系统新建连接数
+      - adVsHealthStatus      # 虚拟服务的健康状态
+      - adVsHealthNodeCnt     # 虚拟服务的健康节点个数
+      - adUplinkThroughput    # 所有链路上行流量（整型）
+      - adDownlinkThroughput  # 所有链路下行流量 （整型）
+      - adUptime              # AD设备运行时间
+      - adDevicePattern       # AD运行模式 单机是3
+      - adStandByState        # AD双机主备状态
+      - adLinkName            # AD链路名称
+      - adLinkType            # AD链路类型
+      - adLinkIfName          # AD链路引用的网口
+      - adLinkStatus          # 链路状态，0为离线，1为正常
+      - adLinkBitIn           # 链路上行流量
+      - adLinkBitOut          # 链路下行流量
+      - adLinkNumber          # 设备链路个数
+    
+    max_repetitions: 25
+    retries: 3
+    timeout: 5s
+
+    lookups:
+      - source_indexes: [LinkIndex]
+        lookup: adLinkType
+      - source_indexes: [LinkIndex]
+        lookup: adLinkIfName
+      - source_indexes: [LinkIndex]
+        lookup: adLinkName
+
+    overrides:
+      adSysName:
+        type: DisplayString
+      adLinkName:
+        type: DisplayString
+        ignore: true
+      adLinkIfName:
+        type: DisplayString
+        ignore: true
+      sfCpuTemp:
+        type: DisplayString
+      adLinkType:
+        type: DisplayString
+        ignore: true
+      adVsHealthStatus:
+        type: DisplayString
+      sfFanState:
+        type: DisplayString
+      sfPowerState:
+        type: DisplayString

@@ -11,21 +11,15 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
-          "type": "dashboard"
-        },
         "type": "dashboard"
       }
     ]
   },
-  "description": "H3C无线AC&AP监控模版",
+  "description": "",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 29,
+  "id": 25,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -47,6 +41,7 @@
         "type": "prometheus",
         "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -134,7 +129,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.2.2",
+      "pluginVersion": "10.1.1",
       "targets": [
         {
           "datasource": {
@@ -151,7 +146,7 @@
           "refId": "A"
         }
       ],
-      "title": "AP 实时在线终端-TOP20",
+      "title": "AP实时在线终端-TOP20",
       "type": "gauge"
     },
     {
@@ -166,7 +161,9 @@
           },
           "custom": {
             "align": "center",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": true,
             "inspect": true
           },
@@ -263,7 +260,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "9.2.2",
+      "pluginVersion": "10.1.1",
       "targets": [
         {
           "datasource": {
@@ -378,7 +375,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.2.2",
+      "pluginVersion": "10.1.1",
       "targets": [
         {
           "datasource": {
@@ -446,7 +443,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.2.2",
+      "pluginVersion": "10.1.1",
       "targets": [
         {
           "datasource": {
@@ -454,6 +451,7 @@
             "uid": "f954ccc5-595b-4342-a33a-cc548e7ce251"
           },
           "editorMode": "code",
+          "exemplar": false,
           "expr": "topk(20, sort_desc(hh3cDot11APMemRTUsage2{job=\"$Job\", instance=\"$IP\"}))",
           "instant": true,
           "legendFormat": "{{hh3cDot11APTemplateNameOfAP}}",
@@ -525,7 +523,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.2.2",
+      "pluginVersion": "10.1.1",
       "targets": [
         {
           "datasource": {
@@ -573,6 +571,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineStyle": {
               "fill": "solid"
@@ -638,7 +637,7 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "hh3cEntityExtCpuUsage{job=\"$Job\",instance=\"$IP\",hh3cEntityExtPhysicalIndex=\"97\"}",
+          "expr": "hh3cEntityExtCpuUsage{job=\"$Job\",instance=\"$IP\"} > 0",
           "format": "time_series",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -677,6 +676,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -742,7 +742,7 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "hh3cEntityExtMemUsage{job=\"$Job\",instance=\"$IP\",hh3cEntityExtPhysicalIndex=\"97\"}",
+          "expr": "hh3cEntityExtMemUsage{job=\"$Job\",instance=\"$IP\"} > 0",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -780,6 +780,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -938,7 +939,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.2.2",
+      "pluginVersion": "10.1.1",
       "targets": [
         {
           "datasource": {
@@ -984,6 +985,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1070,7 +1072,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 37,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "h3c",
@@ -1179,6 +1181,6 @@
   "timezone": "",
   "title": "H3C无线AC&AP监控",
   "uid": "fae98948-1f0c-4692-ae77-78c4d3a2eff9",
-  "version": 2,
+  "version": 30,
   "weekStart": ""
 }
