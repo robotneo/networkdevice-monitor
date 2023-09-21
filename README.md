@@ -105,7 +105,7 @@ make generator mibs
 # mibs文件夹中放入对应品牌的无线设备mib库文件即可
 # 把对应的generator.yml文件放入 ../snmp_exporter/generator/ 目录下
 export MIBDIRS=/root/snmp_exporter/generator/mibs
-./generator generate
+./generator --fail-on-parse-errors generate
 
 mv snmp.yml ../
 
