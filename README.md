@@ -120,6 +120,6 @@ systemctl restart snmp_exporter
 
 查看目录中prometheus.yml文件中配置案例
 
-grafana.json只是根据案例中的指标写出的json模版，适配每个环境下的监控需要做一定的修改.
+grafana.json只是根据案例中的指标写出的json模版，适配每个环境下的监控需要做一定的修改。
 
 grafana模版针对AP上的在线终端数，AP的CPU利用率和内存利用率做了排序，前20优先显示在Grafana中。
