@@ -1,0 +1,35 @@
+# 全局配置文件
+global:
+  # ......
+# 告警插件配置
+alerting:
+  # ......
+# 按照设定参数进行扫描加载，用于自定义报警规则，其报警媒介和route路由由alertmanager插件实现
+rule_files:
+  # ......
+
+# 设定采集对象，这里既有静态设置也有设置服务发现
+scrape_configs:
+  # ......
+  
+  # 采集华为交换机信息
+  - job_name: "snmp"
+    scrape_interval: 30s  # 针对SNMP采集节点 覆盖全局配置15s
+    scrape_timeout: 20s
+    file_sd_configs:
+      - files: 
+        - /root/monitor/prometheus/targets/network-*.yml
+        refresh_interval: 2m
+    metrics_path: /snmp
+    relabel_configs:
+    - source_labels: ["__address__"]
+      target_label: __param_target
+    - source_labels: ["__param_target"]
+      target_label: instance
+    # prometheus采集目标直接修改为snmp_exporter 服务IP地址
+    - target_label: __address__
+      replacement: 172.17.40.54:9116 # snmp_exporter 服务IP地址
+    - source_labels: ["module"] # 从自定义的目标标签获取指标模块名称
+      target_label: __param_module
+    - source_labels: ["auth"] # 从自定义的目标标签获取认证模块名称
+      target_label: __param_auth

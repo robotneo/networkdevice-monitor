@@ -1,0 +1,17 @@
+# Prometheus通过文件发现机制定义的采集目标
+- labels:
+    module: huawei_common,huawei_core   # generator.yml中定义的指标模块名称，如果有多个可以写多个模块名
+    auth: public_v2     # generator.yml中定义的认证模块名
+    brand: Huawei       # 可删除可自定义
+    hostname: XX-XXXX-CORE  # 可删除可自定义
+    model: S12700E-4        # 可删除可自定义
+  targets:
+    - 172.17.14.1   # 核心  # 需要采集的交换机管理IP
+- labels:
+    module: HUAWEI
+    auth: public_v2
+    brand: Huawei
+    hostname: XXXX-XXX-XX-AG
+    model: S5720-36C-EI-AC
+  targets:
+    - 172.17.14.2   # 汇聚

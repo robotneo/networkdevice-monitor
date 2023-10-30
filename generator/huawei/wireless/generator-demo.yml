@@ -1,31 +1,30 @@
-auths:  # 认证模块
-  public_v2:  # 认证模块名称 可自定义 在prometheus.yml中需要配置参数auth对应这个名称
-    version: 2  # 定义SNMP Agent的版本为v2c 支持v3
-    community: public   # SNMP Agent的团体名设置和AC中设置的团体名需一致
+auths:
+  public_v2:  # 认证模块名称
+    version: 2  # snmp v2c版本
+    community: public  # snmp 团体名
 
-modules:  # 指标模块
-  Huawei_AC:  # 指标模块名称 可自定义
+modules:
+  huawei_ac:
     walk:
-      - 1.3.6.1.2.1.1.5                       # AC的设备名称
-      - 1.3.6.1.4.1.2011.5.25.31.1.1.1.1.11   # AC的温度
       - 1.3.6.1.4.1.2011.5.25.31.1.1.1.1.5    # AC的CPU利用率
       - 1.3.6.1.4.1.2011.5.25.31.1.1.1.1.7    # AC的内存利用率
       - 1.3.6.1.4.1.2011.5.25.31.1.1.1.1.10   # AC的启动时间
-      #- 1.3.6.1.2.1.2.1                       # ifNumber - 系统中网络接口的数量
-      - 1.3.6.1.2.1.2.2.1.1                   # ifIndex - 接口索引
-      - 1.3.6.1.2.1.2.2.1.2                   # IfDescr - 描述接口的字符串
-      #- 1.3.6.1.2.1.2.2.1.3                   # ifType - 接口类型
-      - 1.3.6.1.2.1.2.2.1.5                   # ifSpeed - 估计的接口当前带宽，单位是bit/s
-      - 1.3.6.1.2.1.31.1.1.1.15               # ifHighSpeed - 接口当前带宽的估计值 单位为1,000,000 bit/s
-      - 1.3.6.1.2.1.31.1.1.1.18               # ifAlias - 网络管理员指定的接口别名
-      - 1.3.6.1.2.1.2.2.1.8                   # ifOperStatus - 接口当前的状态
-      - 1.3.6.1.2.1.2.2.1.13                  # ifInDiscards - 入方向的被丢弃的报文个数
-      - 1.3.6.1.2.1.2.2.1.14                  # ifInErrors - 出错而不会被送往上层协议的报文/传输单元个数
-      - 1.3.6.1.2.1.2.2.1.19                  # ifOutDiscards - 出方向的被丢弃的报文个数
-      - 1.3.6.1.2.1.2.2.1.20                  # ifOutErrors - 出错而不会被传送的报文/传输单元个数
-      #- 1.3.6.1.2.1.31.1.1.1.1                # ifName - 由本地设备分配的接口名
-      - 1.3.6.1.2.1.31.1.1.1.6                # ifHCInOctets - 接口上接收到的字节总数 包括成帧的字符 该节点有64bit 是ifInOctets的扩充
-      - 1.3.6.1.2.1.31.1.1.1.10               # ifHCOutOctets - 接口上发送到的字节总数 包括成帧字符 该节点有64bit 是ifOutOctets的扩充
+      - 1.3.6.1.2.1.1.5                       # AC的设备名称
+      - 1.3.6.1.4.1.2011.5.25.31.1.1.1.1.11   # AC的温度
+      - 1.3.6.1.2.1.2.2.1.1                   # ifIndex 接口索引
+      - 1.3.6.1.2.1.2.2.1.2                   # IfDescr 描述接口的字符串
+      #- 1.3.6.1.2.1.2.2.1.3                   # ifType 接口类型
+      - 1.3.6.1.2.1.2.2.1.5                   # ifSpeed 估计的接口当前带宽 单位是bit/s
+      - 1.3.6.1.2.1.31.1.1.1.15               # ifHighSpeed 接口当前带宽的估计值 单位为1,000,000 bit/s
+      - 1.3.6.1.2.1.31.1.1.1.18               # ifAlias 网络管理员指定的接口别名
+      - 1.3.6.1.2.1.2.2.1.8                   # ifOperStatus 接口当前的状态
+      - 1.3.6.1.2.1.2.2.1.13                  # ifInDiscards 入方向的被丢弃的报文个数
+      - 1.3.6.1.2.1.2.2.1.14                  # ifInErrors 出错而不会被送往上层协议的报文/传输单元个数
+      - 1.3.6.1.2.1.2.2.1.19                  # ifOutDiscards 出方向的被丢弃的报文个数
+      - 1.3.6.1.2.1.2.2.1.20                  # ifOutErrors 出错而不会被传送的报文/传输单元个数
+      #- 1.3.6.1.2.1.31.1.1.1.1                # ifName 由本地设备分配的接口名
+      - 1.3.6.1.2.1.31.1.1.1.6                # ifHCInOctets 接口上接收到的字节总数 
+      - 1.3.6.1.2.1.31.1.1.1.10               # ifHCOutOctets 接口发送的字节总数
       - hwWlanIDIndexedApId                   # AP的ID
       - 1.3.6.1.4.1.2011.6.139.13.3.10.1.5    # AP的名称
       - 1.3.6.1.4.1.2011.6.139.13.3.10.1.7    # AP的状态
@@ -45,9 +44,10 @@ modules:  # 指标模块
       - 1.3.6.1.4.1.2011.6.139.13.3.10.1.58   # AP的以太接口下行速率
       - 1.3.6.1.4.1.2011.6.139.13.3.10.1.65   # AP上行端口接收总的字节数
       - 1.3.6.1.4.1.2011.6.139.13.3.10.1.66   # AP上行端口发送总的字节数
+      - 1.3.6.1.4.1.2011.6.139.13.3.10.1.65   # AP上行端口接收总的字节数
+      - 1.3.6.1.4.1.2011.6.139.13.3.10.1.66   # AP上行端口发送总的字节数
 
-
-    max_repetitions: 25
+    max_repetitions: 50
     retries: 3
     timeout: 5s
   
@@ -56,10 +56,6 @@ modules:  # 指标模块
         lookup: ifAlias
       - source_indexes: [ifIndex]
         lookup: ifDescr
-      #- source_indexes: [ifIndex]
-      #  lookup: ifName
-      #- source_indexes: [ifIndex]
-      #  lookup: ifType
       - source_indexes: [ifIndex]
         lookup: ifOperStatus
       - source_indexes: [hwWlanIDIndexedApId]
@@ -78,10 +74,6 @@ modules:  # 指标模块
         ignore: true
       ifDescr:
         ignore: true
-      #ifName:
-      #  ignore: true
-      #ifType:
-      #  ignore: true
       ifOperStatus:
         ignore: true
       hwWlanIDIndexedApName:

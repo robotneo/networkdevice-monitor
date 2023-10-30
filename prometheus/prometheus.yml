@@ -1,0 +1,239 @@
+# 全局配置文件
+global:
+  scrape_interval: 15s # 设置数据采集间隔每次15s，默认1分钟
+  evaluation_interval: 15s # 评估规则每次15s，默认1分钟，该设置是针对告警规则rule_files
+  scrape_timeout: 10s # 采集超时，默认10s
+  external_labels:
+    monitor: "it-monitor"
+
+# 告警插件配置
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - 172.17.40.51:9093
+
+# 按照设定参数进行扫描加载，用于自定义报警规则，其报警媒介和route路由由alertmanager插件实现
+rule_files:
+  - "/root/monitor/prometheus/rules/*.yml"
+  # - "second_rules.yml"
+
+# 设定采集对象，这里既有静态设置也有设置服务发现（服务发现用于后续target更改只需要进行规则修改即可，不需要进行prometheus守护进程重启）
+scrape_configs:
+  - job_name: "prometheus"
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets: ["172.17.40.51:9090"]
+    relabel_configs:
+      - source_labels: [ '__address__' ]
+        target_label:  'instance'
+        regex: "(.*):(.*)"
+        replacement: $1
+
+
+  # 采集内部交换机信息
+  - job_name: "snmp"
+    scrape_interval: 30s  # 针对SNMP采集节点 覆盖全局配置15s
+    scrape_timeout: 20s
+    file_sd_configs:
+      - files: 
+        - /root/monitor/prometheus/targets/network-*.yml
+        refresh_interval: 2m
+    metrics_path: /snmp
+    relabel_configs:
+    - source_labels: ["__address__"]
+      target_label: __param_target
+    - source_labels: ["__param_target"]
+      target_label: instance
+    # prometheus采集目标直接修改为snmp_exporter 服务IP地址
+    - target_label: __address__
+      replacement: 172.17.40.54:9116 # snmp_exporter 服务IP地址
+    - source_labels: ["module"] # 从自定义的目标标签获取指标模块名称
+      target_label: __param_module
+    - source_labels: ["auth"] # 从自定义的目标标签获取认证模块名称
+      target_label: __param_auth
+  
+  # 采集内部戴尔物理服务器信息
+  - job_name: "idrac_snmp"
+    scrape_interval: 60s  # 针对iDrac_SNMP采集节点 覆盖全局配置15s
+    scrape_timeout: 60s
+    file_sd_configs:
+      - files:
+        - /root/monitor/prometheus/targets/machine-*.yml
+        refresh_interval: 2m
+    metrics_path: /snmp
+    relabel_configs:
+    - source_labels: ["__address__"]
+      target_label: __param_target
+    - source_labels: ["__param_target"]
+      target_label: instance
+    # prometheus采集目标直接修改为snmp_exporter 服务IP地址
+    - target_label: __address__
+      replacement: 172.17.40.54:9116 # snmp_exporter 服务IP地址
+    - source_labels: ["module"] # 从自定义的目标标签获取指标模块名称
+      target_label: __param_module
+    - source_labels: ["auth"] # 从自定义的目标标签获取认证模块名称
+      target_label: __param_auth
+
+  - job_name: "sangfor" # pull深信服设备数据
+    __scrape_interval__: 15s
+    scrape_timeout: 10s
+    file_sd_configs:
+      - files:
+        - /root/monitor/prometheus/targets/sangfor-*.yml
+        refresh_interval: 2m
+    metrics_path: /snmp
+    relabel_configs:
+    - source_labels: ["__address__"]
+      target_label: __param_target
+    - source_labels: ["__param_target"]
+      target_label: instance
+    - target_label: __address__
+      replacement: 172.17.40.54:9116 # snmp_exporter 服务IP地址
+    - source_labels: ["module"] # 从自定义的目标标签获取指标模块名称
+      target_label: __param_module
+    - source_labels: ["auth"] # 从自定义的目标标签获取认证模块名称
+      target_label: __param_auth
+
+  - job_name: "huawei_wireless"
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    file_sd_configs:
+      - files:
+        - /root/monitor/prometheus/targets/huawei-*.yml
+        refresh_interval: 2m
+    metrics_path: /snmp
+    relabel_configs:
+    - source_labels: ["__address__"]
+      target_label: __param_target
+    - source_labels: ["__param_target"]
+      target_label: instance
+    - target_label: __address__
+      replacement: 172.17.40.54:9116 # snmp_exporter 服务IP地址
+    - source_labels: ["module"] # 从自定义的目标标签获取指标模块名称
+      target_label: __param_module
+    - source_labels: ["auth"] # 从自定义的目标标签获取认证模块名称
+      target_label: __param_auth
+
+
+  - job_name: "blackbox"
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+        - 172.17.40.54:9115
+
+  - job_name: 'blackbox_exporter'
+    scrape_interval: 15s
+    scrape_timeout: 5s
+    metrics_path: /probe
+    consul_sd_configs:
+      - server: '172.17.40.151:8500'
+        token: '1ab5decd-028a-6a91-f9b6-0f41ce31bdb6'
+        services: ['blackbox_exporter']
+    relabel_configs:
+      - source_labels: ["__meta_consul_service_metadata_instance"]
+        target_label: __param_target
+      - source_labels: [__meta_consul_service_metadata_module]
+        target_label: __param_module
+      - source_labels: [__meta_consul_service_metadata_module]
+        target_label: module
+      - source_labels: ["__meta_consul_service_metadata_company"]
+        target_label: company
+      - source_labels: ["__meta_consul_service_metadata_env"]
+        target_label: env
+      - source_labels: ["__meta_consul_service_metadata_name"]
+        target_label: name
+      - source_labels: ["__meta_consul_service_metadata_project"]
+        target_label: project
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 172.17.40.54:9115
+
+  
+  - job_name: 'node_exporter'
+    scrape_interval: 15s
+    scrape_timeout: 5s
+    consul_sd_configs:
+      - server: '172.17.40.151:8500'
+        token: '1ab5decd-028a-6a91-f9b6-0f41ce31bdb6'
+        refresh_interval: 30s
+        services: ['selfnode_exporter']
+        tags: ['linux']
+    relabel_configs:
+      - source_labels: [__meta_consul_tags]
+        regex: .*OFF.*
+        action: drop
+      - source_labels: ['__meta_consul_service']
+        target_label: cservice
+      - source_labels: ['__meta_consul_service_metadata_vendor']
+        target_label: vendor
+      - source_labels: ['__meta_consul_service_metadata_region']
+        target_label: region
+      - source_labels: ['__meta_consul_service_metadata_group']
+        target_label: group
+      - source_labels: ['__meta_consul_service_metadata_account']
+        target_label: account
+      - source_labels: ['__meta_consul_service_metadata_name']
+        target_label: name
+      - source_labels: ['__meta_consul_service_metadata_iid']
+        target_label: iid
+      - source_labels: ['__meta_consul_service_metadata_exp']
+        target_label: exp
+      - source_labels: ['__meta_consul_service_metadata_instance']
+        target_label: instance
+      - source_labels: [instance]
+        target_label: __address__
+
+  - job_name: 'windows_exporter'
+    scrape_interval: 15s
+    scrape_timeout: 5s
+    consul_sd_configs:
+      - server: '172.17.40.151:8500'
+        token: '1ab5decd-028a-6a91-f9b6-0f41ce31bdb6'
+        refresh_interval: 30s
+        services: ['selfnode_exporter']
+        tags: ['windows']
+    relabel_configs:
+      - source_labels: [__meta_consul_tags]
+        regex: .*OFF.*
+        action: drop
+      - source_labels: ['__meta_consul_service']
+        target_label: cservice
+      - source_labels: ['__meta_consul_service_metadata_vendor']
+        target_label: vendor
+      - source_labels: ['__meta_consul_service_metadata_region']
+        target_label: region
+      - source_labels: ['__meta_consul_service_metadata_group']
+        target_label: group
+      - source_labels: ['__meta_consul_service_metadata_account']
+        target_label: account
+      - source_labels: ['__meta_consul_service_metadata_name']
+        target_label: name
+      - source_labels: ['__meta_consul_service_metadata_iid']
+        target_label: iid
+      - source_labels: ['__meta_consul_service_metadata_exp']
+        target_label: exp
+      - source_labels: ['__meta_consul_service_metadata_instance']
+        target_label: instance
+      - source_labels: [instance]
+        target_label: __address__
+
+  - job_name: 'vmware_vcenter'
+    metrics_path: /metrics
+    scheme: http
+    scrape_interval: 60s
+    scrape_timeout: 30s
+    static_configs:
+      - targets:
+        - 172.17.41.101
+    #params:
+    #  section: [default]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 172.17.40.99:9272  # vmware_exporter暴露的IP和端口

@@ -1,0 +1,10 @@
+# Prometheus通过文件发现机制定义的采集目标
+# /root/monitor/prometheus/targets/h3c-ac.yml
+- labels:
+    module: huawei_ac    # generator.yml中定义的指标模块名称，如果有多个可以写多个模块名
+    auth: public_v2     # generator.yml中定义的认证模块名
+    brand: H3C       # 可删除可自定义
+    hostname: XX-XXXX-CORE  # 可删除可自定义
+    model: AC6005        # 可删除可自定义
+  targets:
+    - 172.17.14.1   # 需要采集的无线控制器管理IP
