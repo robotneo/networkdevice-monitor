@@ -18,7 +18,7 @@ scrape_configs:
     scrape_timeout: 10s
     file_sd_configs:
       - files:
-        - /root/monitor/prometheus/targets/huawei-*.yml
+        - /root/monitor/prometheus/targets/ruijie-*.yml
         refresh_interval: 2m
     metrics_path: /snmp
     relabel_configs:
