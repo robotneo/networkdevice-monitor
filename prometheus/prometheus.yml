@@ -33,9 +33,9 @@ scrape_configs:
 
 
   # 采集内部交换机信息
-  - job_name: "snmp"
-    scrape_interval: 30s  # 针对SNMP采集节点 覆盖全局配置15s
-    scrape_timeout: 20s
+  - job_name: "huawei_sw"
+    scrape_interval: 15s  # 针对SNMP采集节点 覆盖全局配置15s
+    scrape_timeout: 10s
     file_sd_configs:
       - files: 
         - /root/monitor/prometheus/targets/network-*.yml
@@ -52,8 +52,28 @@ scrape_configs:
     - source_labels: ["module"] # 从自定义的目标标签获取指标模块名称
       target_label: __param_module
     - source_labels: ["auth"] # 从自定义的目标标签获取认证模块名称
+      target_label: __param_auth    
+
+  - job_name: "huawei_access"
+    scrape_interval: 30s
+    scrape_timeout: 20s
+    file_sd_configs:
+      - files:
+        - /root/monitor/prometheus/targets/networkacc.yml
+        refresh_interval: 2m
+    metrics_path: /snmp
+    relabel_configs:
+    - source_labels: ["__address__"]
+      target_label: __param_target
+    - source_labels: ["__param_target"]
+      target_label: instance
+    - target_label: __address__
+      replacement: 172.17.40.54:9116
+    - source_labels: ["module"]
+      target_label: __param_module
+    - source_labels: ["auth"]
       target_label: __param_auth
-  
+ 
   # 采集内部戴尔物理服务器信息
   - job_name: "idrac_snmp"
     scrape_interval: 60s  # 针对iDrac_SNMP采集节点 覆盖全局配置15s
@@ -71,13 +91,13 @@ scrape_configs:
     # prometheus采集目标直接修改为snmp_exporter 服务IP地址
     - target_label: __address__
       replacement: 172.17.40.54:9116 # snmp_exporter 服务IP地址
-    - source_labels: ["module"] # 从自定义的目标标签获取指标模块名称
+    - source_labels: ["module"] # 从自定义的目标标签获取M指标模块名称
       target_label: __param_module
     - source_labels: ["auth"] # 从自定义的目标标签获取认证模块名称
-      target_label: __param_auth
+      target_label: __param_auth    
 
-  - job_name: "sangfor" # pull深信服设备数据
-    __scrape_interval__: 15s
+  - job_name: "sangfor"
+    scrape_interval: 15s
     scrape_timeout: 10s
     file_sd_configs:
       - files:
@@ -91,7 +111,7 @@ scrape_configs:
       target_label: instance
     - target_label: __address__
       replacement: 172.17.40.54:9116 # snmp_exporter 服务IP地址
-    - source_labels: ["module"] # 从自定义的目标标签获取指标模块名称
+    - source_labels: ["module"] # 从自定义的目标标签获取MIB模块名称
       target_label: __param_module
     - source_labels: ["auth"] # 从自定义的目标标签获取认证模块名称
       target_label: __param_auth
@@ -111,7 +131,7 @@ scrape_configs:
       target_label: instance
     - target_label: __address__
       replacement: 172.17.40.54:9116 # snmp_exporter 服务IP地址
-    - source_labels: ["module"] # 从自定义的目标标签获取指标模块名称
+    - source_labels: ["module"] # 从自定义的目标标签获取MIB模块名称
       target_label: __param_module
     - source_labels: ["auth"] # 从自定义的目标标签获取认证模块名称
       target_label: __param_auth
@@ -129,7 +149,7 @@ scrape_configs:
     metrics_path: /probe
     consul_sd_configs:
       - server: '172.17.40.151:8500'
-        token: '1ab5decd-028a-6a91-f9b6-0f41ce31bdb6'
+        token: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx'
         services: ['blackbox_exporter']
     relabel_configs:
       - source_labels: ["__meta_consul_service_metadata_instance"]
@@ -157,7 +177,7 @@ scrape_configs:
     scrape_timeout: 5s
     consul_sd_configs:
       - server: '172.17.40.151:8500'
-        token: '1ab5decd-028a-6a91-f9b6-0f41ce31bdb6'
+        token: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx'
         refresh_interval: 30s
         services: ['selfnode_exporter']
         tags: ['linux']
@@ -191,7 +211,7 @@ scrape_configs:
     scrape_timeout: 5s
     consul_sd_configs:
       - server: '172.17.40.151:8500'
-        token: '1ab5decd-028a-6a91-f9b6-0f41ce31bdb6'
+        token: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx'
         refresh_interval: 30s
         services: ['selfnode_exporter']
         tags: ['windows']
