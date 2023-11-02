@@ -1,0 +1,47 @@
+groups:
+- name: Windows服务器状态-告警
+  rules: 
+  - alert: Windows Server 收集器不成功
+    expr: windows_exporter_collector_success == 0
+    for: 0m
+    labels:
+      alertype: windows
+      severity: High
+    annotations:
+      description: "**Collector {{ $labels.collector }} was not successful**  \n  >  状态值 = {{ $value }}%"
+
+  - alert: Windows 远程桌面状态不正常
+    expr: windows_service_status{exported_name="termservice", status="ok"} != 1
+    for: 1m
+    labels:
+      alertype: windows
+      severity: High
+    annotations:
+      description: "**远程桌面服务状态异常**  \n  > 状态值 = {{ $value }}"
+  
+  - alert: Windows服务器CPU使用率超过 90%
+    expr: 100 - (avg by (instance) (rate(windows_cpu_time_total{mode="idle"}[2m])) * 100) > 90
+    for: 0m
+    labels:
+      alertype: windows
+      severity: warning
+    annotations:
+      description: "**CPU使用率超过 90%**  \n  > 使用率 = {{ $value }}%"
+  
+  - alert: Windows服务器内存使用率超过 90%
+    expr: 100 - ((windows_os_physical_memory_free_bytes / windows_cs_physical_memory_bytes) * 100) > 90
+    for: 2m
+    labels:
+      alertype: windows
+      severity: warning
+    annotations:
+      description: "**内存使用率超过 90%**  \n  > 使用率 = {{ $value }}%"
+
+  - alert: Windows服务器磁盘使用率超过 90%
+    expr: 100.0 - 100 * ((windows_logical_disk_free_bytes / 1024 / 1024 ) / (windows_logical_disk_size_bytes / 1024 / 1024)) > 90
+    for: 2m
+    labels:
+      alertype: windows
+      severity: warning
+    annotations:
+      description: "**磁盘使用率超过90%**  \n  > 使用率 = {{ $value }}%  \n  volume = {{ $labels.volume }}"

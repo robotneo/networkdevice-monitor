@@ -1,0 +1,74 @@
+groups:
+- name: 物理机iDrac状态-告警
+  rules:
+  - alert: 节点存活--杭州IT机房
+    expr:  globalSystemStatus{job="iDrac_SNMP"} != 3
+    for: 1m
+    labels:
+      alertype: dell
+      severity: Critical
+    annotations:
+      description: "**物理机【{{ $labels.instance }}】状态异常**  \n  > 状态值 = {{ $value }}"
+
+  - alert: 内存状态--杭州IT机房
+    expr:  memoryDeviceStatus{job="iDrac_SNMP"} != 3
+    for: 1m  
+    labels:
+      alertype: dell
+      severity: Critical
+    annotations:
+      description: "**物理机内存第【{{$labels.memoryDeviceIndex}}】根故障**  \n  > 状态值 = {{ $value }}"
+
+  - alert: CPU状态--杭州IT机房
+    expr:  processorDeviceStatus{job="iDrac_SNMP"} != 3
+    for: 1m
+    labels:
+      alertype: dell
+      severity: Critical
+    annotations:
+      description: "**物理机CPU第【{{$labels.processorDeviceIndex}}】块故障**  \n  > 状态值 = {{ $value }}"
+  
+  - alert: 虚拟磁盘状态--杭州IT机房
+    expr:  virtualDiskState{job="iDrac_SNMP"} != 2
+    for: 1m  
+    labels:
+      alertype: dell
+      severity: warning
+    annotations:
+      description: "**物理机虚拟磁盘第【{{$labels.virtualDiskNumber}}】块故障**  \n  > 状态值 = {{ $value }}"
+  
+  - alert: 电源状态--杭州IT机房
+    expr:  systemPowerState{job="iDrac_SNMP"} != 4
+    for: 1m  
+    labels:
+      alertype: dell
+      severity: Critical
+    annotations:
+      description: "**物理机【{{ $labels.instance }}】电源故障**  \n  > 状态值 = {{ $value }}"
+
+  - alert: 网卡状态--杭州IT机房
+    expr:  networkDeviceStatus{job="iDrac_SNMP"} != 3
+    for: 1m  
+    labels:
+      alertype: dell
+      severity: Critical
+    annotations:
+      description: "**物理机网卡第【{{$labels.networkDeviceIndex}}】块故障**  \n  > 状态值 = {{ $value }}"
+
+  - alert: 存储状态--杭州IT机房
+    expr:  globalStorageStatus{job="iDrac_SNMP"} != 3
+    for: 1m  
+    labels:
+      alertype: dell
+      severity: warning
+    annotations:
+      description: "**物理机存储第【{{$labels.networkDeviceIndex}}】块故障**  \n  > 状态值 = {{ $value }}"
+
+  - alert: 采集状态
+    expr: up{job=~"idrac_snmp"} == 0
+    for: 3m
+    labels:
+      alertype: itself
+      severity: Critical
+    annotations:
+      description: "**{{ $labels.job }}：异常**  \n  > {{ $labels.brand }}-{{ $labels.module }}-{{ $labels.instance }}"

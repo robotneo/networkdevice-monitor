@@ -1,0 +1,56 @@
+groups:
+- name: 网络协议服务状态-告警
+  rules:
+  - alert: 站点可用性
+    expr: probe_success{job="blackbox_exporter"} == 0
+    for: 1m
+    labels:
+      alertype: domain
+      severity: Critical
+    annotations:
+      description: "**{{ $labels.env }}_{{ $labels.name }}({{ $labels.project }})：站点无法访问**  \n  > {{ $labels.instance }}"
+
+  - alert: 站点1h可用性低于80%
+    expr: sum_over_time(probe_success{job="blackbox_exporter"}[1h])/count_over_time(probe_success{job="blackbox_exporter"}[1h]) * 100 < 80
+    for: 3m
+    labels:
+      alertype: domain
+      severity: warning
+    annotations:
+      description: "**{{ $labels.env }}_{{ $labels.name }}({{ $labels.project }})：站点1h可用性：{{ $value | humanize }}%**  \n  > {{ $labels.instance }}"
+
+  - alert: 站点状态异常
+    expr: (probe_success{job="blackbox_exporter"} == 0 and probe_http_status_code > 499) or probe_http_status_code == 0
+    for: 1m
+    labels:
+      alertype: domain
+      severity: warning
+    annotations:
+      description: "**{{ $labels.env }}_{{ $labels.name }}({{ $labels.project }})：站点状态异常：{{ $value }}**  \n  > {{ $labels.instance }}"
+
+  - alert: 站点耗时过高
+    expr: probe_duration_seconds > 0.5
+    for: 2m
+    labels:
+      alertype: domain
+      severity: warning
+    annotations:
+      description: "**{{ $labels.env }}_{{ $labels.name }}({{ $labels.project }})：当前站点耗时：{{ $value | humanize }}s**  \n  > {{ $labels.instance }}"
+
+  - alert: SSL证书有效期
+    expr: (probe_ssl_earliest_cert_expiry-time()) / 3600 / 24 < 15
+    for: 2m
+    labels:
+      alertype: domain
+      severity: warning
+    annotations:
+      description: "**{{ $labels.env }}_{{ $labels.name }}({{ $labels.project }})：证书有效期剩余{{ $value | humanize }}天**  \n  > {{ $labels.instance }}"
+
+  - alert: 采集状态
+    expr: up{job=~"blackbox_exporter|blackbox"} == 0
+    for: 3m
+    labels:
+      alertype: itself
+      severity: Critical
+    annotations:
+      description: "**{{ $labels.job }}：异常**  \n  > {{ $labels.module }}-{{ $labels.name }}-{{ $labels.instance }}"

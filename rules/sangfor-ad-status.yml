@@ -1,0 +1,74 @@
+groups:
+- name: 出口链路服务状态-告警
+  rules:
+  - alert: CMCC-Office下行出口带宽
+    expr: (adLinkBitOut{adLinkName="CMCC-Office"} / 1000000) > 480
+    for: 15m
+    labels:
+      alertype: network
+      severity: High
+    annotations:
+      description: "**{{ $labels.adLinkName }}：下行带宽(15分钟内持续)使用超限**  \n  > 当前带宽 = {{ $value }}Mbps  \n  {{ $labels.adLinkIfName }}-{{ $labels.instance }}"
+
+  - alert: CTCC-Office下行出口带宽
+    expr: (adLinkBitOut{adLinkName="CTCC-Office"} / 1000000) > 280
+    for: 10m
+    labels:
+      alertype: network
+      severity: High
+    annotations:
+      description: "**{{ $labels.adLinkName }}：下行带宽(10分钟内持续)使用超限**  \n  > 当前带宽 = {{ $value }}Mbps  \n  {{ $labels.adLinkIfName }}-{{ $labels.instance }}"
+
+  - alert: CTCC-Server下行出口带宽
+    expr: (adLinkBitOut{adLinkName="CTCC-Server"} / 1000000) > 95
+    for: 10m
+    labels:
+      alertype: network
+      severity: High
+    annotations:
+      description: "**{{ $labels.adLinkName }}：下行带宽(10分钟内持续)使用超限**  \n  > 当前带宽 = {{ $value }}Mbps  \n  {{ $labels.adLinkIfName }}-{{ $labels.instance }}"
+
+  - alert: CMCC-Office上行出口带宽
+    expr: (adLinkBitIn{adLinkName="CMCC-Office"} / 1000000) > 480
+    for: 15m
+    labels:
+      alertype: network
+      severity: warning
+    annotations:
+      description: "**{{ $labels.adLinkName }}：上行带宽(15分钟内持续)使用超限**  \n  > 当前带宽 = {{ $value }}Mbps \n  {{ $labels.adLinkName }}-{{ $labels.instance }}"
+
+  - alert: CTCC-Office上行出口带宽
+    expr: (adLinkBitIn{adLinkName="CTCC-Office"} / 1000000) > 280
+    for: 10m
+    labels:
+      alertype: network
+      severity: warning
+    annotations:
+      description: "**{{ $labels.adLinkName }}：上行带宽(10分钟内持续)使用超限**  \n  > 当前带宽 = {{ $value }}Mbps  \n  {{ $labels.adLinkName }}-{{ $labels.instance }}"
+
+  - alert: CTCC-Server上行出口带宽
+    expr: (adLinkBitIn{adLinkName="CTCC-Server"} / 1000000) > 95
+    for: 10m
+    labels:
+      alertype: network
+      severity: warning
+    annotations:
+      description: "**{{ $labels.adLinkName }}：上行带宽(10分钟内持续)使用超限**  \n  > 当前带宽 = {{ $value }}Mbps  \n  {{ $labels.adLinkName }}-{{ $labels.instance }}"
+
+  - alert: 出口链路状态-故障
+    expr: adLinkStatus == 0
+    for: 0m
+    labels:
+      alertype: network
+      severity: Critical
+    annotations:
+      description: "**{{ $labels.adLinkName }}：出口链路离线**  \n  > 故障值 = {{ $value }}  \n  {{ $labels.adLinkName }}-{{ $labels.instance }}"
+
+  - alert: 出口链路状态-繁忙
+    expr: adLinkStatus == 2
+    for: 2m
+    labels:
+      alertype: network
+      severity: High
+    annotations:
+      description: "**{{ $labels.adLinkName }}：出口链路(10分钟内持续)繁忙**  \n  > 故障值 = {{ $value }}  \n  {{ $labels.adLinkName }}-{{ $labels.instance }}"
