@@ -1,0 +1,140 @@
+auths:  # 认证模块
+  public_v2:  # 认证模块名称 可自定义 在prometheus.yml中需要配置参数auth对应这个名称
+    version: 2  # 定义SNMP Agent的版本为v2c 支持v3
+    community: public   # SNMP Agent的团体名设置和AC中设置的团体名需一致
+
+
+
+
+modules:  # 指标模块
+  ruijie_ac:  # 指标模块名称 可自定义
+    walk:
+
+      - 1.3.6.1.2.1.1.3   # Uptime
+      - 1.3.6.1.2.1.1.5   # ACSystemName
+      - 1.3.6.1.4.1.4881.1.1.10.2.56.1.1.8      # AC的设备名称 - ruijieAcAcName
+      #- 1.3.6.1.4.1.4881.1.1.10.2.56.1.1.21     # AC的温度 - ruijieAcTemp 无效
+      - 1.3.6.1.4.1.4881.1.1.10.2.1.1.16        # 系统温度 - ruijieSystemTemperature
+      - ruijieCPUUtilization5Sec                # AC的CPU利用率 - ruijieCPUUtilization5Sec
+      - ruijieCPUUtilization1Min                # AC的CPU利用率 - ruijieCPUUtilization1Min
+      - ruijieCPUUtilization5Min                # AC的CPU利用率 - ruijieCPUUtilization5Min
+      - 1.3.6.1.4.1.4881.1.1.10.2.35.1.1.1.3    # AC的内存利用率 - ruijieMemoryPoolCurrentUtilization
+      - 1.3.6.1.4.1.4881.1.1.10.2.1.1.27        # AC的运行时长 - ruijieSystemUptime
+      - 1.3.6.1.2.1.2.2.1.1                     # ifIndex - 接口索引
+      - 1.3.6.1.2.1.2.2.1.2                     # IfDescr - 描述接口的字符串
+      - 1.3.6.1.2.1.2.2.1.5                     # ifSpeed - 估计的接口当前带宽，单位是bit/s
+      - 1.3.6.1.2.1.31.1.1.1.15                 # ifHighSpeed - 接口当前带宽的估计值 单位为1,000,000 bit/s
+      - 1.3.6.1.2.1.31.1.1.1.18                 # ifAlias - 网络管理员指定的接口别名
+      - 1.3.6.1.2.1.2.2.1.8                     # ifOperStatus - 接口当前的状态
+      - 1.3.6.1.2.1.2.2.1.13                    # ifInDiscards - 入方向的被丢弃的报文个数
+      - 1.3.6.1.2.1.2.2.1.14                    # ifInErrors - 出错而不会被送往上层协议的报文/传输单元个数
+      - 1.3.6.1.2.1.2.2.1.19                    # ifOutDiscards - 出方向的被丢弃的报文个数
+      - 1.3.6.1.2.1.2.2.1.20                    # ifOutErrors - 出错而不会被传送的报文/传输单元个数
+      - 1.3.6.1.2.1.31.1.1.1.6                  # ifHCInOctets - 接口上接收到的字节总数 包括成帧的字符 该节点有64bit 是ifInOctets的扩充
+      - 1.3.6.1.2.1.31.1.1.1.10                 # ifHCOutOctets - 接口上发送到的字节总数 包括成帧字符 该节点有64bit 是ifOutOctets的扩充
+      - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.1.1.2  # AP的名称 - ruijieApApName
+      - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.1.1.48 # AP的状态 - ruijieApState
+      #- 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.1.1.1  # AP的Mac - ruijieApMacAddr
+
+      - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.1.1.39 # AP的型号 - ruijieApPID
+      - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.1.1.33 # AP的IP - ruijieApIp
+      - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.1.1.52 # AP的上线时长 - ruijieApUptimeMs
+      - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.1.1.51 # AP的启动时间 - ruijieApLinkOnTimeIntervalMs
+      - 1.3.6.1.4.1.4881.1.1.10.2.1.1.49.1.6    # AP的内存使用率 - ruijieSystemApMemoryPoolCurrentUtilization
+      - 1.3.6.1.4.1.4881.1.1.10.2.1.1.49.1.4    # AP的CPU使用率(5s) - ruijieSystemApCPUUtilizationCurrent
+      - 1.3.6.1.4.1.4881.1.1.10.2.1.1.49.1.5    # AP的CPU使用率(5m) - ruijieSystemApCPUUtilizationAverage
+      - 1.3.6.1.4.1.4881.1.1.10.2.1.1.49.1.9    # AP的温度 - ruijieSystemAPDeviceTemperature
+      - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.1.1.34 # AP的在线用户数 - ruijieApStaNum
+      - 1.3.6.1.4.1.4881.1.1.10.2.56.1.1.15     # 当前连接到本AC的无线用户数 - ruijieAcStaNum
+      - 1.3.6.1.4.1.4881.1.1.10.2.56.1.1.11     # 当前连接到本AC的AP数 - ruijieAcApNum
+
+      - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.8.1.1 # ruijieApGeneralMacAddr
+      - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.8.1.2 # ruijieApGeneralApName
+      - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.8.1.3 # ruijieApGeneralState
+      #- 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.8.1.4 # ruijieApGeneralTime #
+      - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.8.1.5 # ruijieApGeneralTimeMs
+      - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.8.1.6 # ruijieApGeneralIp
+      - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.8.1.7 # ruijieApGeneralMacAddrColon
+
+
+      # - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.7.1.1  # ruijieApMicroApSlot
+      # - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.7.1.2  # ruijieApMicroApName
+      # - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.7.1.3  # ruijieApMicroApReset #
+      # #- 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.7.1.4  # ruijieApMicroApUninstall #
+      # - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.7.1.5  # ruijieApMicroApMac
+      # - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.7.1.6  # ruijieApMicroApBoard
+      # - 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.7.1.7  # ruijieApMicroApState 
+      - ruijieApMicroApName      
+      - ruijieApMicroApReset     
+      - ruijieApMicroApMac       
+      - ruijieApMicroApBoard     
+      - ruijieApMicroApState     
+      - ruijieApMicroApRole      
+      - ruijieApMicroApMasterSlot
+
+    max_repetitions: 25
+    retries: 3
+    timeout: 5s
+
+    lookups:
+      - source_indexes: [ifIndex]
+        lookup: ifAlias
+      - source_indexes: [ifIndex]
+        lookup: ifDescr
+      - source_indexes: [ifIndex]
+        lookup: ifOperStatus
+      - source_indexes: [ruijieApMacAddr]
+        lookup: 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.1.1.2
+      - source_indexes: [ruijieApMacAddr]
+        lookup: 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.1.1.48
+      - source_indexes: [ruijieApMacAddr]
+        lookup: 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.1.1.39
+      - source_indexes: [ruijieApMacAddr]
+        lookup: 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.1.1.33
+      - source_indexes: [ruijieSystemApStatMacAddr]
+        lookup: 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.1.1.2
+      - source_indexes: [ruijieSystemApStatMacAddr]
+        lookup: 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.1.1.48
+      - source_indexes: [ruijieSystemApStatMacAddr]
+        lookup: 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.1.1.39
+      - source_indexes: [ruijieSystemApStatMacAddr]
+        lookup: 1.3.6.1.4.1.4881.1.1.10.2.56.2.1.1.1.33
+
+      - source_indexes: [ruijieApGeneralMacAddr]
+        lookup: ruijieApGeneralApName
+      - source_indexes: [ruijieApGeneralMacAddr]
+        lookup: ruijieApGeneralState
+      - source_indexes: [ruijieApGeneralMacAddr]
+        lookup: ruijieApGeneralIp
+
+      - source_indexes: [ruijieApMacAddr, ruijieApMicroApSlot]
+        lookup: ruijieApMicroApName  
+      - source_indexes: [ruijieApMacAddr, ruijieApMicroApSlot]
+        lookup: ruijieApMicroApMac  
+      - source_indexes: [ruijieApMacAddr, ruijieApMicroApSlot]
+        lookup: ruijieApMicroApState  
+
+    overrides:
+      ifAlias:
+        ignore: true
+      ifDescr:
+        ignore: true
+      ifOperStatus:
+        ignore: true
+      ruijieApApName:
+        ignore: true
+        type: DisplayString
+      ruijieApState:
+        ignore: true
+      ruijieApPID:
+        ignore: true
+        type: DisplayString
+      ruijieApIp:
+        ignore: true
+      ruijieApMicroApName:
+        ignore: true
+        type: DisplayString
+      ruijieApGeneralApName:
+        ignore: true
+        type: DisplayString
+
