@@ -1,0 +1,47 @@
+groups:
+- name: 杭州华为交换机信息-告警
+  rules: 
+  - alert: 设备板卡温度告警
+    expr:  0 < hwEntityTemperature >= hwEntityTemperatureThreshold
+    for: 1m
+    labels:
+      alertype: switch
+      severity: Critical
+    annotations:
+      description: "**设备板卡温度高门限**  \n  >  状态值 = {{ $value }}%"
+
+  - alert: 交换机设备风扇状态
+    expr: hwEntityFanSpeed == 0
+    for: 1m
+    labels:
+      alertype: switch
+      severity: Critical
+    annotations:
+      description: "**{{ $labels.hostname }} - 设备风扇转速为 {{ $value }}% **  \n  > 风扇状态值：{{ $labels.hwEntityFanState }} - 风扇在位状态值：{{ $labels.hwEntityFanPresent }}"
+  
+  - alert: CPU使用率超限
+    expr: 0 < hwEntityCpuUsage{job=~"huawei_sw|huawei_sw"} >= 60
+    for: 5m
+    labels:
+      alertype: switch
+      severity: Critical
+    annotations:
+      description: "**{{ $labels.hostname }} - 交换机CPU使用率超限** \n  > 当前使用率 = {{ $value }}%"
+  
+  - alert: 内存使用率超限
+    expr: 0 < hwEntityMemUsage{job=~"huawei_sw|huawei_sw"} >= 85
+    for: 10m
+    labels:
+      alertype: switch
+      severity: Critical
+    annotations:
+      description: "**{{$labels.hwWlanIDIndexedApName}} - 交换机内存使用率超限**  \n  > 当前使用率 = {{ $value }}%"
+
+  - alert: 核心交换机CSS集群状态
+    expr: hwCssMemberConfigEnable{job=~"huawei_sw"} != 1
+    for: 0m
+    labels:
+      alertype: switch
+      severity: Critical
+    annotations:
+      description: "**{{$labels.hostname}} CSS集群状态异常**  \n  > 当前状态值 = {{ $value }}"
