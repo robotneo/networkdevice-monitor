@@ -1,0 +1,107 @@
+auths:
+  h3c_auth:  # 认证模块名称
+    version: 2  # snmp v2c版本
+    community: public  # snmp 团体名
+
+modules:
+  h3c_common:  # 华三公共指标模块名称
+    walk:
+      # 交换机基础信息
+      - 1.3.6.1.2.1.1.1                       # sysDescr - 设备描述
+      - 1.3.6.1.2.1.1.5                       # sysName - 系统名称
+      - 1.3.6.1.2.1.1.3                       # sysUpTime - 设备上电时间
+      # 实体CPU和内存信息
+      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.6       # hh3cEntityExtCpuUsage - 实体 CPU 实时利用率
+      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.8       # hh3cEntityExtMemUsage - 实体内存实时利用率百分比
+      # 实体风扇和电源状态信息
+      - 1.3.6.1.2.1.47.1.1.1.1.5              # entPhysicalClass - 实体类型
+      - 1.3.6.1.2.1.47.1.1.1.1.7              # entPhysicalName - 实体名称
+      # prometheus 通过合并查询实现
+      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.19      # hh3cEntityExtErrorStatus - 实体错误状态
+      # 实体传感器温度信息
+      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.12      # hh3cEntityExtTemperature - 实体温度
+      # 存储介质信息
+      - 1.3.6.1.4.1.25506.2.5.1.1.4.1.1.4     # hh3cFlhPartSpace - 存储设备分区容量 单位byte
+      - 1.3.6.1.4.1.25506.2.5.1.1.4.1.1.5     # hh3cFlhPartSpaceFree - 存储介质分区大小
+      - 1.3.6.1.4.1.25506.2.5.1.1.4.1.1.10    # hh3cFlhPartName - 存储设备分区名称
+
+    max_repetitions: 20
+    retries: 3
+    timeout: 5s
+
+    lookups:
+      # hh3cEntityExtPhysicalIndex = entPhysicalIndex
+      - source_indexes: [entPhysicalIndex]
+        lookup: entPhysicalClass
+      - source_indexes: [entPhysicalIndex]
+        lookup: entPhysicalName
+
+    overrides:
+      entPhysicalClass:
+        ignore: true
+  
+  h3c_stack:  # 华三堆叠信息
+    walk:
+      # 堆叠信息
+      - 1.3.6.1.4.1.25506.2.91.1.7            # hh3cStackTopology - 堆叠系统的拓扑类型
+      - 1.3.6.1.4.1.25506.2.91.1.2            # hh3cStackMemberNum - 本IRF系统目前包含的堆叠设备数量
+      
+    max_repetitions: 20
+    retries: 3
+    timeout: 5s
+
+  h3c_interface:
+    walk:
+      # 接口信息 - 索引 ifIndex
+      - 1.3.6.1.2.1.2.2.1.2                   # ifDescr - 接口描述
+      - 1.3.6.1.2.1.31.1.1.1.18               # ifAlias - 接口别名
+      - 1.3.6.1.2.1.31.1.1.1.1                # ifName - 接口名字
+      - 1.3.6.1.2.1.2.2.1.6                   # ifPhysAddress - 接口物理地址
+      - 1.3.6.1.2.1.2.2.1.7                   # ifAdminStatus - 接口默认状态
+      - 1.3.6.1.2.1.2.2.1.8                   # ifOperStatus - 接口运行状态
+      - 1.3.6.1.2.1.2.2.1.13                  # ifInDiscards - 入方向丢包统计
+      - 1.3.6.1.2.1.2.2.1.14                  # ifInErrors - 入方向错包统计
+      - 1.3.6.1.2.1.2.2.1.19                  # ifOutDiscards - 出方向丢包统计
+      - 1.3.6.1.2.1.2.2.1.20                  # ifOutErrors - 出方向错包统计
+      - 1.3.6.1.2.1.31.1.1.1.6                # ifHCInOctets - 入方向报文统计
+      - 1.3.6.1.2.1.31.1.1.1.10               # ifHCOutOctets - 出方向报文统计
+      - 1.3.6.1.2.1.31.1.1.1.15               # ifHighSpeed - 接口当前带宽
+
+      # 光模块信息 - 索引 ifIndex
+      - hh3cTransceiverInfoTable
+
+    max_repetitions: 60
+    retries: 3
+    timeout: 5s
+    
+    lookups:
+      - source_indexes: [ifIndex]
+        lookup: ifDescr
+      - source_indexes: [ifIndex]
+        lookup: ifAlias
+      - source_indexes: [ifIndex]
+        lookup: ifName
+      - source_indexes: [ifIndex]
+        lookup: ifPhysAddress
+      - source_indexes: [ifIndex]
+        lookup: ifAdminStatus
+      - source_indexes: [ifIndex]
+        lookup: ifOperStatus
+      - source_indexes: [ifIndex]
+        lookup: ifHighSpeed
+    
+    overrides:
+      ifDescr:
+        ignore: true
+      ifAlias:
+        ignore: true
+      ifName:
+        ignore: true
+      ifPhysAddress:
+        ignore: true
+      ifAdminStatus:
+        ignore: true
+      ifOperStatus:
+        ignore: true
+      ifHighSpeed:
+        ignore: true
