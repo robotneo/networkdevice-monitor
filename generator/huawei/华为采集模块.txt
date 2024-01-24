@@ -1,0 +1,7 @@
+hw_common  采集华为交换机的常规指标
+hw_interface 采集华为交换机的接口信息和光模块信息指标
+hw_stack 采集华为交换机的堆叠信息指标
+
+
+hw_ac_info 采集华为无线AC的信息 AC常规信息和接口信息
+hw_ap_info 采集华为AP的常规信息和射频卡信息

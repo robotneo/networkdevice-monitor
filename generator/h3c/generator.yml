@@ -1,0 +1,295 @@
+auths:
+  auth_h3c:
+    version: 2
+    community: public
+
+modules:
+  h3c_common:
+    walk:
+      # 交换机基础信息
+      - 1.3.6.1.2.1.1.1                       # sysDescr - 设备描述
+      - 1.3.6.1.2.1.1.5                       # sysName - 系统名称
+      - 1.3.6.1.2.1.1.3                       # sysUpTime - 设备上电时间
+      # 实体CPU和内存信息
+      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.6       # hh3cEntityExtCpuUsage - 实体 CPU 实时利用率
+      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.8       # hh3cEntityExtMemUsage - 实体内存实时利用率百分比
+      # 实体风扇和电源状态信息
+      - 1.3.6.1.2.1.47.1.1.1.1.5              # entPhysicalClass - 实体类型
+      - 1.3.6.1.2.1.47.1.1.1.1.7              # entPhysicalName - 实体名称
+      # prometheus 通过合并查询实现
+      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.19      # hh3cEntityExtErrorStatus - 实体错误状态
+      # 实体传感器温度信息
+      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.12      # hh3cEntityExtTemperature - 实体温度
+      # 电源实体当前功率
+      - 1.3.6.1.4.1.25506.2.6.1.3.1.1.3       # hh3cEntityExtCurrentPower - 实体当前功率 单位是毫瓦
+      - 1.3.6.1.4.1.25506.2.6.1.3.1.1.4       # hh3cEntityExtAveragePower - 实体平均功率 单位是毫瓦
+      # 存储介质信息
+      - 1.3.6.1.4.1.25506.2.5.1.1.4.1.1.4     # hh3cFlhPartSpace - 存储设备分区容量 单位byte
+      - 1.3.6.1.4.1.25506.2.5.1.1.4.1.1.5     # hh3cFlhPartSpaceFree - 存储介质分区大小
+      - 1.3.6.1.4.1.25506.2.5.1.1.4.1.1.10    # hh3cFlhPartName - 存储设备分区名称
+
+    max_repetitions: 20
+    retries: 3
+    timeout: 5s
+
+    lookups:
+      # hh3cEntityExtPhysicalIndex = entPhysicalIndex
+      - source_indexes: [entPhysicalIndex]
+        lookup: entPhysicalClass
+      - source_indexes: [entPhysicalIndex]
+        lookup: entPhysicalName
+
+    overrides:
+      entPhysicalClass:
+        ignore: true
+  
+  h3c_stack:
+    walk:
+      # 堆叠信息
+      - 1.3.6.1.4.1.25506.2.91.1.7            # hh3cStackTopology - 堆叠系统的拓扑类型
+      - 1.3.6.1.4.1.25506.2.91.1.2            # hh3cStackMemberNum - 本IRF系统目前包含的堆叠设备数量
+      - 1.3.6.1.4.1.25506.2.91.4.1.1          # hh3cStackPortIndex 当前堆叠口在本设备上的逻辑编号
+      - 1.3.6.1.4.1.25506.2.91.4.1.2          # hh3cStackPortEnable 当前堆叠接口是否使能
+      - 1.3.6.1.4.1.25506.2.91.4.1.3          # hh3cStackPortStatus 当前堆叠口的链路状态
+      - 1.3.6.1.4.1.25506.2.91.4.1.4          # hh3cStackNeighbor 与当前堆叠口相连的堆叠设备的设备成员编号
+      
+    max_repetitions: 20
+    retries: 3
+    timeout: 5s
+    
+    lookups:
+      # h3cStackmemberID和h3cStackPortIndex
+      - source_indexes: [h3cStackmemberID, h3cStackPortIndex]
+        lookup: hh3cStackPortEnable
+      - source_indexes: [h3cStackmemberID, h3cStackPortIndex]
+        lookup: hh3cStackNeighbor
+
+    overrides:
+      hh3cStackPortEnable:
+        ignore: true
+      hh3cStackNeighbor:
+        ignore: true
+
+
+  h3c_interface:
+    walk:
+      # 接口信息 - 索引 ifIndex
+      - 1.3.6.1.2.1.2.2.1.2                   # ifDescr - 接口描述
+      - 1.3.6.1.2.1.31.1.1.1.18               # ifAlias - 接口别名
+      - 1.3.6.1.2.1.31.1.1.1.1                # ifName - 接口名字
+      - 1.3.6.1.2.1.31.1.1.1.15               # ifHighSpeed - 接口当前带宽
+      - 1.3.6.1.2.1.2.2.1.7                   # ifAdminStatus - 接口默认状态
+      - 1.3.6.1.2.1.2.2.1.8                   # ifOperStatus - 接口运行状态
+      - 1.3.6.1.2.1.2.2.1.13                  # ifInDiscards - 入方向丢包统计
+      - 1.3.6.1.2.1.2.2.1.14                  # ifInErrors - 入方向错包统计
+      - 1.3.6.1.2.1.2.2.1.19                  # ifOutDiscards - 出方向丢包统计
+      - 1.3.6.1.2.1.2.2.1.20                  # ifOutErrors - 出方向错包统计
+      - 1.3.6.1.2.1.31.1.1.1.6                # ifHCInOctets - 入方向报文统计
+      - 1.3.6.1.2.1.31.1.1.1.10               # ifHCOutOctets - 出方向报文统计
+
+
+      # 光模块信息 - 索引 ifIndex
+      - 1.3.6.1.4.1.25506.2.70.1.1.1.9        # hh3cTransceiverCurTXPower 光模块当前的发送光功率 单位为百分之一dBM
+      - 1.3.6.1.4.1.25506.2.70.1.1.1.12       # hh3cTransceiverCurRXPower 光模块当前的接收功率 单位为百分之一dBM
+      - 1.3.6.1.4.1.25506.2.70.1.1.1.15       # hh3cTransceiverTemperature 光模块当前的温度 单位为摄氏度
+      - 1.3.6.1.4.1.25506.2.70.1.1.1.20       # hh3cTransceiverTempHiWarn 温度预警上限值，单位为千分之一摄氏度
+      - 1.3.6.1.4.1.25506.2.70.1.1.1.32       # hh3cTransceiverPwrOutHiWarn 输出功率预警上限值 单位为十分之一微瓦 为0时代表不支持
+      - 1.3.6.1.4.1.25506.2.70.1.1.1.33       # hh3cTransceiverPwrOutLoWarn 输出功率预警下限值,单位为十分之一微瓦
+      - 1.3.6.1.4.1.25506.2.70.1.1.1.36       # hh3cTransceiverRcvPwrHiWarn 输入功率预警上限值,单位为十分之一微瓦
+      - 1.3.6.1.4.1.25506.2.70.1.1.1.37       # hh3cTransceiverRcvPwrLoWarn 输入功率预警下限值,单位为十分之一微瓦 
+
+    max_repetitions: 25
+    retries: 3
+    timeout: 5s
+    
+    lookups:
+      - source_indexes: [ifIndex]
+        lookup: ifDescr
+      - source_indexes: [ifIndex]
+        lookup: ifAlias
+      - source_indexes: [ifIndex]
+        lookup: ifName
+      - source_indexes: [ifIndex]
+        lookup: ifHighSpeed
+      - source_indexes: [ifIndex]
+        lookup: ifAdminStatus
+      - source_indexes: [ifIndex]
+        lookup: ifOperStatus
+    
+    overrides:
+      ifDescr:
+        ignore: true
+      ifAlias:
+        ignore: true
+      ifName:
+        ignore: true
+      ifHighSpeed:
+        ignore: true
+      ifAdminStatus:
+        ignore: true
+      ifOperStatus:
+        ignore: true
+    
+    filters:
+      dynamic:
+        - oid: 1.3.6.1.2.1.2.2.1.7
+          targets:
+            - 1.3.6.1.2.1.2.2.1.8
+            - 1.3.6.1.2.1.31.1.1.1.6
+            - 1.3.6.1.2.1.31.1.1.1.10
+            - 1.3.6.1.2.1.2.2.1.13
+            - 1.3.6.1.2.1.2.2.1.19
+            - 1.3.6.1.2.1.2.2.1.14
+            - 1.3.6.1.2.1.2.2.1.20
+            - 1.3.6.1.4.1.25506.2.70.1.1.1.9
+            - 1.3.6.1.4.1.25506.2.70.1.1.1.12
+            - 1.3.6.1.4.1.25506.2.70.1.1.1.15
+            - 1.3.6.1.4.1.25506.2.70.1.1.1.20
+            - 1.3.6.1.4.1.25506.2.70.1.1.1.32
+            - 1.3.6.1.4.1.25506.2.70.1.1.1.33
+            - 1.3.6.1.4.1.25506.2.70.1.1.1.36
+            - 1.3.6.1.4.1.25506.2.70.1.1.1.37
+          values: ["1"]
+
+  h3c_ac_info:
+    walk:
+      # AC基本信息
+      - 1.3.6.1.2.1.1.1                       # sysDescr - 设备描述
+      - 1.3.6.1.2.1.1.5                       # sysName - 系统名称
+      - 1.3.6.1.2.1.1.3                       # sysUpTime - 设备上电时间
+      # 实体CPU和内存信息
+      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.6       # hh3cEntityExtCpuUsage - 实体 CPU 实时利用率
+      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.8       # hh3cEntityExtMemUsage - 实体内存实时利用率百分比 
+      # 实体风扇和电源状态信息
+      - 1.3.6.1.2.1.47.1.1.1.1.5              # entPhysicalClass - 实体类型
+      - 1.3.6.1.2.1.47.1.1.1.1.7              # entPhysicalName - 实体名称
+      # prometheus 通过合并查询实现
+      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.19      # hh3cEntityExtErrorStatus - 实体错误状态
+      # 实体传感器温度信息
+      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.12      # hh3cEntityExtTemperature - 实体温度
+      # 电源实体当前功率
+      - 1.3.6.1.4.1.25506.2.6.1.3.1.1.3       # hh3cEntityExtCurrentPower - 实体当前功率 单位是毫瓦
+      - 1.3.6.1.4.1.25506.2.6.1.3.1.1.4       # hh3cEntityExtAveragePower - 实体平均功率 单位是毫瓦
+
+      # AC接口信息
+      - 1.3.6.1.2.1.2.2.1.1                   # ifIndex - 接口索引
+      - 1.3.6.1.2.1.2.2.1.2                   # ifDescr - 接口描述
+      - 1.3.6.1.2.1.31.1.1.1.18               # ifAlias - 接口别名
+      - 1.3.6.1.2.1.31.1.1.1.1                # ifName - 接口名称
+      - 1.3.6.1.2.1.31.1.1.1.15               # ifHighSpeed - 接口带宽
+      - 1.3.6.1.2.1.2.2.1.7                   # ifAdminStatus - 接口默认状态
+      - 1.3.6.1.2.1.2.2.1.8                   # ifOperStatus - 接口当前状态
+      - 1.3.6.1.2.1.2.2.1.13                  # ifInDiscards - 入方向丢包统计
+      - 1.3.6.1.2.1.2.2.1.14                  # ifInErrors - 入方向错包统计
+      - 1.3.6.1.2.1.2.2.1.19                  # ifOutDiscards - 出方向丢包统计
+      - 1.3.6.1.2.1.2.2.1.20                  # ifOutErrors - 出方向错包统计
+      - 1.3.6.1.2.1.31.1.1.1.6                # ifHCInOctets - 入方向报文统计
+      - 1.3.6.1.2.1.31.1.1.1.10               # ifHCOutOctets - 出方向报文统计
+
+    max_repetitions: 25
+    retries: 3
+    timeout: 5s
+  
+    lookups:
+      - source_indexes: [ifIndex]
+        lookup: ifAlias
+      - source_indexes: [ifIndex]
+        lookup: ifDescr
+      - source_indexes: [ifIndex]
+        lookup: ifName
+      - source_indexes: [ifIndex]
+        lookup: ifHighSpeed
+      - source_indexes: [ifIndex]
+        lookup: ifAdminStatus
+      - source_indexes: [ifIndex]
+        lookup: ifOperStatus
+
+    overrides:
+      ifAlias:
+        ignore: true
+      ifDescr:
+        ignore: true
+      ifName:
+        ignore: true
+      ifHighSpeed:
+        ignore: true
+      ifOperStatus:
+        ignore: true
+      ifAdminStatus:
+        ignore: true
+
+    filters:
+      dynamic:
+        - oid: 1.3.6.1.2.1.2.2.1.7
+          targets:
+            - 1.3.6.1.2.1.2.2.1.8
+            - 1.3.6.1.2.1.31.1.1.1.6
+            - 1.3.6.1.2.1.31.1.1.1.10
+            - 1.3.6.1.2.1.2.2.1.13
+            - 1.3.6.1.2.1.2.2.1.19
+            - 1.3.6.1.2.1.2.2.1.14
+            - 1.3.6.1.2.1.2.2.1.20
+          values: ["1"]
+  
+  h3c_ap_info:
+    walk:
+      # AP基础信息
+      - 1.3.6.1.4.1.25506.2.75.2.1.1.1.1      # hh3cDot11APID - AP接口索引ID
+      - 1.3.6.1.4.1.25506.2.75.2.1.1.1.4      # hh3cDot11APOperationStatus - AP与AC的关联状态
+      - 1.3.6.1.4.1.25506.2.75.2.1.1.1.5      # hh3cDot11APTemplateNameOfAP - 设定的AP名称
+      - 1.3.6.1.4.1.25506.2.75.2.1.6.1.1      # hh3cDot11APIfIndex hh3cDot11APObjID - AP接口索引
+      - 1.3.6.1.4.1.25506.2.75.2.1.2.1.2      # hh3cDot11CurrAPIPAddress - AP的IP
+      - 1.3.6.1.4.1.25506.2.75.2.1.2.1.3      # hh3cDot11CurrAPMacAddress - AP的Mac
+      - 1.3.6.1.4.1.25506.2.75.2.1.2.1.9      # hh3cDot11CurrAPModelName - AP类型名称
+      - 1.3.6.1.4.1.25506.2.75.1.1.2.1        # hh3cDot11APConnectCount - 当前AC连接的AP总数量
+      - 1.3.6.1.4.1.25506.2.75.1.1.2.2        # hh3cDot11StationConnectCount - 当前所有AP在线终端总数
+      - 1.3.6.1.4.1.25506.2.75.2.1.2.1.7      # hh3cDot11CurrAPStationAssocCount - AP当前连接STA数量
+      - 1.3.6.1.4.1.25506.2.75.2.1.10.1.1     # hh3cDot11APSysUpTime2 - AP启动时间
+      - 1.3.6.1.4.1.25506.2.75.2.1.10.1.2     # hh3cDot11APCPURTUsage2 - AP实时CPU利用率(周期1分钟)
+      - 1.3.6.1.4.1.25506.2.75.2.1.10.1.4     # hh3cDot11APMemRTUsage2 - AP实时内存利用率(周期1分钟)
+      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.6       # hh3cEntityExtCpuUsage - AC的CPU实时利用率
+      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.8       # hh3cEntityExtMemUsage - AC的内存实时利用率
+
+      # AP射频信息
+      
+
+    max_repetitions: 50
+    retries: 3
+    timeout: 5s
+  
+    lookups:
+      - source_indexes: [hh3cDot11APObjID]
+        lookup: 1.3.6.1.4.1.25506.2.75.2.1.1.1.5
+        drop_source_indexes: true
+      - source_indexes: [hh3cDot11APObjID]
+        lookup: 1.3.6.1.4.1.25506.2.75.2.1.1.1.4
+        drop_source_indexes: true
+      - source_indexes: [hh3cDot11APObjID]
+        lookup: 1.3.6.1.4.1.25506.2.75.2.1.2.1.9
+        drop_source_indexes: true
+      - source_indexes: [hh3cDot11APObjID]
+        lookup: 1.3.6.1.4.1.25506.2.75.2.1.2.1.2
+        drop_source_indexes: true
+      - source_indexes: [hh3cDot11APObjID]
+        lookup: 1.3.6.1.4.1.25506.2.75.2.1.2.1.3
+        drop_source_indexes: true
+
+    overrides:
+      ifAlias:
+        ignore: true
+      ifDescr:
+        ignore: true
+      ifOperStatus:
+        ignore: true
+      hh3cDot11APTemplateNameOfAP:
+        ignore: true
+        type: DisplayString
+      hh3cDot11APOperationStatus:
+        ignore: true
+      hh3cDot11CurrAPMacAddress:
+        ignore: true
+      hh3cDot11CurrAPModelName:
+        ignore: true
+        type: DisplayString
+      hh3cDot11CurrAPIPAddress:
+        ignore: true
