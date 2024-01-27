@@ -234,24 +234,34 @@ modules:
   h3c_ap_info:
     walk:
       # AP基础信息
-      - 1.3.6.1.4.1.25506.2.75.2.1.1.1.1      # hh3cDot11APID - AP接口索引ID
-      - 1.3.6.1.4.1.25506.2.75.2.1.1.1.4      # hh3cDot11APOperationStatus - AP与AC的关联状态
-      - 1.3.6.1.4.1.25506.2.75.2.1.1.1.5      # hh3cDot11APTemplateNameOfAP - 设定的AP名称
-      - 1.3.6.1.4.1.25506.2.75.2.1.6.1.1      # hh3cDot11APIfIndex hh3cDot11APObjID - AP接口索引
-      - 1.3.6.1.4.1.25506.2.75.2.1.2.1.2      # hh3cDot11CurrAPIPAddress - AP的IP
-      - 1.3.6.1.4.1.25506.2.75.2.1.2.1.3      # hh3cDot11CurrAPMacAddress - AP的Mac
-      - 1.3.6.1.4.1.25506.2.75.2.1.2.1.9      # hh3cDot11CurrAPModelName - AP类型名称
-      - 1.3.6.1.4.1.25506.2.75.1.1.2.1        # hh3cDot11APConnectCount - 当前AC连接的AP总数量
-      - 1.3.6.1.4.1.25506.2.75.1.1.2.2        # hh3cDot11StationConnectCount - 当前所有AP在线终端总数
-      - 1.3.6.1.4.1.25506.2.75.2.1.2.1.7      # hh3cDot11CurrAPStationAssocCount - AP当前连接STA数量
-      - 1.3.6.1.4.1.25506.2.75.2.1.10.1.1     # hh3cDot11APSysUpTime2 - AP启动时间
-      - 1.3.6.1.4.1.25506.2.75.2.1.10.1.2     # hh3cDot11APCPURTUsage2 - AP实时CPU利用率(周期1分钟)
-      - 1.3.6.1.4.1.25506.2.75.2.1.10.1.4     # hh3cDot11APMemRTUsage2 - AP实时内存利用率(周期1分钟)
-      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.6       # hh3cEntityExtCpuUsage - AC的CPU实时利用率
-      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.8       # hh3cEntityExtMemUsage - AC的内存实时利用率
+      - 1.3.6.1.4.1.25506.2.75.2.1.1.1.4      # hh3cDot11APOperationStatus AP与AC的关联状态
+      - 1.3.6.1.4.1.25506.2.75.2.1.1.1.5      # hh3cDot11APTemplateNameOfAP 设定的AP名称
+      - 1.3.6.1.4.1.25506.2.75.2.1.2.1.1      # hh3cDot11APObjID AP接口索引
+      - 1.3.6.1.4.1.25506.2.75.2.1.2.1.2      # hh3cDot11CurrAPIPAddress AP的IP
+      - 1.3.6.1.4.1.25506.2.75.2.1.2.1.3      # hh3cDot11CurrAPMacAddress AP的Mac
+      - 1.3.6.1.4.1.25506.2.75.2.1.2.1.9      # hh3cDot11CurrAPModelName AP类型名称
+      - 1.3.6.1.4.1.25506.2.75.1.1.2.1        # hh3cDot11APConnectCount 当前AC连接的AP总数量
+      - 1.3.6.1.4.1.25506.2.75.1.1.2.2        # hh3cDot11StationConnectCount 当前所有AP在线终端总数
+      - 1.3.6.1.4.1.25506.2.75.2.1.2.1.7      # hh3cDot11CurrAPStationAssocCount AP当前连接STA数量
+      - 1.3.6.1.4.1.25506.2.75.2.1.10.1.1     # hh3cDot11APSysUpTime2 AP启动时间
+      - 1.3.6.1.4.1.25506.2.75.2.1.10.1.2     # hh3cDot11APCPURTUsage2 AP实时CPU利用率(周期1分钟)
+      - 1.3.6.1.4.1.25506.2.75.2.1.10.1.4     # hh3cDot11APMemRTUsage2 AP实时内存利用率(周期1分钟)
+      - 1.3.6.1.4.1.25506.2.75.2.1.10.1.7     # hh3cDot11APACAssociateStatus2 AP和AC间的关联状态
+      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.6       # hh3cEntityExtCpuUsage AC的CPU实时利用率
+      - 1.3.6.1.4.1.25506.2.6.1.1.1.1.8       # hh3cEntityExtMemUsage AC的内存实时利用率
 
-      # AP射频信息
-      
+      # AP射频信息 该表的索引节点是hh3cDot11CurAPID和hh3cDot11RadioID
+      - 1.3.6.1.4.1.25506.2.75.2.1.3.1.3      # hh3cDot11AdminStatus 当前AP射频的管理状态
+      - 1.3.6.1.4.1.25506.2.75.2.1.3.1.5      # hh3cDot11Channel 当前AP射频的信道分配
+      - 1.3.6.1.4.1.25506.2.75.2.1.3.1.6      # hh3cDot11TxPowerLevel 当前AP射频的发射功率电平
+      - 1.3.6.1.4.1.25506.2.75.2.1.3.1.8      # hh3cDot11AntennaGain 当前AP射频天线的增益
+      - 1.3.6.1.4.1.25506.2.75.2.1.3.1.9      # hh3cDot11MaxBandwidth 当前AP射频的最大带宽
+      - 1.3.6.1.4.1.25506.2.75.2.1.3.1.10     # hh3cDot11ResourceUseRatio 当前AP射频资源的使用率
+      - 1.3.6.1.4.1.25506.2.75.2.1.3.1.12     # hh3cDot11TxPowerLevel2 当前AP射频用于传输数据的功率
+      - 1.3.6.1.4.1.25506.2.75.2.1.3.1.19     # hh3cDot11AvgRxSignalStrength 当前AP射频接收到的平均信号强度
+      - 1.3.6.1.4.1.25506.2.75.2.1.3.1.25     # hh3cDot11OperStatusCM 当前AP射频的工作状态
+      - 1.3.6.1.4.1.25506.2.75.2.1.3.1.26     # hh3cDot11AirPrimChnlBusy 当前AP射频口在主信道的空口利用率
+ 
 
     max_repetitions: 50
     retries: 3
@@ -259,20 +269,34 @@ modules:
   
     lookups:
       - source_indexes: [hh3cDot11APObjID]
-        lookup: 1.3.6.1.4.1.25506.2.75.2.1.1.1.5
+        lookup: hh3cDot11APOperationStatus
         drop_source_indexes: true
       - source_indexes: [hh3cDot11APObjID]
-        lookup: 1.3.6.1.4.1.25506.2.75.2.1.1.1.4
+        lookup: hh3cDot11APTemplateNameOfAP
         drop_source_indexes: true
       - source_indexes: [hh3cDot11APObjID]
-        lookup: 1.3.6.1.4.1.25506.2.75.2.1.2.1.9
+        lookup: hh3cDot11CurrAPIPAddress
         drop_source_indexes: true
       - source_indexes: [hh3cDot11APObjID]
-        lookup: 1.3.6.1.4.1.25506.2.75.2.1.2.1.2
+        lookup: hh3cDot11CurrAPMacAddress
         drop_source_indexes: true
       - source_indexes: [hh3cDot11APObjID]
-        lookup: 1.3.6.1.4.1.25506.2.75.2.1.2.1.3
+        lookup: hh3cDot11CurrAPModelName
         drop_source_indexes: true
+      - source_indexes: [hh3cDot11CurAPID, hh3cDot11RadioID]
+        lookup: hh3cDot11AdminStatus
+      - source_indexes: [hh3cDot11CurAPID, hh3cDot11RadioID]
+        lookup: hh3cDot11Channel
+      - source_indexes: [hh3cDot11CurAPID, hh3cDot11RadioID]
+        lookup: hh3cDot11TxPowerLevel
+      - source_indexes: [hh3cDot11CurAPID, hh3cDot11RadioID]
+        lookup: hh3cDot11AntennaGain
+      - source_indexes: [hh3cDot11CurAPID, hh3cDot11RadioID]
+        lookup: hh3cDot11MaxBandwidth
+      - source_indexes: [hh3cDot11CurAPID, hh3cDot11RadioID]
+        lookup: hh3cDot11TxPowerLevel2
+      - source_indexes: [hh3cDot11CurAPID, hh3cDot11RadioID]
+        lookup: hh3cDot11AirPrimChnlBusy
 
     overrides:
       ifAlias:
@@ -281,15 +305,29 @@ modules:
         ignore: true
       ifOperStatus:
         ignore: true
+      hh3cDot11APOperationStatus:
+        ignore: true
       hh3cDot11APTemplateNameOfAP:
         ignore: true
         type: DisplayString
-      hh3cDot11APOperationStatus:
+      hh3cDot11CurrAPIPAddress:
         ignore: true
       hh3cDot11CurrAPMacAddress:
         ignore: true
       hh3cDot11CurrAPModelName:
         ignore: true
         type: DisplayString
-      hh3cDot11CurrAPIPAddress:
+      hh3cDot11AdminStatus:
+        ignore: true
+      hh3cDot11Channel:
+        ignore: true
+      hh3cDot11TxPowerLevel:
+        ignore: true
+      hh3cDot11AntennaGain:
+        ignore: true
+      hh3cDot11MaxBandwidth:
+        ignore: true
+      hh3cDot11TxPowerLevel2:
+        ignore: true
+      hh3cDot11AirPrimChnlBusy:
         ignore: true
