@@ -2,7 +2,7 @@
 
 - 适配品牌类型：华为无线、华三无线、锐捷无线；欢迎有相关品牌的无线产品资源的联系我
 - 目前还更新适配：深信服AD，华为交换机，华三交换机，锐捷交换机等
-- snmp_exporter版本：0.25.0
+- [snmp_exporter](https://github.com/prometheus/snmp_exporter)版本：0.25.0
 
 #### 更新日志
 
