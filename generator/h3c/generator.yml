@@ -1,10 +1,10 @@
 auths:
-  auth_h3c:
+  auth_h3c: # 认证模块名
     version: 2
     community: public
 
 modules:
-  h3c_common:
+  h3c_common: # 指标模块名
     walk:
       # 交换机基础信息
       - 1.3.6.1.2.1.1.1                       # sysDescr - 设备描述
