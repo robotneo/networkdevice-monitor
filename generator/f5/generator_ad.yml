@@ -1,0 +1,78 @@
+auths:
+  f5_auth:
+    version: 2
+    community: public
+
+modules:
+  # F5负载均衡常规指标
+  f5_common:
+    walk:
+      - 1.3.6.1.4.1.3375.2.1.6.7            # sysSystemUptimeInSec 运行时间
+      - 1.3.6.1.2.1.1.5                     # sysName 主机名
+      - 1.3.6.1.2.1.1.1                     # sysDescr 系统信息
+      - 1.3.6.1.4.1.3375.2.1.4.2            # sysProductVersion 系统版本
+      - 1.3.6.1.4.1.3375.2.1.4.4            # sysProductEdition 系统补丁版本
+      - 1.3.6.1.4.1.3375.2.1.3.2.1.2.1.2    # sysChassisFanStatus 风扇状态
+      - 1.3.6.1.4.1.3375.2.1.3.2.1.2.1.3    # sysChassisFanSpeed 风扇速度
+      - 1.3.6.1.4.1.3375.2.1.3.2.2.2.1.2    # sysChassisPowerSupplyStatus 电源状态
+      - 1.3.6.1.4.1.3375.2.1.3.2.3.2.1.2    # sysChassisTempTemperature 设备温度传感器
+    
+    max_repetitions: 25
+    retries: 3
+    timeout: 5s
+
+    lookups:
+      # 风扇下标 sysChassisFanIndex
+      # 电源下标 sysChassisPowerSupplyIndex
+      # 温度传感器下标 sysChassisTempIndex
+      - source_indexes: [sysChassisFanIndex]
+        lookup: sysChassisFanSpeed
+    
+    overrides:
+      sysChassisFanSpeed:
+        ignore: false
+
+  # F5负载均衡接口信息
+  f5_interface:
+    walk:
+      - 1.3.6.1.4.1.3375.2.1.2.4.4.3.1.1    # sysInterfaceStatName 接口名称
+      - 1.3.6.1.4.1.3375.2.1.2.4.4.3.1.2    # sysInterfaceStatPktsIn 接口下行包总数
+      - 1.3.6.1.4.1.3375.2.1.2.4.4.3.1.3    # sysInterfaceStatBytesIn 接口下行包总字节
+      - 1.3.6.1.4.1.3375.2.1.2.4.4.3.1.4    # sysInterfaceStatPktsOut 接口上行包总数
+      - 1.3.6.1.4.1.3375.2.1.2.4.4.3.1.5    # sysInterfaceStatBytesOut 接口上行包总字节
+      - 1.3.6.1.4.1.3375.2.1.2.4.4.3.1.8    # sysInterfaceStatErrorsIn 接口下行错包
+      - 1.3.6.1.4.1.3375.2.1.2.4.4.3.1.9    # sysInterfaceStatErrorsOut 接口上行错包
+      - 1.3.6.1.4.1.3375.2.1.2.4.4.3.1.10   # sysInterfaceStatDropsIn 接口下行丢包
+      - 1.3.6.1.4.1.3375.2.1.2.4.4.3.1.11   # sysInterfaceStatDropsOut 接口上行丢包
+      - 1.3.6.1.4.1.3375.2.1.2.4.4.3.1.15   # sysInterfaceStatPauseActive 接口流控制帧状态
+
+    max_repetitions: 25
+    retries: 3
+    timeout: 5s
+  
+    lookups:
+      # 接口下标 sysInterfaceStatName
+      - source_indexes: [sysInterfaceStatName]
+        lookup: sysInterfaceStatPauseActive
+    
+    overrides:
+      sysInterfaceStatPauseActive:
+        ignore: true
+    
+  # F5负载均衡应用信息
+  f5_app:
+    walk:
+      - 1.3.6.1.4.1.3375.2.2.5.1.2.1.23     # ltmPoolMemberCnt  指定池成员总数
+      - 1.3.6.1.4.1.3375.2.2.5.1.2.1.8      # ltmPoolActiveMemberCnt 指定池活跃成员总数
+      - 1.3.6.1.4.1.3375.2.2.5.2.3.1.31     # ltmPoolStatCurSessions 指定池的当前会话数量
+      - 1.3.6.1.4.1.3375.2.2.10.1.2.1.9     # ltmVirtualServEnabled 虚拟服务器状态
+      - 1.3.6.1.4.1.3375.2.2.10.2.3.1.12    # ltmVirtualServStatClientCurConns 客户端到当前虚拟服务器连接数
+      - 1.3.6.1.4.1.3375.2.2.10.2.3.1.33    # ltmVirtualServStatVsUsageRatio5m 虚拟服务器5分钟使用率
+
+    max_repetitions: 25
+    retries: 3
+    timeout: 5s
+  
+    lookups:
+    
+    overrides:
