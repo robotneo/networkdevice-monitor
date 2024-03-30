@@ -60,7 +60,7 @@ WantedBy=multi-user.target
 EOF
 
 cat> /etc/victoriametrics/vmagent/vmagent.conf <<EOF
-ARGS="-promscrape.config=/etc/victoriametrics/vmagent/scrape.yml -remoteWrite.url=https://172.17.40.139:8428/api/v1/write -remoteWrite.tmpDataPath=/var/lib/vmagent-remotewrite-data -promscrape.suppressScrapeErrors"
+ARGS="-promscrape.config=/etc/victoriametrics/vmagent/scrape.yml -remoteWrite.url=http://172.17.40.139:8428/api/v1/write -remoteWrite.tmpDataPath=/var/lib/vmagent-remotewrite-data -promscrape.suppressScrapeErrors"
 EOF
 
 cat> /etc/victoriametrics/vmagent/scrape.yml <<EOF
