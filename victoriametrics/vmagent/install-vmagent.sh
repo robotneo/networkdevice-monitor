@@ -15,7 +15,7 @@ chown -R victoriametrics:victoriametrics /var/lib/vmagent-remotewrite-data
 
 VM_VERSION=`curl -sg "https://api.github.com/repos/VictoriaMetrics/VictoriaMetrics/tags" | jq -r '.[0].name'`
 
-wget https://github.com/VictoriaMetrics/VictoriaMetrics/releases/download/${VM_VERSION}/vmutils-amd64-${VM_VERSION}.tar.gz -O /tmp/vmutils.tar.gz
+wget https://github.com/VictoriaMetrics/VictoriaMetrics/releases/download/${VM_VERSION}/vmutils-linux-amd64-${VM_VERSION}.tar.gz -O /tmp/vmutils.tar.gz
 
 cd /tmp && tar -xzvf /tmp/vmutils.tar.gz vmagent-prod
 mv /tmp/vmagent-prod /usr/bin
