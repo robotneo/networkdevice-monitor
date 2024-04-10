@@ -1,26 +1,60 @@
 #!/bin/bash
 set -e
-apt update && apt install -y curl wget net-tools jq
 
-# 创建vmagent配置文件目录
-mkdir -p /etc/victoriametrics/single
-# 创建vmagent临时数据缓存目录
-mkdir -p /var/lib/victoria-metrics-data
+# 函数：安装依赖工具
+install_dependencies() {
+    if [ "$OS" == "ubuntu" ] || [ "$OS" == "debian" ]; then
+        apt-get update && apt-get install -y curl wget net-tools jq
+    elif [ "$OS" == "centos" ]; then
+        yum update && yum install -y curl wget net-tools jq
+    else
+        echo "Unsupported operating system."
+        exit 1
+    fi
+}
 
-if ! getent passwd victoriametrics >/dev/null 2>&1; then
-  adduser --system --home /var/lib/victoria-metrics-data --group victoriametrics
+# 函数：设置系统服务和用户
+setup_system() {
+    # 创建victoriametrics配置文件目录
+    mkdir -p /etc/victoriametrics/single
+    # 创建victoriametrics数据保存目录
+    mkdir -p /var/lib/victoria-metrics-data
+
+    # 检查victoriametrics组是否存在，不存在则创建
+    if ! getent group victoriametrics > /dev/null 2>&1; then
+        groupadd --system victoriametrics
+    fi
+
+    # 检查victoriametrics用户是否存在，不存在则创建
+    if ! id -u victoriametrics > /dev/null 2>&1; then
+        useradd --system --home-dir /var/lib/victoria-metrics-data --no-create-home --gid victoriametrics victoriametrics
+    fi
+
+    chown -R victoriametrics:victoriametrics /var/lib/victoria-metrics-data
+}
+
+# 确定操作系统类型
+OS="unknown"
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    OS=$ID
 fi
 
-chown -R victoriametrics:victoriametrics /var/lib/victoria-metrics-data
+# 安装依赖工具
+install_dependencies
 
-VM_VERSION=`curl -sg "https://api.github.com/repos/VictoriaMetrics/VictoriaMetrics/tags" | jq -r '.[0].name'`
+# 设置系统服务和用户
+setup_system
 
+# 获取VictoriaMetrics最新版本
+VM_VERSION=$(curl -s "https://api.github.com/repos/VictoriaMetrics/VictoriaMetrics/tags" | jq -r '.[0].name')
+
+# 下载并安装VictoriaMetrics
 wget https://github.com/VictoriaMetrics/VictoriaMetrics/releases/download/${VM_VERSION}/victoria-metrics-linux-amd64-${VM_VERSION}.tar.gz -O /tmp/victoria-metrics.tar.gz
 
-cd /tmp && tar -xzvf /tmp/victoria-metrics.tar.gz victoria-metrics-prod
-mv /tmp/victoria-metrics-prod /usr/bin
-chmod +x /usr/bin/victoria-metrics-prod
-chown root:root /usr/bin/victoria-metrics-prod
+tar -xzvf /tmp/victoria-metrics.tar.gz -C /tmp
+mv /tmp/victoria-metrics*/victoria-metrics-prod /usr/local/bin/
+chmod +x /usr/local/bin/victoria-metrics-prod
 
 cat> /etc/systemd/system/victoria-metrics.service <<EOF
 [Unit]
@@ -72,3 +106,5 @@ chown -R victoriametrics:victoriametrics /etc/victoriametrics/single
 systemctl enable victoria-metrics.service
 systemctl restart victoria-metrics.service
 ps aux | grep victoria-metrics
+
+echo "VictoriaMetrics installation and service setup complete."
