@@ -1,0 +1,85 @@
+services:
+  #  指标采集
+  #  它从 "--promscrape.config" 中定义的目标中抓取数据
+  #  并将它们转发到 "--remoteWrite.url"
+  vmagent:
+    container_name: vmagent
+    image: victoriametrics/vmagent:v1.100.0
+    depends_on:
+      - "victoriametrics"
+    ports:
+      - 8429:8429
+    volumes:
+      - vmagentdata:/vmagentdata
+      - ./scrape/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--promscrape.config=/etc/prometheus/prometheus.yml"
+      - "--remoteWrite.url=http://victoriametrics:8428/api/v1/write"
+    networks:
+      - vm_net
+    restart: always
+  
+  # VictoriaMetrics实例，一个负责存储指标和处理读请求的单一进程
+  victoriametrics:
+    container_name: victoriametrics
+    image: victoriametrics/victoria-metrics:v1.100.0
+    ports:
+      - 8428:8428
+      - 8089:8089
+      - 8089:8089/udp
+      - 2003:2003
+      - 2003:2003/udp
+      - 4242:4242
+    volumes:
+      - vmdata:/storage
+    command:
+      - "--storageDataPath=/storage"
+      - "--graphiteListenAddr=:2003"
+      - "--opentsdbListenAddr=:4242"
+      - "--httpListenAddr=:8428"
+      - "--influxListenAddr=:8089"
+    networks:
+      - vm_net
+    restart: always
+  
+  promxy:
+    container_name: promxy
+    image: quay.io/jacksontj/promxy
+    hostname: promxy
+    ports:
+      - "8082:8082"
+    volumes:
+      - promxydata:/var/log
+      - ./cmd/promxy/config.yaml:/etc/promxy/config.yaml
+    command:
+      - --config=/etc/promxy/config.yaml
+      - --log-level=info
+      - --web.enable-lifecycle
+    networks:
+      - vm_net
+
+  # 使用VictoriaMetrics作为数据源配置的Grafana实例
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:10.4.1
+    depends_on:
+      - "victoriametrics"
+    ports:
+      - 3000:3000
+    volumes:
+      - grafanadata:/var/lib/grafana
+      - ./provisioning/datasources/prometheus-datasource:/etc/grafana/provisioning/datasources
+      - ./provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./dashboards/victoriametrics.json:/var/lib/grafana/dashboards/vm.json
+      - ./dashboards/vmagent.json:/var/lib/grafana/dashboards/vmagent.json
+    networks:
+      - vm_net
+    restart: always
+
+volumes:
+  vmagentdata: {}
+  vmdata: {}
+  promxydata: {}
+  grafanadata: {}
+networks:
+  vm_net:
