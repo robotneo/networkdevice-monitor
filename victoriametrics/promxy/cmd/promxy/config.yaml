@@ -1,14 +1,18 @@
-# 常规的Prometheus配置
+##
+## 常规的 Prometheus 配置
+##
 global:
+  # 评估间隔
   evaluation_interval: 5s
+  # 外部标签
   external_labels:
     source: promxy
 
-# 规则文件指定了一系列的通配符，所有匹配的文件中的规则和警报都将被读取。
+# 规则文件指定一组通配符。所有匹配的文件中都会读取规则和警报。
 rule_files:
 - "*rule"
 
-# 警报设置指定了与Alertmanager相关的配置
+# Alerting 指定与 Alertmanager 相关的设置。
 alerting:
   alertmanagers:
   - scheme: http
@@ -16,73 +20,70 @@ alerting:
     - targets:
       - "127.0.0.1:12345"
 
-# remote_write配置被promxy用作其本地追加器，这意味着所有promxy将“写入”（而不是导出）的指标都会发送到此配置。这些示例包括：记录规则、警报规则上的指标等。
+# remote_write 配置用于 promxy 作为其本地 Appender 使用，意味着 promxy 将发送所有“写入”（而不是导出）的指标到这里。
+# 这些包括：记录规则、警报规则上的指标等。
 remote_write:
   - url: http://localhost:8083/receive
 
 ##
-### Promxy configuration
+### Promxy 配置
 ##
 promxy:
   server_groups:
-    # All upstream prometheus service discovery mechanisms are supported with the same
-    # markup, all defined in https://github.com/prometheus/prometheus/blob/master/discovery/config/config.go#L33
+    # 所有上游 Prometheus 服务发现机制都使用相同的标记，全部在 https://github.com/prometheus/prometheus/blob/master/discovery/config/config.go#L33 中定义
     - static_configs:
         - targets:
           - localhost:9090
-      # labels to be added to metrics retrieved from this server_group
+      # 要添加到从此 server_group 检索到的指标的标签
       labels:
         sg: localhost_9090
-      # anti-affinity for merging values in timeseries between hosts in the server_group
+      # 在 server_group 中的主机之间合并时间序列值的反亲和性
       anti_affinity: 10s
-      # time to wait for a server's response headers after fully writing the request (including its body, if any).
-      # This time does not include the time to read the response body.
+      # 等待服务器响应头的时间，单位毫秒
       timeout: 5s
-      # Controls whether to use remote_read or the prom API for fetching remote RAW data (e.g. matrix selectors)
-      # Note, some prometheus implementations (e.g. [VictoriaMetrics](https://github.com/prometheus/prometheus/issues/4456) don't support remote_read.
+      # 控制是否使用 remote_read 还是 prom API 用于获取远程 RAW 数据（例如矩阵选择器）
+      # 注意，某些 Prometheus 实现（例如 VictoriaMetrics）不支持 remote_read。
       remote_read: true
-      # configures the path to send remote read requests to. The default is "api/v1/read"
+      # 配置发送远程读取请求的路径。默认为 "api/v1/read"
       remote_read_path: api/v1/read
-      # path_prefix defines a prefix to prepend to all queries to hosts in this servergroup
-      # This can be relabeled using __path_prefix__
+      # path_prefix 定义要添加到此 servergroup 中所有查询的前缀
+      # 这可以使用 __path_prefix__ 进行重标记
       path_prefix: /example/prefix
-      # query_params adds the following map of query parameters to downstream requests.
-      # The initial use-case for this is to add `nocache=1` to VictoriaMetrics downstreams
-      # (see https://github.com/jacksontj/promxy/issues/202)
+      # query_params 将以下查询参数映射添加到下游请求。
+      # 最初的用例是将 `nocache=1` 添加到 VictoriaMetrics 下游
       query_params:
         nocache: 1
-      # configures the protocol scheme used for requests. Defaults to http
+      # 配置用于请求的协议方案。默认为 http
       scheme: http
-      # options for promxy's HTTP client when talking to hosts in server_groups
+      # promxy 与 server_groups 中的主机通信时的 HTTP 客户端选项
       http_client:
-        # dial_timeout controls how long promxy will wait for a connection to the downstream
-        # the default is 200ms.
+        # 连接下游的等待时间，默认为 200 毫秒。
         dial_timeout: 1s
         tls_config:
           insecure_skip_verify: true
 
-      # relative_time_range defines a relative-to-now time range that this server group contains.
-      # this is completely optional and start/end are both optional as well
-      # an example is if this servergroup only has the most recent 3h of data
-      # the "start" would be -3h and the end would be left out
+      # relative_time_range 定义相对于当前时间的时间范围，此 server_group 包含该范围内的数据。
+      # 这是完全可选的，start/end 也都是可选的
+      # 例如，如果此 servergroup 仅包含最近的 3 小时数据
+      # "start" 将为 -3h，而 end 将被省略
       relative_time_range:
         start: -3h
         end: -1h
         truncate: false
 
-      # when merging sample streams, the max value at a given timestamp will be preferred
+      # 在合并样本流时，将优先考虑给定时间戳的最大值
       prefer_max: false
 
-      # absolute_time_range defines an absolute time range that this server group contains.
-      # this is completely optional and start/end are both optional as well
-      # and example is if the servergroup has been deprecated and is no longer receiving data
-      # you could set the specific times that it has data for.
+      # absolute_time_range 定义此 server_group 包含的绝对时间范围。
+      # 这是完全可选的，start/end 也都是可选的
+      # 例如，如果 servergroup 已被弃用且不再接收数据
+      # 您可以设置其具有数据的特定时间。
       absolute_time_range:
         start: '2009-10-10T23:00:00Z'
         end: '2009-10-11T23:00:00Z'
         truncate: true
 
-    # as many additional server groups as you have
+    # 可以有任意数量的其他 server_groups
     - static_configs:
         - targets:
           - localhost:9091
@@ -93,7 +94,6 @@ promxy:
       http_client:
         tls_config:
           insecure_skip_verify: true
-      # ignore_error will make the given security group's response "optional"
-      # meaning if this servergroup returns and error and others don't the overall
-      # query can still succeed
+      # ignore_error 将使给定安全组的响应“可选”
+      # 这意味着如果此 servergroup 返回错误而其他 servergroup 不返回，则总体查询仍然可以成功
       ignore_error: true
