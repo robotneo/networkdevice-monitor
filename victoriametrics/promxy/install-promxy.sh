@@ -50,8 +50,8 @@ setup_system
 PROMXY_VERSION=$(curl -s "https://api.github.com/repos/jacksontj/promxy/tags" | jq -r '.[0].name')
 
 # 下载并安装Promxy
-wget https://github.com/jacksontj/promxy/releases/download/${PROMXY_VERSION}/promxy-${PROMXY_VERSION}-linux-amd64 -O /usr/local/promxy/promxy
-chmod +x /usr/local/promxy/promxy
+wget https://github.com/jacksontj/promxy/releases/download/${PROMXY_VERSION}/promxy-${PROMXY_VERSION}-linux-amd64 -O /usr/local/promxy
+chmod +x /usr/local/promxy
 
 cat> /etc/systemd/system/promxy.service <<EOF
 [Unit]
@@ -68,7 +68,7 @@ StartLimitBurst=5
 StartLimitInterval=0
 Restart=on-failure
 RestartSec=5
-ExecStart=/usr/local/promxy/promxy --bind-addr=:8082 --config=/etc/promxy/config.yaml
+ExecStart=/usr/local/promxy --bind-addr=:8082 --config=/etc/promxy/config.yaml
 ExecStop=/bin/kill -s SIGTERM \$MAINPID
 ExecReload=/bin/kill -HUP \$MAINPID
 ProtectSystem=full
