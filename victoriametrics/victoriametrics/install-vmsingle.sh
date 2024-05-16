@@ -53,7 +53,7 @@ VM_VERSION=$(curl -s "https://api.github.com/repos/VictoriaMetrics/VictoriaMetri
 wget https://github.com/VictoriaMetrics/VictoriaMetrics/releases/download/${VM_VERSION}/victoria-metrics-linux-amd64-${VM_VERSION}.tar.gz -O /tmp/victoria-metrics.tar.gz
 
 tar -xzvf /tmp/victoria-metrics.tar.gz -C /tmp
-mv /tmp/victoria-metrics*/victoria-metrics-prod /usr/bin/
+mv /tmp/victoria-metrics* /usr/bin/
 chmod +x /usr/local/bin/victoria-metrics-prod
 
 cat> /etc/systemd/system/victoria-metrics.service <<EOF
