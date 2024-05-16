@@ -97,7 +97,7 @@ WantedBy=multi-user.target
 EOF
 
 cat> /etc/victoriametrics/single/vmsingle.conf <<EOF
-ARGS="-storageDataPath=/var/lib/victoria-metrics-data -retentionPeriod=90d -httpListenAddr=:8428"
+ARGS="-storageDataPath=/var/lib/victoria-metrics-data -retentionPeriod=90d -httpListenAddr=:8428 -vmui.defaultTimezone=Local"
 EOF
 
 chown -R victoriametrics:victoriametrics /var/lib/victoria-metrics-data
