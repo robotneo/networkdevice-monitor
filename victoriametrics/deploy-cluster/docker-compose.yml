@@ -99,6 +99,8 @@ services:
       - '-storageNode=vmstorage-1:8400'
       - '-storageNode=vmstorage-2:8400'
       - '-storageNode=vmstorage-3:8400'
+      # 保持2个副本数
+      - '-replicationFactor=2'
     ports:
       - 8480
     networks:
@@ -115,6 +117,8 @@ services:
       - '-storageNode=vmstorage-1:8400'
       - '-storageNode=vmstorage-2:8400'
       - '-storageNode=vmstorage-3:8400'
+      # 保持2个副本数
+      - '-replicationFactor=2'
     ports:
       - 8480
     networks:
@@ -131,6 +135,8 @@ services:
       - '-storageNode=vmstorage-1:8400'
       - '-storageNode=vmstorage-2:8400'
       - '-storageNode=vmstorage-3:8400'
+      # 保持2个副本数
+      - '-replicationFactor=2'
     ports:
       - 8480
     networks:
@@ -151,6 +157,7 @@ services:
       - '-storageNode=vmstorage-2:8401'
       - '-storageNode=vmstorage-3:8401'
       - '-vmalert.proxyURL=http://vmalert:8880'
+      - '-dedup.minScrapeInterval=1ms'
     ports:
       - 8481
     networks:
@@ -168,6 +175,7 @@ services:
       - '-storageNode=vmstorage-2:8401'
       - '-storageNode=vmstorage-3:8401'
       - '-vmalert.proxyURL=http://vmalert:8880'
+      - '-dedup.minScrapeInterval=1ms'
     ports:
       - 8481
     networks:
