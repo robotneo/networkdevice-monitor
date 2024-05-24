@@ -1,0 +1,216 @@
+services:
+  # 指标收集器
+  # 它抓取 --promscrape.config 参数定义的配置文件中配置的 job_name
+  # 同时把抓取的数据转储到 --remoteWrite.url 参数定义的数据数据库中
+  vmagent:
+    container_name: vmagent
+    image: victoriametrics/vmagent:v1.101.0
+    depends_on:
+      - "vmauth"
+    ports:
+      - 8429:8429
+    volumes:
+      - vmagentdata:/vmagentdata
+      - ./vmagent/prometheus-cluster.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '-promscrape.config=/etc/prometheus/prometheus.yml'
+      - '-promscrape.config.strictParse=false'
+      - '-remoteWrite.url=http://vmauth:8427/insert/0/prometheus/api/v1/write'
+    restart: always
+
+  # 配置了 VictoriaMetrics 作为数据源的 Grafana 实例
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:10.4.2
+    depends_on:
+      - "vmauth"
+    ports:
+      - 3000:3000
+    volumes:
+      - grafanadata:/var/lib/grafana
+      - ./provisioning/datasources/prometheus-datasource:/etc/grafana/provisioning/datasources
+      - ./provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./dashboards/victoriametrics-cluster.json:/var/lib/grafana/dashboards/vm.json
+      - ./dashboards/vmagent.json:/var/lib/grafana/dashboards/vmagent.json
+      - ./dashboards/vmalert.json:/var/lib/grafana/dashboards/vmalert.json
+    restart: always
+
+  # vmstorage 两台节点，数据分片存储， 每台接收到由 vminsert 发送的总指标数据的 1/N 部分 这里是两台就是 1/2
+  vmstorage-1:
+    container_name: vmstorage-1
+    image: victoriametrics/vmstorage:v1.101.0-cluster
+    ports:
+      - 8482
+      - 8400
+      - 8401
+    volumes:
+      - strgdata-1:/storage
+    command:
+      - '-storageDataPath=/storage'
+    restart: always
+  vmstorage-2:
+    container_name: vmstorage-2
+    image: victoriametrics/vmstorage:v1.101.0-cluster
+    ports:
+      - 8482
+      - 8400
+      - 8401
+    volumes:
+      - strgdata-2:/storage
+    command:
+      - '-storageDataPath=/storage'
+    restart: always
+  vmstorage-3:
+    container_name: vmstorage-3
+    image: victoriametrics/vmstorage:v1.101.0-cluster
+    ports:
+      - 8482
+      - 8400
+      - 8401
+    volumes:
+      - strgdata-3:/storage
+    command:
+      - '-storageDataPath=/storage'
+    restart: always
+
+  # vminsert 是数据采集前端（这里是两台），它接收由 vmagent 推送的指标数据
+  # 对其进行预处理，并分发到配置的 vmstorage 分片中
+  vminsert-1:
+    container_name: vminsert-1
+    image: victoriametrics/vminsert:v1.101.0-cluster
+    depends_on:
+      - "vmstorage-1"
+      - "vmstorage-2"
+      - "vmstorage-3"
+    command:
+      - '-storageNode=vmstorage-1:8400'
+      - '-storageNode=vmstorage-2:8400'
+      - '-storageNode=vmstorage-3:8400'
+    ports:
+      - 8480:8480
+    restart: always
+  vminsert-2:
+    container_name: vminsert-2
+    image: victoriametrics/vminsert:v1.101.0-cluster
+    depends_on:
+      - "vmstorage-1"
+      - "vmstorage-2"
+      - "vmstorage-3"
+    command:
+      - '-storageNode=vmstorage-1:8400'
+      - '-storageNode=vmstorage-2:8400'
+      - '-storageNode=vmstorage-3:8400'
+    ports:
+      - 8480:8480
+    restart: always
+  vminsert-3:
+    container_name: vminsert-3
+    image: victoriametrics/vminsert:v1.101.0-cluster
+    depends_on:
+      - "vmstorage-1"
+      - "vmstorage-2"
+      - "vmstorage-3"
+    command:
+      - '-storageNode=vmstorage-1:8400'
+      - '-storageNode=vmstorage-2:8400'
+      - '-storageNode=vmstorage-3:8400'
+    ports:
+      - 8480:8480
+    restart: always
+
+  # vmselect 是个查询前端，它负责处理 MetricsQL 或 PromQL 的读取查询
+  # vmselect 从配置的 --storageNode 节点中收集查询。
+  vmselect-1:
+    container_name: vmselect-1
+    image: victoriametrics/vmselect:v1.101.0-cluster
+    depends_on:
+      - "vmstorage-1"
+      - "vmstorage-2"
+      - "vmstorage-3"
+    command:
+      - '-storageNode=vmstorage-1:8401'
+      - '-storageNode=vmstorage-2:8401'
+      - '-storageNode=vmstorage-3:8401'
+      - '-vmalert.proxyURL=http://vmalert:8880'
+    ports:
+      - 8481
+    restart: always
+  vmselect-2:
+    container_name: vmselect-2
+    image: victoriametrics/vmselect:v1.101.0-cluster
+    depends_on:
+      - "vmstorage-1"
+      - "vmstorage-2"
+      - "vmstorage-3"
+    command:
+      - '-storageNode=vmstorage-1:8401'
+      - '-storageNode=vmstorage-2:8401'
+      - '-storageNode=vmstorage-3:8401'
+      - '-vmalert.proxyURL=http://vmalert:8880'
+    ports:
+      - 8481
+    restart: always
+
+  # vmauth 是一个用于处理 HTTP 请求的路由器和负载均衡器
+  # 它通过 --auth.config 进行配置，并使得 Grafana、vmui、vmalert、vminsert 与 vmselect 之间平衡读取请求
+  # 它还可以作为认证代理使用
+  vmauth:
+    container_name: vmauth
+    image: victoriametrics/vmauth:v1.101.0
+    depends_on:
+      - "vminsert-1"
+      - "vminsert-2"
+      - "vminsert-3"
+      - "vmselect-1"
+      - "vmselect-2"
+    volumes:
+      - ./auth-cluster.yml:/etc/auth.yml
+    command:
+      - '-auth.config=/etc/auth.yml'
+    ports:
+      - 8427:8427
+    restart: always
+
+  # vmalert 评估告警并记录规则
+  vmalert:
+    container_name: vmalert
+    image: victoriametrics/vmalert:v1.101.0
+    depends_on:
+      - "vmauth"
+    ports:
+      - 8880:8880
+    volumes:
+      - ./vmalert/alerts-cluster.yml:/etc/alerts/alerts.yml
+      - ./vmalert/alerts-health.yml:/etc/alerts/alerts-health.yml
+      - ./vmalert/alerts-vmagent.yml:/etc/alerts/alerts-vmagent.yml
+      - ./vmalert/alerts-vmalert.yml:/etc/alerts/alerts-vmalert.yml
+    command:
+      - '-datasource.url=http://vmauth:8427/select/0/prometheus'
+      - '-remoteRead.url=http://vmauth:8427/select/0/prometheus'
+      - '-remoteWrite.url=http://vmauth:8427/insert/0/prometheus'
+      - '-notifier.url=http://alertmanager:9093/'
+      - '-rule=/etc/alerts/*.yml'
+      # display source of alerts in grafana
+      - '-external.url=http://127.0.0.1:3000' #grafana outside container
+      # when copypaste the line below be aware of '$$' for escaping in '$expr'
+      - '-external.alert.source=explore?orgId=1&left={"datasource":"VictoriaMetrics","queries":[{"expr":{{$$expr|jsonEscape|queryEscape}},"refId":"A"}],"range":{"from":"now-1h","to":"now"}}'
+    restart: always
+
+  # alertmanager 接收来自 vmalert 的告警通知，并根据 --config.file 中的配置进行通知路由分发
+  alertmanager:
+    container_name: alertmanager
+    image: prom/alertmanager:v0.27.0
+    volumes:
+      - ./alertmanager/alertmanager.yml:/config/alertmanager.yml
+    command:
+      - '--config.file=/config/alertmanager.yml'
+    ports:
+      - 9093:9093
+    restart: always
+
+volumes:
+  # /var/lib/docker/volumes/ 具名挂载
+  vmagentdata: {}
+  strgdata-1: {}
+  strgdata-2: {}
+  grafanadata: {}
