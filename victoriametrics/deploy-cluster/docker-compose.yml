@@ -184,7 +184,7 @@ services:
       - "vmselect-1"
       - "vmselect-2"
     volumes:
-      - ./auth-cluster.yml:/etc/auth.yml
+      - ./vmauth/auth-cluster.yml:/etc/auth.yml
     command:
       - '-auth.config=/etc/auth.yml'
     ports:
