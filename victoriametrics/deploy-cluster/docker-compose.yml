@@ -213,4 +213,5 @@ volumes:
   vmagentdata: {}
   strgdata-1: {}
   strgdata-2: {}
+  strgdata-3: {}
   grafanadata: {}
