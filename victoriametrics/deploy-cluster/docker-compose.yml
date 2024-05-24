@@ -181,6 +181,24 @@ services:
     networks:
       - vm_cluster
     restart: always
+  vmselect-3:
+    container_name: vmselect-3
+    image: victoriametrics/vmselect:v1.101.0-cluster
+    depends_on:
+      - "vmstorage-1"
+      - "vmstorage-2"
+      - "vmstorage-3"
+    command:
+      - '-storageNode=vmstorage-1:8401'
+      - '-storageNode=vmstorage-2:8401'
+      - '-storageNode=vmstorage-3:8401'
+      - '-vmalert.proxyURL=http://vmalert:8880'
+      - '-dedup.minScrapeInterval=1ms'
+    ports:
+      - 8481
+    networks:
+      - vm_cluster
+    restart: always
 
   # vmauth 是一个用于处理 HTTP 请求的路由器和负载均衡器
   # 它通过 --auth.config 进行配置，并使得 Grafana、vmui、vmalert、vminsert 与 vmselect 之间平衡读取请求
@@ -194,6 +212,7 @@ services:
       - "vminsert-3"
       - "vmselect-1"
       - "vmselect-2"
+      - "vmselect-3"
     volumes:
       - ./vmauth/auth-cluster.yml:/etc/auth.yml
     command:

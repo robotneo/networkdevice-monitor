@@ -14,5 +14,6 @@ unauthorized_user:
     url_prefix:
     - "http://vmselect-1:8481/"
     - "http://vmselect-2:8481/"
+    - "http://vmselect-3:8481/"
     retry_status_codes: [500, 502, 503]
     load_balancing_policy: first_available
