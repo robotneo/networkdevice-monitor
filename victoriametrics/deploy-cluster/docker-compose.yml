@@ -50,6 +50,7 @@ services:
     volumes:
       - strgdata-1:/storage
     command:
+      - '-retentionPeriod=30d'
       - '-storageDataPath=/storage'
     networks:
       - vm_cluster
@@ -64,6 +65,7 @@ services:
     volumes:
       - strgdata-2:/storage
     command:
+      - '-retentionPeriod=30d'
       - '-storageDataPath=/storage'
     networks:
       - vm_cluster
@@ -78,6 +80,7 @@ services:
     volumes:
       - strgdata-3:/storage
     command:
+      - '-retentionPeriod=30d'
       - '-storageDataPath=/storage'
     networks:
       - vm_cluster
