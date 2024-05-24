@@ -97,7 +97,7 @@ services:
       - '-storageNode=vmstorage-2:8400'
       - '-storageNode=vmstorage-3:8400'
     ports:
-      - 8480:8480
+      - 8480
     networks:
       - vm_cluster
     restart: always
@@ -113,7 +113,7 @@ services:
       - '-storageNode=vmstorage-2:8400'
       - '-storageNode=vmstorage-3:8400'
     ports:
-      - 8480:8480
+      - 8480
     networks:
       - vm_cluster
     restart: always
@@ -129,7 +129,7 @@ services:
       - '-storageNode=vmstorage-2:8400'
       - '-storageNode=vmstorage-3:8400'
     ports:
-      - 8480:8480
+      - 8480
     networks:
       - vm_cluster
     restart: always
@@ -209,7 +209,7 @@ services:
     command:
       - '-datasource.url=http://vmauth:8427/select/0/prometheus'
       - '-remoteRead.url=http://vmauth:8427/select/0/prometheus'
-      - '-remoteWrite.url=http://vmauth:8427/insert/0/prometheus'
+      - '-remoteWrite.url=http://vmagent:8429/api/v1/write'
       - '-notifier.url=http://alertmanager:9093/'
       - '-rule=/etc/alerts/*.yml'
       # display source of alerts in grafana
