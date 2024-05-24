@@ -16,6 +16,8 @@ services:
       - '-promscrape.config=/etc/prometheus/prometheus.yml'
       - '-promscrape.config.strictParse=false'
       - '-remoteWrite.url=http://vmauth:8427/insert/0/prometheus/api/v1/write'
+    networks:
+      - vm_cluster
     restart: always
 
   # 配置了 VictoriaMetrics 作为数据源的 Grafana 实例
@@ -33,6 +35,8 @@ services:
       - ./dashboards/victoriametrics-cluster.json:/var/lib/grafana/dashboards/vm.json
       - ./dashboards/vmagent.json:/var/lib/grafana/dashboards/vmagent.json
       - ./dashboards/vmalert.json:/var/lib/grafana/dashboards/vmalert.json
+    networks:
+      - vm_cluster
     restart: always
 
   # vmstorage 两台节点，数据分片存储， 每台接收到由 vminsert 发送的总指标数据的 1/N 部分 这里是两台就是 1/2
@@ -47,6 +51,8 @@ services:
       - strgdata-1:/storage
     command:
       - '-storageDataPath=/storage'
+    networks:
+      - vm_cluster
     restart: always
   vmstorage-2:
     container_name: vmstorage-2
@@ -59,6 +65,8 @@ services:
       - strgdata-2:/storage
     command:
       - '-storageDataPath=/storage'
+    networks:
+      - vm_cluster
     restart: always
   vmstorage-3:
     container_name: vmstorage-3
@@ -71,6 +79,8 @@ services:
       - strgdata-3:/storage
     command:
       - '-storageDataPath=/storage'
+    networks:
+      - vm_cluster
     restart: always
 
   # vminsert 是数据采集前端（这里是两台），它接收由 vmagent 推送的指标数据
@@ -88,6 +98,8 @@ services:
       - '-storageNode=vmstorage-3:8400'
     ports:
       - 8480:8480
+    networks:
+      - vm_cluster
     restart: always
   vminsert-2:
     container_name: vminsert-2
@@ -102,6 +114,8 @@ services:
       - '-storageNode=vmstorage-3:8400'
     ports:
       - 8480:8480
+    networks:
+      - vm_cluster
     restart: always
   vminsert-3:
     container_name: vminsert-3
@@ -116,6 +130,8 @@ services:
       - '-storageNode=vmstorage-3:8400'
     ports:
       - 8480:8480
+    networks:
+      - vm_cluster
     restart: always
 
   # vmselect 是个查询前端，它负责处理 MetricsQL 或 PromQL 的读取查询
@@ -134,6 +150,8 @@ services:
       - '-vmalert.proxyURL=http://vmalert:8880'
     ports:
       - 8481
+    networks:
+      - vm_cluster
     restart: always
   vmselect-2:
     container_name: vmselect-2
@@ -149,6 +167,8 @@ services:
       - '-vmalert.proxyURL=http://vmalert:8880'
     ports:
       - 8481
+    networks:
+      - vm_cluster
     restart: always
 
   # vmauth 是一个用于处理 HTTP 请求的路由器和负载均衡器
@@ -169,6 +189,8 @@ services:
       - '-auth.config=/etc/auth.yml'
     ports:
       - 8427:8427
+    networks:
+      - vm_cluster
     restart: always
 
   # vmalert 评估告警并记录规则
@@ -194,6 +216,8 @@ services:
       - '-external.url=http://127.0.0.1:3000' #grafana outside container
       # when copypaste the line below be aware of '$$' for escaping in '$expr'
       - '-external.alert.source=explore?orgId=1&left={"datasource":"VictoriaMetrics","queries":[{"expr":{{$$expr|jsonEscape|queryEscape}},"refId":"A"}],"range":{"from":"now-1h","to":"now"}}'
+    networks:
+      - vm_cluster
     restart: always
 
   # alertmanager 接收来自 vmalert 的告警通知，并根据 --config.file 中的配置进行通知路由分发
@@ -206,6 +230,8 @@ services:
       - '--config.file=/config/alertmanager.yml'
     ports:
       - 9093:9093
+    networks:
+      - vm_cluster
     restart: always
 
 volumes:
@@ -215,3 +241,8 @@ volumes:
   strgdata-2: {}
   strgdata-3: {}
   grafanadata: {}
+
+networks:
+  vm_cluster:
+    driver: bridge
+    #attachable: true
