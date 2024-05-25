@@ -90,7 +90,7 @@ WantedBy=multi-user.target
 EOF
 
 cat> /etc/victoriametrics/vminsert/vminsert.conf <<EOF
-ARGS="-storageNode=vmstorage-1:8400 -replicationFactor=2"
+ARGS="-storageNode=127.0.0.1:8400 -replicationFactor=2"
 EOF
 
 chown -R victoriametrics:victoriametrics /etc/victoriametrics/vminsert
