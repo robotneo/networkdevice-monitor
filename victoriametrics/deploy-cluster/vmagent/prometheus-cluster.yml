@@ -10,7 +10,7 @@ scrape_configs:
       - targets: ['vmalert:8880']
   - job_name: 'vmauth'
     static_configs:
-      - targets: ['vmalert:8427']
+      - targets: ['vmauth:8427']
   - job_name: 'vminsert'
     static_configs:
       - targets: ['vminsert-1:8480', 'vminsert-2:8480', 'vminsert-3:8480']
