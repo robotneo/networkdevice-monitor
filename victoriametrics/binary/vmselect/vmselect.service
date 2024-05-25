@@ -1,0 +1,34 @@
+[Unit]
+Description=vmselect - performs incoming queries by fetching the needed data from all the configured vmstorage nodes
+# https://docs.victoriametrics.com/Cluster-VictoriaMetrics.html
+After=network.target
+
+[Service]
+Type=simple
+User=victoriametrics
+Group=victoriametrics
+StartLimitBurst=5
+StartLimitInterval=0
+Restart=on-failure
+RestartSec=1
+EnvironmentFile=-/etc/victoriametrics/vmcluster/vmselect.conf
+ExecStart=/usr/bin/vmselect-prod $ARGS
+ExecStop=/bin/kill -s SIGTERM $MAINPID
+ExecReload=/bin/kill -HUP $MAINPID
+# See docs https://docs.victoriametrics.com/Single-server-VictoriaMetrics.html#tuning
+LimitNOFILE=1048576
+LimitNPROC=1048576
+LimitCORE=infinity
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=vmselect
+PrivateTmp=yes
+ProtectHome=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectControlGroups=true
+ProtectKernelModules=true
+ProtectKernelTunables=yes
+
+[Install]
+WantedBy=multi-user.target
