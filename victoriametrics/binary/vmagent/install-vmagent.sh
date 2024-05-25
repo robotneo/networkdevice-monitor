@@ -58,15 +58,14 @@ chmod +x /usr/bin/vmagent-prod
 
 cat> /etc/systemd/system/vmagent.service <<EOF
 [Unit]
-Description=vmagent is a tiny agent which helps you collect metrics from various sources and store them in VictoriaMetrics.
+Description=vmagent is a tiny but mighty agent which helps you collect metrics from various sources and store them in VictoriaMetrics or any other Prometheus-compatible storage systems that support the remote_write protocol.
+# https://docs.victoriametrics.com/vmagent.html
 After=network.target
 
 [Service]
 Type=simple
 User=victoriametrics
 Group=victoriametrics
-WorkingDirectory=/var/lib/vmagent-remotewrite-data
-ReadWritePaths=/var/lib/vmagent-remotewrite-data
 StartLimitBurst=5
 StartLimitInterval=0
 Restart=on-failure
@@ -75,9 +74,12 @@ EnvironmentFile=-/etc/victoriametrics/vmagent/vmagent.conf
 ExecStart=/usr/bin/vmagent-prod \$ARGS
 ExecStop=/bin/kill -s SIGTERM \$MAINPID
 ExecReload=/bin/kill -HUP \$MAINPID
+# See docs https://docs.victoriametrics.com/Single-server-VictoriaMetrics.html#tuning
 LimitNOFILE=1048576
 LimitNPROC=1048576
 LimitCORE=infinity
+WorkingDirectory=/var/lib/vmagent-remotewrite-data
+ReadWritePaths=/var/lib/vmagent-remotewrite-data
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=vmagent
@@ -94,7 +96,7 @@ WantedBy=multi-user.target
 EOF
 
 cat> /etc/victoriametrics/vmagent/vmagent.conf <<EOF
-ARGS="-promscrape.config=/etc/victoriametrics/vmagent/scrape.yml -remoteWrite.url=http://172.17.40.139:8428/api/v1/write -remoteWrite.tmpDataPath=/var/lib/vmagent-remotewrite-data -promscrape.suppressScrapeErrors"
+ARGS="-promscrape.config=/etc/victoriametrics/vmagent/scrape.yml -remoteWrite.url=http://127.0.0.1:8428/api/v1/write -remoteWrite.tmpDataPath=/var/lib/vmagent-remotewrite-data -promscrape.suppressScrapeErrors"
 EOF
 
 cat> /etc/victoriametrics/vmagent/scrape.yml <<EOF
