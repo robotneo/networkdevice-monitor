@@ -1,0 +1,1 @@
+## docker compose 部署单节点VictoriMetrics
