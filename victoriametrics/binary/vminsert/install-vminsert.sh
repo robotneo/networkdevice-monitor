@@ -66,9 +66,9 @@ StartLimitInterval=0
 Restart=on-failure
 RestartSec=1
 EnvironmentFile=-/etc/victoriametrics/vminsert/vminsert.conf
-ExecStart=/usr/bin/vminsert-prod $ARGS
-ExecStop=/bin/kill -s SIGTERM $MAINPID
-ExecReload=/bin/kill -HUP $MAINPID
+ExecStart=/usr/bin/vminsert-prod \$ARGS
+ExecStop=/bin/kill -s SIGTERM \$MAINPID
+ExecReload=/bin/kill -HUP \$MAINPID
 # See docs https://docs.victoriametrics.com/Single-server-VictoriaMetrics.html#tuning
 LimitNOFILE=1048576
 LimitNPROC=1048576
