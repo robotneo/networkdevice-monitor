@@ -89,7 +89,7 @@ WantedBy=multi-user.target
 EOF
 
 cat> /etc/victoriametrics/vmselect/vmselect.conf <<EOF
-ARGS="-storageNode=127.0.0.1:8401 -replicationFactor=2"
+ARGS="-storageNode=127.0.0.1:8401 -dedup.minScrapeInterval=1ms"
 EOF
 
 chown -R victoriametrics:victoriametrics /etc/victoriametrics/vmselect
