@@ -4,9 +4,9 @@ set -e
 # 函数：安装依赖工具
 install_dependencies() {
     if [ "$OS" == "ubuntu" ] || [ "$OS" == "debian" ]; then
-        apt-get update && apt-get install -y curl wget net-tools jq
+        apt-get update && apt-get install -y curl wget net-tools
     elif [ "$OS" == "centos" ]; then
-        yum update && yum install -y curl wget net-tools jq
+        yum update && yum install -y curl wget net-tools
     else
         echo "Unsupported operating system."
         exit 1
@@ -47,7 +47,7 @@ install_dependencies
 setup_system
 
 # 获取vmagent最新版本
-VM_VERSION=$(curl -s "https://api.github.com/repos/VictoriaMetrics/VictoriaMetrics/tags" | jq -r '.[0].name')
+VM_VERSION=$(curl -s "https://api.github.com/repos/VictoriaMetrics/VictoriaMetrics/tags"  | grep '"name":' | head -n 1 | awk -F '"' '{print $4}')
 
 # 下载并安装vmagent
 wget https://github.com/VictoriaMetrics/VictoriaMetrics/releases/download/${VM_VERSION}/vmutils-linux-amd64-${VM_VERSION}.tar.gz -O /tmp/vmutils.tar.gz
