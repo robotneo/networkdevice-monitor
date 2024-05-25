@@ -95,7 +95,7 @@ WantedBy=multi-user.target
 EOF
 
 cat> /etc/victoriametrics/vmstorage/vmstorage.conf <<EOF
-ARGS="-storageDataPath=/var/lib/victoriametrics/data -retentionPeriod=30d"
+ARGS="-storageDataPath=/var/lib/victoria-metrics-cluster-data -retentionPeriod=30d"
 EOF
 
 chown -R victoriametrics:victoriametrics /etc/victoriametrics/vmstorage
