@@ -1,0 +1,36 @@
+[Unit]
+Description=vmstorage - stores the raw data and returns the queried data on the given time range for the given label filters
+# https://docs.victoriametrics.com/Cluster-VictoriaMetrics.html
+After=network.target
+
+[Service]
+Type=simple
+User=victoriametrics
+Group=victoriametrics
+StartLimitBurst=5
+StartLimitInterval=0
+Restart=on-failure
+RestartSec=1
+EnvironmentFile=-/etc/victoriametrics/vmcluster/vmstorage.conf
+ExecStart=/usr/bin/vmstorage-prod $ARGS
+ExecStop=/bin/kill -s SIGTERM $MAINPID
+ExecReload=/bin/kill -HUP $MAINPID
+# See docs https://docs.victoriametrics.com/Single-server-VictoriaMetrics.html#tuning
+LimitNOFILE=1048576
+LimitNPROC=1048576
+LimitCORE=infinity
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=vmstorage
+WorkingDirectory=/var/lib/victoria-metrics-cluster-data
+ReadWritePaths=/var/lib/victoria-metrics-cluster-data
+PrivateTmp=yes
+ProtectHome=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectControlGroups=true
+ProtectKernelModules=true
+ProtectKernelTunables=yes
+
+[Install]
+WantedBy=multi-user.target
