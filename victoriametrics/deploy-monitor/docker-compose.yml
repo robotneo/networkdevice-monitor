@@ -14,7 +14,7 @@ services:
       - "-promscrape.config=/etc/prometheus/prometheus.yml"
       - "-remoteWrite.url=http://victoriametrics:8428/api/v1/write"
     networks:
-      - vm_net
+      - vm_single
     restart: always
   
   # VictoriaMetrics实例 一个负责存储指标和处理读请求的单一进程
@@ -38,7 +38,7 @@ services:
       - "-influxListenAddr=:8089"
       - "-vmalert.proxyURL=http://vmalert:8880"
     networks:
-      - vm_net
+      - vm_single
     restart: always
 
   # 使用VictoriaMetrics作为数据源配置的Grafana实例
@@ -57,7 +57,7 @@ services:
       - ./dashboards/vmagent.json:/var/lib/grafana/dashboards/vmagent.json
       - ./dashboards/vmalert.json:/var/lib/grafana/dashboards/vmalert.json
     networks:
-      - vm_net
+      - vm_single
     restart: always
 
   # vmalert执行告警规则评估和记录规则
@@ -85,7 +85,7 @@ services:
       # 在复制粘贴这行时，请注意在 $expr 中使用 $$ 进行转义
       - '-external.alert.source=explore?orgId=1&left={"datasource":"VictoriaMetrics","queries":[{"expr":{{$$expr|jsonEscape|queryEscape}},"refId":"A"}],"range":{"from":"now-1h","to":"now"}}'
     networks:
-      - vm_net
+      - vm_single
     restart: always
 
   # Alertmanager 接收来自 vmalert 的警报通知 并根据 --config.file 分发它们
@@ -93,13 +93,15 @@ services:
     container_name: alertmanager
     image: prom/alertmanager:latest
     volumes:
+      - alertmanagerdata:/var/lib/alertmanager
       - ./alertmanager/alertmanager.yml:/config/alertmanager.yml
     command:
       - "--config.file=/config/alertmanager.yml"
+      - "--storage.path=/var/lib/alertmanager"
     ports:
       - 9093:9093
     networks:
-      - vm_net
+      - vm_single
     restart: always
   
   # PrometheusAlert 部署 对消息做格式化
@@ -121,13 +123,16 @@ services:
     depends_on:
       - alertmanager
     networks:
-      - vm_net
+      - vm_single
     restart: always
 
 volumes:
   vmagentdata: {}
   vmdata: {}
   grafanadata: {}
+  alertmanagerdata: {}
   promalertdata: {}
 networks:
-  vm_net:
+  vm_single:
+    driver: bridge
+    #attachable: true
