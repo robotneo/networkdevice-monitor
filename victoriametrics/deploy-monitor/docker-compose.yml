@@ -111,7 +111,7 @@ services:
     volumes:
       - ./prometheusalert/app.conf:/app/conf/app.conf
       - promalertdata:/app/db
-    command:
+    environment:
       - "PA_LOGIN_USER=admin"
       - "PA_LOGIN_PASSWORD=admin"
       - "PA_TITLE=PrometheusAlert"
