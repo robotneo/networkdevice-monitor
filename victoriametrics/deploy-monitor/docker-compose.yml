@@ -107,17 +107,17 @@ services:
   # PrometheusAlert 部署 对消息做格式化
   prometheusalert:
     container_name: prometheusalert
-    image: feiyu563/prometheus-alert:latest
+    image: feiyu563/prometheus-alert:master
     volumes:
       - ./prometheusalert/app.conf:/app/conf/app.conf
       - promalertdata:/app/db
-    environment:
-      - "PA_LOGIN_USER=admin"
-      - "PA_LOGIN_PASSWORD=admin"
-      - "PA_TITLE=PrometheusAlert"
-      - "PA_OPEN_FEISHU=1"
-      - "PA_OPEN_DINGDING=1"
-      - "PA_OPEN_WEIXIN=1"
+    # environment:
+    #   - "PA_LOGIN_USER=admin"
+    #   - "PA_LOGIN_PASSWORD=admin"
+    #   - "PA_TITLE=PrometheusAlert"
+    #   - "PA_OPEN_FEISHU=1"
+    #   - "PA_OPEN_DINGDING=1"
+    #   - "PA_OPEN_WEIXIN=1"
     ports:
       - 8080:8080
     depends_on:
