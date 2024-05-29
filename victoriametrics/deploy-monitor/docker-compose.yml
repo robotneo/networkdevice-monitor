@@ -108,6 +108,7 @@ services:
     image: feiyu563/prometheus-alert:latest
     volumes:
       - ./prometheusalert/app.conf:/app/conf/app.conf
+      - promalertdata:/app/db
     command:
       - "PA_LOGIN_USER=admin"
       - "PA_LOGIN_PASSWORD=admin"
@@ -117,6 +118,8 @@ services:
       - "PA_OPEN_WEIXIN=1"
     ports:
       - 8080:8080
+    depends_on:
+      - alertmanager
     networks:
       - vm_net
     restart: always
@@ -125,5 +128,6 @@ volumes:
   vmagentdata: {}
   vmdata: {}
   grafanadata: {}
+  promalertdata: {}
 networks:
   vm_net:
