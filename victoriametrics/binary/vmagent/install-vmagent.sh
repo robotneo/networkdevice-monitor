@@ -56,6 +56,9 @@ cd /tmp && tar -xzvf /tmp/vmutils.tar.gz vmagent-prod
 mv /tmp/vmagent-prod /usr/bin
 chmod +x /usr/bin/vmagent-prod
 
+# 清理 /tmp 目录中的压缩文件和解压后的临时文件
+rm -rf /tmp/vmutils.tar.gz /tmp/vmagent-prod*
+
 cat> /etc/systemd/system/vmagent.service <<EOF
 [Unit]
 Description=vmagent is a tiny but mighty agent which helps you collect metrics from various sources and store them in VictoriaMetrics or any other Prometheus-compatible storage systems that support the remote_write protocol.
@@ -107,16 +110,18 @@ global:
 scrape_configs:
   - job_name: 'vmagent'
     static_configs:
-      - targets: ['172.17.40.139:8429']
+      - targets: ['127.0.0.1:8429']
   - job_name: victoriametrics
     static_configs:
       - targets:
-        - http://172.17.40.139:8428/metrics
+        - http://127.0.0.1:8428/metrics
 EOF
 
 chown -R victoriametrics:victoriametrics /var/lib/vmagent-remotewrite-data
 chown -R victoriametrics:victoriametrics /etc/victoriametrics/vmagent
 
-systemctl enable vmagent.service
-systemctl restart vmagent.service
+sudo systemctl enable vmagent.service
+sudo systemctl restart vmagent.service
 ps aux | grep vmagent
+
+echo "vmagent installation and service setup complete."

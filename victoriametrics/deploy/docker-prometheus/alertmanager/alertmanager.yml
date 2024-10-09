@@ -1,0 +1,24 @@
+global:
+  # 阿里邮箱
+  smtp_smarthost: 'smtp.qiye.aliyun.com:465'
+  # 发邮件的邮箱
+  smtp_from: 'your-email@example.com'
+  # 发邮件的邮箱用户名，也就是你的邮箱　　　　　
+  smtp_auth_username: 'your-email@example.com'
+  # 发邮件的邮箱密码
+  smtp_auth_password: 'your-password'
+  # 进行tls验证
+  smtp_require_tls: true
+
+route:
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 10m
+  receiver: live-monitoring
+
+receivers:
+- name: 'live-monitoring'
+  # 收邮件的邮箱
+  email_configs:
+  - to: 'your-email@example.com'

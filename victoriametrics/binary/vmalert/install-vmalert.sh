@@ -52,6 +52,9 @@ cd /tmp && tar -xzvf /tmp/vmutils.tar.gz vmalert-prod
 mv /tmp/vmalert-prod /usr/bin
 chmod +x /usr/bin/vmalert-prod
 
+# 清理 /tmp 目录中的压缩文件和解压后的临时文件
+rm -rf /tmp/vmutils.tar.gz /tmp/vmalert-prod*
+
 cat> /etc/systemd/system/vmalert.service <<EOF
 [Unit]
 Description=vmalert executes a list of the given alerting or recording rules against configured address. It is heavily inspired by Prometheus implementation and aims to be compatible with its syntax.
@@ -85,7 +88,7 @@ WantedBy=multi-user.target
 EOF
 
 cat> /etc/victoriametrics/vmalert/vmalert.conf <<EOF
-ARGS="-rule=/etc/victoriametrics/vmalert/alerts.yml -datasource.url=http://127.0.0.1:8428 -notifier.url=http://127.0.0.1:9093 -remoteWrite.url=http://127.0.0.1:8428 -remoteRead.url=http://127.0.0.1:8428 -external.label=cluster=east-1 -external.label=replica=a"
+ARGS="-rule=/etc/victoriametrics/vmalert/alerts.yml -datasource.url=http://127.0.0.1:8428 -notifier.url=http://127.0.0.1:9093 -remoteWrite.url=http://127.0.0.1:8428 -remoteRead.url=http://127.0.0.1:8428"
 EOF
 
 chown -R victoriametrics:victoriametrics /etc/victoriametrics/vmalert

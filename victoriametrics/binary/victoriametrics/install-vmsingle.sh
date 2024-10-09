@@ -4,9 +4,9 @@ set -e
 # 函数：安装依赖工具
 install_dependencies() {
     if [ "$OS" == "ubuntu" ] || [ "$OS" == "debian" ]; then
-        apt-get update && apt-get install -y curl wget net-tools jq
+        apt-get update && apt-get install -y curl wget net-tools
     elif [ "$OS" == "centos" ]; then
-        yum update && yum install -y curl wget net-tools jq
+        yum update && yum install -y curl wget net-tools
     else
         echo "Unsupported operating system."
         exit 1
@@ -56,6 +56,9 @@ tar -xzvf /tmp/victoria-metrics.tar.gz -C /tmp
 mv /tmp/victoria-metrics-prod /usr/bin/
 chmod +x /usr/bin/victoria-metrics-prod
 
+# 清理 /tmp 目录中的压缩文件和解压后的文件
+rm -rf /tmp/victoria-metrics.tar.gz /tmp/victoria-metrics-prod*
+
 cat> /etc/systemd/system/victoria-metrics.service <<EOF
 [Unit]
 Description=VictoriaMetrics is a fast, cost-effective and scalable monitoring solution and time series database.
@@ -103,8 +106,8 @@ EOF
 chown -R victoriametrics:victoriametrics /var/lib/victoria-metrics-data
 chown -R victoriametrics:victoriametrics /etc/victoriametrics/single
 
-systemctl enable victoria-metrics.service
-systemctl restart victoria-metrics.service
+sudo systemctl enable victoria-metrics.service
+sudo systemctl restart victoria-metrics.service
 ps aux | grep victoria-metrics
 
 echo "VictoriaMetrics installation and service setup complete."
