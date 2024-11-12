@@ -28,7 +28,7 @@
 
 ![SNMP v3](img/1.jpg)
 
-**Grafana Dashboard ID:  [`21107`](https://grafana.com/grafana/dashboards/21107)**
+Grafana Dashboard ID:  [`22265`](https://grafana.com/grafana/dashboards/22265)
 
 ## 如何采集
 
