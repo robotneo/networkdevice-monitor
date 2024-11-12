@@ -1,6 +1,10 @@
+# File contains default list of alerts for vmalert service.
+# The alerts below are just recommendations and may require some updates
+# and threshold calibration according to every specific setup.
 groups:
-  # vmalert的告警组假设已经安装了Grafana仪表板 https://grafana.com/grafana/dashboards/14950/。
-  # 请根据您的设置更新 `dashboard` 注释。
+  # Alerts group for vmalert assumes that Grafana dashboard
+  # https://grafana.com/grafana/dashboards/14950/ is installed.
+  # Pls update the `dashboard` annotation according to your setup.
   - name: vmalert
     interval: 30s
     rules:
@@ -9,8 +13,9 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "vmalert实例 {{ $labels.instance }} 的配置重新加载失败"
-          description: "实例 {{ $labels.instance }} 上的vmalert配置热重载失败。检查vmalert的日志以获取详细的错误信息。"
+          summary: "Configuration reload failed for vmalert instance {{ $labels.instance }}"
+          description: "Configuration hot-reload failed for vmalert on instance {{ $labels.instance }}.
+            Check vmalert's logs for detailed error message."
 
       - alert: AlertingRulesError
         expr: sum(increase(vmalert_alerting_rules_errors_total[5m])) without(alertname, id) > 0
@@ -19,8 +24,9 @@ groups:
           severity: warning
         annotations:
           dashboard: "http://localhost:3000/d/LzldHAVnz?viewPanel=13&var-instance={{ $labels.instance }}&var-group={{ $labels.group }}"
-          summary: "vmalert实例 {{ $labels.instance }} 的告警规则执行失败"
-          description: "告警规则在组 \"{{ $labels.group }}\" 中执行失败。检查vmalert的日志以获取详细的错误信息。"
+          summary: "Alerting rules are failing for vmalert instance {{ $labels.instance }}"
+          description: "Alerting rules execution is failing for group \"{{ $labels.group }}\".
+            Check vmalert's logs for detailed error message."
 
       - alert: RecordingRulesError
         expr: sum(increase(vmalert_recording_rules_errors_total[5m])) without(recording, id) > 0
@@ -29,18 +35,21 @@ groups:
           severity: warning
         annotations:
           dashboard: "http://localhost:3000/d/LzldHAVnz?viewPanel=30&var-instance={{ $labels.instance }}&var-group={{ $labels.group }}"
-          summary: "vmalert实例 {{ $labels.instance }} 的记录规则执行失败"
-          description: "记录规则在组 \"{{ $labels.group }}\" 中执行失败。检查vmalert的日志以获取详细的错误信息。"
+          summary: "Recording rules are failing for vmalert instance {{ $labels.instance }}"
+          description: "Recording rules execution is failing for group \"{{ $labels.group }}\".
+            Check vmalert's logs for detailed error message."
 
       - alert: RecordingRulesNoData
-        expr: sum(vmalert_recording_rules_last_evaluation_samples) without(recording, id) < 1
+        expr: sum(vmalert_recording_rules_last_evaluation_samples) without(id) < 1
         for: 30m
         labels:
           severity: info
         annotations:
           dashboard: "http://localhost:3000/d/LzldHAVnz?viewPanel=33&var-group={{ $labels.group }}"
-          summary: "记录规则 {{ $labels.recording }} ({ $labels.group }}) 产生无数据"
-          description: "组 \"{{ $labels.group }}\" 中的记录规则 \"{{ $labels.recording }}\" 在过去30分钟内产生0个样本。这可能是由于配置错误或查询表达式不正确导致的。"
+          summary: "Recording rule {{ $labels.recording }} ({{ $labels.group }}) produces no data"
+          description: "Recording rule \"{{ $labels.recording }}\" from group \"{{ $labels.group }}\" 
+            produces 0 samples over the last 30min. It might be caused by a misconfiguration 
+            or incorrect query expression."
 
       - alert: TooManyMissedIterations
         expr: increase(vmalert_iteration_missed_total[5m]) > 0
@@ -48,8 +57,12 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "vmalert实例 {{ $labels.instance }} 缺少规则评估"
-          description: "vmalert实例 {{ $labels.instance }} 在组 \"{{ $labels.group }}\" 中缺少规则评估。组评估时间超过了配置的评估间隔。这可能导致告警通知或记录规则样本的遗漏。尝试增加评估间隔或增加组 \"{{ $labels.group }}\" 的并发性。详见 https://docs.victoriametrics.com/vmalert/#groups。如果规则表达式执行时间超出预期，请参见 https://docs.victoriametrics.com/troubleshooting/#slow-queries。"
+          summary: "vmalert instance {{ $labels.instance }} is missing rules evaluations"
+          description: "vmalert instance {{ $labels.instance }} is missing rules evaluations for group \"{{ $labels.group }}\".
+            The group evaluation time takes longer than the configured evaluation interval. This may result in missed 
+            alerting notifications or recording rules samples. Try increasing evaluation interval or concurrency of
+            group \"{{ $labels.group }}\". See https://docs.victoriametrics.com/vmalert/#groups. 
+            If rule expressions are taking longer than expected, please see https://docs.victoriametrics.com/troubleshooting/#slow-queries."
 
       - alert: RemoteWriteErrors
         expr: increase(vmalert_remotewrite_errors_total[5m]) > 0
@@ -57,8 +70,9 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "vmalert实例 {{ $labels.instance }} 未能将指标推送到远程写入URL"
-          description: "vmalert实例 {{ $labels.instance }} 未能将通过告警或记录规则生成的指标推送到配置的远程写入URL。检查vmalert的日志以获取详细的错误信息。"
+          summary: "vmalert instance {{ $labels.instance }} is failing to push metrics to remote write URL"
+          description: "vmalert instance {{ $labels.instance }} is failing to push metrics generated via alerting 
+            or recording rules to the configured remote write URL. Check vmalert's logs for detailed error message."
 
       - alert: AlertmanagerErrors
         expr: increase(vmalert_alerts_send_errors_total[5m]) > 0
@@ -66,5 +80,6 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "vmalert实例 {{ $labels.instance }} 未能将通知发送到Alertmanager"
-          description: "vmalert实例 {{ $labels.instance }} 未能将告警通知发送到 \"{{ $labels.addr }}\"。检查vmalert的日志以获取详细的错误信息。"
+          summary: "vmalert instance {{ $labels.instance }} is failing to send notifications to Alertmanager"
+          description: "vmalert instance {{ $labels.instance }} is failing to send alert notifications to \"{{ $labels.addr }}\".
+            Check vmalert's logs for detailed error message."
