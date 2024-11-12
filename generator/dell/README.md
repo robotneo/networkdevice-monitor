@@ -3,3 +3,4 @@
 ## 模块说明
 
 - dell_idrac指标模块是戴尔iDrac指标信息
+- 戴尔 iDrac 这里已经更新使用 categraf 采集，目前已开源，需要查看使用可以看链接：[idrac-monitor](https://github.com/robotneo/idrac-monitor)
