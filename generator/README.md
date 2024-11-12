@@ -2,4 +2,4 @@
 
 ## 模块说明
 
-generator.yml文件是针对generator目录下所有设备信息采集的配置文件，统一生成snmp.yml文件。
+generator.yml 文件是针对 generator 目录下所有设备信息采集的配置文件，统一生成 SNMP 设备的 snmp.yml 指标采集文件。

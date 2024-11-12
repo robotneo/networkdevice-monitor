@@ -1,0 +1,234 @@
+auths:
+  synology_v3:  # 认证模块名
+    version: 3
+    username: monitor
+    # noAuthNoPriv authNoPriv authPriv
+    security_level: authPriv
+    password: Mrot@2024neo
+    # MD5, SHA, SHA224, SHA256, SHA384, or SHA512
+    auth_protocol: SHA
+    # DES, AES, AES192, AES256, AES192C, or AES256C
+    priv_protocol: AES
+    priv_password: Mrot@2024mei
+    # context_name: context
+  
+modules:
+  synology_common:
+    walk:
+      - 1.3.6.1.2.1.1.3           # sysUpTime 系统启动时间
+      - 1.3.6.1.4.1.2021.11.9     # ssCpuUser 用于处理用户级代码的 CPU 时间百分比
+      - 1.3.6.1.4.1.2021.11.10    # ssCpuSystem 过去一分钟内计算的用于处理系统级代码的 CPU 时间百分比
+      - 1.3.6.1.4.1.2021.11.11    # ssCpuIdle 处理器闲置时间百分比在过去一分钟内计算得出
+      - 1.3.6.1.4.1.2021.10.1.2   # CPU 负载名称 laLoadInt
+      - 1.3.6.1.4.1.2021.10.1.5   # CPU 1 5 15 分钟负载数据
+      - 1.3.6.1.4.1.2021.4        # mem* 内存指标
+      - 1.3.6.1.2.1.25.1.1        # hrSystemUptime
+      - 1.3.6.1.2.1.25.1.6        # hrSystemProcesses
+      - 1.3.6.1.2.1.25.2          # hrStorage* 硬盘指标
+      - 1.3.6.1.4.1.6574.1        # synoSystem
+      - 1.3.6.1.4.1.6574.2        # synoDisk
+      - 1.3.6.1.4.1.6574.3        # synoRaid
+      - 1.3.6.1.4.1.6574.4        # synoUPS
+      - 1.3.6.1.4.1.6574.5        # synologyDiskSMART
+      - 1.3.6.1.4.1.6574.6        # synologyService
+      - 1.3.6.1.4.1.6574.101      # storageIO
+      - 1.3.6.1.4.1.6574.102      # spaceIO
+      - 1.3.6.1.4.1.6574.103      # FlashCache
+      - 1.3.6.1.4.1.6574.104      # iSCSI LUN
+    
+    max_repetitions: 25
+    # 查询失败时的最大重复次数，查询的总时间为 timeout * retries
+    retries: 3
+    # 每个单独的 SNMP 查询返回数据的超时时间（秒）
+    timeout: 5s
+    allow_nonincreasing_oids: false
+    use_unconnected_udp_socket: false
+
+    lookups:
+      - source_indexes: [laIndex]
+        lookup: laNames
+      - source_indexes: [hrStorageIndex]
+        lookup: hrStorageDescr
+      - source_indexes: [diskIndex]
+        lookup: diskID
+      - source_indexes: [raidIndex]
+        lookup: raidName
+      - source_indexes: [serviceInfoIndex]
+        lookup: serviceName
+      - source_indexes: [storageIOIndex]
+        lookup: storageIODevice
+      - source_indexes: [spaceIOIndex]
+        lookup: spaceIODevice
+      - source_indexes: [flashCacheIndex]
+        lookup: flashCacheSSDDev
+
+    overrides:
+      # 系统时间
+      sysUpTime:
+        scale: 0.01
+      # 启动时间
+      hrSystemUptime:
+        scale: 0.01
+      # CPU 指标
+      laNames:
+        type: DisplayString
+      # 内存指标
+      memSwapErrorMsg:
+        type: DisplayString
+      # 硬盘指标
+      hrStorageDescr:
+        type: DisplayString
+      hrStorageType:
+        ignore: true
+      # synoSystem
+      modelName:
+        type: DisplayString
+      serialNumber:
+        type: DisplayString
+      version:
+        type: DisplayString
+      # synoDisk
+      diskID:
+        type: DisplayString
+      diskName:
+        type: DisplayString
+      diskModel:
+        type: DisplayString
+      diskRole:
+        type: DisplayString
+      diskType:
+        type: DisplayString
+      # synoRaid
+      raidName:
+        type: DisplayString
+      # synologyDiskSMART
+      diskSMARTInfoDevName:
+        type: DisplayString
+      diskSMARTAttrStatus:
+        type: DisplayString
+      diskSMARTAttrName:
+        type: DisplayString
+      # synologyService
+      serviceName:
+        type: DisplayString
+      # storageIO
+      storageIODevice:
+        type: DisplayString
+      storageIODeviceSerial:
+        type: DisplayString
+      # spaceIO
+      spaceIODevice:
+        type: DisplayString
+      spaceUUID:
+        type: DisplayString
+      # FlashCache
+      flashCacheSSDDev:
+        type: DisplayString
+      flashCacheSpaceDev:
+        type: DisplayString
+      # iSCSI LUN
+      iSCSILUNUUID:
+        type: DisplayString
+      iSCSILUNName:
+        type: DisplayString
+      iSCSILUNType:
+        type: DisplayString
+    
+    filters:
+      # static:
+      #   - targets:
+      #     - ifIndex
+      #     indices: ["2","3","4"]
+      # dynamic:  # 根据接口当前状态收集接口指标
+      #   - oid: 1.3.6.1.2.1.2.2.1.7
+      #     targets:
+      #       - "1.3.6.1.2.1.31.1.1.1.6"
+      #     values: ["1"]
+
+  synology_interface:
+    walk:
+      - 1.3.6.1.2.1.2.2.1.7                   # ifAdminStatus
+      - 1.3.6.1.2.1.2.2.1.8                   # ifOperStatus
+      - 1.3.6.1.2.1.2.2.1.13                  # ifInDiscards
+      - 1.3.6.1.2.1.2.2.1.19                  # ifOutDiscards
+      - 1.3.6.1.2.1.2.2.1.14                  # ifInErrors
+      - 1.3.6.1.2.1.2.2.1.20                  # ifOutErrors
+      - 1.3.6.1.2.1.2.2.1.3                   # ifType
+      - 1.3.6.1.2.1.2.2.1.4                   # ifMtu
+      - 1.3.6.1.2.1.2.2.1.6                   # ifPhysAddress
+      - 1.3.6.1.2.1.31.1.1.1.1                # ifName
+      - 1.3.6.1.2.1.31.1.1.1.2                # ifInMulticastPkts
+      - 1.3.6.1.2.1.31.1.1.1.3                # ifInBroadcastPkts
+      - 1.3.6.1.2.1.31.1.1.1.4                # ifOutMulticastPkts
+      - 1.3.6.1.2.1.31.1.1.1.5                # ifOutBroadcastPkts
+      - 1.3.6.1.2.1.31.1.1.1.7                # ifHCInUcastPkts
+      - 1.3.6.1.2.1.31.1.1.1.11               # ifHCOutUcastPkts
+      - 1.3.6.1.2.1.31.1.1.1.18               # ifAlias
+      - 1.3.6.1.2.1.31.1.1.1.15               # ifHighSpeed
+      - 1.3.6.1.2.1.31.1.1.1.6                # ifHCInOctets
+      - 1.3.6.1.2.1.31.1.1.1.10               # ifHCOutOctets
+    
+    max_repetitions: 25
+    # 查询失败时的最大重复次数，查询的总时间为 timeout * retries
+    retries: 3
+    # 每个单独的 SNMP 查询返回数据的超时时间（秒）
+    timeout: 5s
+    allow_nonincreasing_oids: false
+    use_unconnected_udp_socket: false
+
+    lookups:
+      # - source_indexes: [ifIndex]
+      #   lookup: ifAlias
+        # 如果新的索引唯一 可以删除原来的索引 true
+        # drop_source_indexes: false
+      - source_indexes: [ifIndex]
+        lookup: ifName
+      # - source_indexes: [ifIndex]
+      #   lookup: ifMtu
+      # - source_indexes: [ifIndex]
+      #   lookup: ifAdminStatus
+      # - source_indexes: [ifIndex]
+      #   lookup: ifHighSpeed
+      # - source_indexes: [ifIndex]
+      #   lookup: ifPhysAddress
+    
+    overrides:
+      ifAlias:
+        ignore: false
+        type: DisplayString
+      ifName:
+        ignore: false
+        type: DisplayString
+      ifMtu:
+        ignore: false
+      ifType:
+        type: EnumAsInfo
+      ifAdminStatus:
+        ignore: false
+      ifPhysAddress:
+        ignore: false
+        type: PhysAddress48
+    
+    filters:
+      # static:
+      #   - targets:
+      #     - ifIndex
+      #     indices: ["2","3","4"]
+      # dynamic:  # 根据接口当前状态收集接口指标
+      #   - oid: 1.3.6.1.2.1.2.2.1.7
+      #     targets:
+      #       - "1.3.6.1.2.1.31.1.1.1.6"
+      #       - "1.3.6.1.2.1.31.1.1.1.10"
+      #       - "1.3.6.1.2.1.31.1.1.1.15"
+      #       - "1.3.6.1.2.1.2.2.1.8"
+      #       - "1.3.6.1.2.1.2.2.1.13"
+      #       - "1.3.6.1.2.1.2.2.1.19"
+      #       - "1.3.6.1.2.1.2.2.1.14"
+      #       - "1.3.6.1.2.1.2.2.1.20"
+      #       - "1.3.6.1.2.1.31.1.1.1.2"
+      #       - "1.3.6.1.2.1.31.1.1.1.3"
+      #       - "1.3.6.1.2.1.31.1.1.1.4"
+      #       - "1.3.6.1.2.1.31.1.1.1.5"
+      #       - "1.3.6.1.2.1.31.1.1.1.7"
+      #       - "1.3.6.1.2.1.31.1.1.1.11"
+      #     values: ["1"]

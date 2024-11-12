@@ -1,0 +1,140 @@
+auths:
+  # 认证模块名称
+  huawei_auth:  # 认证模块名
+    version: 2  # snmp v2c版本
+    community: public02   # snmp 团体名
+  h3c_auth:
+    version: 2  # snmp v2c版本
+    community: public01  # snmp 团体名
+
+modules:  # 指标模块
+  huawei_common:  # 模块名称
+    walk:
+      - 1.3.6.1.2.1.1.5                       # sysName
+      - 1.3.6.1.2.1.31.1.1.1.1                # ifName
+      - 1.3.6.1.2.1.2.2.1.7                   # ifAdminStatus
+      - 1.3.6.1.2.1.2.2.1.8                   # ifOperStatus
+      - 1.3.6.1.2.1.31.1.1.1.18               # ifAlias
+      - 1.3.6.1.2.1.31.1.1.1.15               # ifHighSpeed
+      - 1.3.6.1.2.1.31.1.1.1.6                # ifHCInOctets
+      - 1.3.6.1.2.1.31.1.1.1.10               # ifHCOutOctets
+      - 1.3.6.1.2.1.2.2.1.13                  # ifInDiscards
+      - 1.3.6.1.2.1.2.2.1.19                  # ifOutDiscards
+      - 1.3.6.1.2.1.2.2.1.14                  # ifInErrors
+      - 1.3.6.1.2.1.2.2.1.20                  # ifOutErrors
+      - 1.3.6.1.4.1.2011.5.25.31.1.1.10.1.5   # hwEntityFanSpeed 风扇的转速
+      - 1.3.6.1.4.1.2011.5.25.31.1.1.10.1.6   # hwEntityFanPresent 风扇的在位状态
+      - 1.3.6.1.4.1.2011.5.25.31.1.1.10.1.7   # hwEntityFanState 风扇的运行状态
+      - 1.3.6.1.2.1.47.1.1.1.1.7              # entPhysicalName
+      - 1.3.6.1.2.1.47.1.1.1.1.11             # entPhysicalSerialNum
+      - 1.3.6.1.4.1.2011.5.2.1.8.1.4          # hwAuthorMethodNew
+      - 1.3.6.1.4.1.2011.5.25.31.1.1.3.1.47   # hwEntityOpticalWaveLengthExact
+      - 1.3.6.1.4.1.2011.5.2.1.10.1.1         # hwLocalUserName
+      - 1.3.6.1.4.1.2011.5.25.31.1.1.3.1.6    # hwEntityOpticalVoltage
+      - 1.3.6.1.4.1.2011.5.25.31.7.1.1        # hwEntityHeartbeatOnOff
+      - 1.3.6.1.4.1.2011.5.25.31.1.1.1.1.11   # hwEntityTemperature
+
+    max_repetitions: 25
+    retries: 3
+    timeout: 5s
+    allow_nonincreasing_oids: false
+    use_unconnected_udp_socket: false
+
+
+    lookups:
+      - source_indexes: [ifIndex]
+        lookup: ifName
+        drop_source_indexes: true
+      - source_indexes: [ifIndex]
+        lookup: ifAlias
+      - source_indexes: [ifIndex]
+        lookup: 1.3.6.1.2.1.31.1.1.1.15
+      - source_indexes: [ifIndex]
+        lookup: ifAdminStatus
+      - source_indexes: [hwEntityFanSlot, hwEntityFanSn]
+        lookup: hwEntityFanSpeed
+      - source_indexes: [hwEntityFanSlot, hwEntityFanSn]
+        lookup: hwEntityFanPresent
+      - source_indexes: [entPhysicalIndex]
+        lookup: entPhysicalName
+
+    overrides:
+      ifName:
+        ignore: true
+      ifHighSpeed:
+        ignore: true
+      ifAlias:
+        ignore: true
+        type: DisplayString
+      hwEntityFanSpeed:
+        ignore: true
+      hwEntityFanPresent:
+        ignore: true
+      entPhysicalName:
+        ignore: true
+      hwAuthorMethodNew:
+        ignore: false
+        regex_extracts:
+          '':   # 指标名称保持不变
+            - regex: '(.*)'
+              value: '$1'   # float64
+      hwEntityOpticalWaveLengthExact:
+        ignore: false
+        type: DisplayString
+        regex_extracts:
+          _Value:  # 后缀可以自定义 最终指标名：hwEntityOpticalWaveLengthExact_Value
+            - regex: '(.*)'
+              value: '$1'   # float64
+      hwLocalUserName:
+        ignore: false
+        regex_extracts:
+          _Status:        # 指标名称更为 hwLocalUserName_Status
+            - regex: '^huawei$'   # 假如获取到了 admin 用户就把指标样本值设为 1
+              value: '1'  # float64
+            - regex: '.*'       # 假如没有获取到 admin 用户就把指标样本值设为 0
+              value: '0'  # float64
+      hwEntityOpticalVoltage:
+        scale: 0.001
+      ifInErrors:
+        scale: 8
+      # ifOperStatus:
+      #   offset: -1
+      ifOperStatus:
+        offset: 2
+        scale: -1
+      hwEntityHeartbeatOnOff:
+        offset: 2
+        scale: -1
+      hwEntityTemperature:
+        scale: 1.8
+        offset: 32
+      
+  
+    filters:
+      # static:
+      #   - targets:
+      #     - ifIndex
+      #     indices: ["2","3","4"]
+      dynamic:  # 根据接口当前状态收集接口指标
+        - oid: 1.3.6.1.2.1.2.2.1.7
+          targets:
+            - "1.3.6.1.2.1.31.1.1.1.6"
+            - "1.3.6.1.2.1.31.1.1.1.10"
+            - "1.3.6.1.2.1.2.2.1.13"
+            - "1.3.6.1.2.1.2.2.1.19"
+            - "1.3.6.1.2.1.2.2.1.14"
+            - "1.3.6.1.2.1.2.2.1.20"
+          values: ["1"]
+        - oid: 1.3.6.1.2.1.47.1.1.1.1.7
+          targets:
+            - "1.3.6.1.2.1.47.1.1.1.1.11"
+          values: ["^HUAWEI.*"]
+        - oid: 1.3.6.1.2.1.47.1.1.1.1.7
+          targets:
+            - "1.3.6.1.4.1.2011.5.25.31.1.1.3.1.47"
+            - "1.3.6.1.4.1.2011.5.25.31.1.1.3.1.6"
+          values: ["^XGigabitEthernet.*"]
+        - oid: 1.3.6.1.2.1.47.1.1.1.1.7
+          targets:
+            - "1.3.6.1.4.1.2011.5.25.31.1.1.1.1.11"
+          values: ["^MPU (B|b)oard [0-9]$"]
