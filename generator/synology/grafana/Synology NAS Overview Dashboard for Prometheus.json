@@ -1,0 +1,4221 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_VICTORIAMETRICS-SINGLE",
+      "label": "VictoriaMetrics-Single",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    },
+    {
+      "name": "VAR_NASDEVICES",
+      "type": "constant",
+      "label": "NASDevices",
+      "value": "1",
+      "description": ""
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "11.2.2"
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Synology NAS 总览仪表板可让用户快速查看多个 Synology NAS 系统的整体状态及其运行情况。",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "gnetId": 14364,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [
+        "synology"
+      ],
+      "targetBlank": false,
+      "title": "Synology",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 23,
+      "panels": [],
+      "title": "Synology 组件",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+      },
+      "description": "在 Prometheus 中，将 NASDevices 变量更新为 Synology 系统的总数，而不论它们分配在哪个 Job 中。该设置有助于识别整个 Synology NAS 设备组中的问题：\n\nTotal Synology's：即在 Prometheus 中报告的所有 NAS 设备数量，需要手动设置到 NASDevices 变量中。\nSynology's Down：表示某 NAS 设备宕机或未被抓取。\nUpdate Variable：若检测到多于 NASDevices 变量的设备上线，请更新该变量以反映实际数量。",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Synology's Down"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "color"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Total Synology's"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Update Variable"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 1
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "$NASDevices",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Total Synology's",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "$NASDevices-count(systemStatus)>0",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Synology's Down",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "count(systemStatus)-$NASDevices>0",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Update Variable",
+          "refId": "C"
+        }
+      ],
+      "title": "群晖系统",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Admin Down"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "DOWN"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Interfaces Down"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Admin Up"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 4,
+        "y": 1
+      },
+      "id": 19,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "count(ifAdminStatus{job=~'$JobName',instance=~'$Device',ifName=~'$InterfacePhysical'}==1)",
+          "format": "time_series",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Admin Up",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "count(ifAdminStatus{job=~'$JobName',instance=~'$Device',ifName=~'$InterfacePhysical'}==2) >0",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Admin Down",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "(count(ifOperStatus{job=~'$JobName',instance=~'$Device',ifName=~'$InterfacePhysical'}==2)) - (count(ifAdminStatus{job=~'$JobName',instance=~'$Device',ifName=~'$InterfacePhysical'}==2)) >0",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "DOWN",
+          "refId": "C"
+        }
+      ],
+      "title": "网络接口状态",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "RAID Warning"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "RAID Failure"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 8,
+        "y": 1
+      },
+      "id": 16,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "count(raidStatus{job=~'$JobName',instance=~'$Device',raidName=~'$raidName'})",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Total Volumes ",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "count((raidStatus{job=~'$JobName',instance=~'$Device',raidName=~'$raidName'}>=2 and raidStatus{job=~'$JobName',instance=~'$Device',raidName=~'$raidName'}<=10) or (raidStatus{job=~'$JobName',instance=~'$Device',raidName=~'$raidName'}>=13 and {job=~'$JobName',instance=~'$Device',raidName=~'$raidName'}<=20))",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "RAID Warning",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "count((raidStatus{job=~'$JobName',instance=~'$Device',raidName=~'$raidName'}>=11 and raidStatus{job=~'$JobName',instance=~'$Device',raidName=~'$raidName'}<=12) or raidStatus{job=~'$JobName',instance=~'$Device',raidName=~'$raidName'}>21)",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "RAID Failure",
+          "refId": "C"
+        }
+      ],
+      "title": "存储卷",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Not Used"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "color"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Failure"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "color"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 12,
+        "y": 1
+      },
+      "id": 17,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "count(diskIndex{job=~'$JobName',instance=~'$Device',diskID=~'$DiskName'})",
+          "format": "time_series",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Total Drives",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "count(diskStatus{job=~'$JobName',instance=~'$Device',diskID=~'$DiskName'}>=2) and count(diskStatus{job=~'$JobName',instance=~'$Device',diskID=~'$DiskName'}<=3)",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Not Used",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "count(diskStatus{job=~'$JobName',instance=~'$Device',diskID=~'$DiskName'}>=4)",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Failure",
+          "refId": "C"
+        }
+      ],
+      "title": "硬盘",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "noValue": "No Cache",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Not Used"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "color"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Failure"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "color"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
+      "id": 18,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "vertical",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "count(diskIndex{job=~'$JobName',instance=~'$Device',diskID=~'$DiskNameSSD'})",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Total Drives",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "count(diskStatus{job=~'$JobName',instance=~'$Device',diskID=~'$DiskNameSSD'}==3)>0",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Not Used",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "count(diskStatus{job=~'$JobName',instance=~'$Device',diskID=~'$DiskNameSSD'}>=4)>0",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Failure",
+          "refId": "C"
+        }
+      ],
+      "title": "缓存盘",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SMART Checks"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SMART Failures"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "id": 30,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "count(diskSMARTAttrStatus{job=~'$JobName',instance=~'$Device'}==1)",
+          "format": "time_series",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "SMART Checks",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "count(diskSMARTAttrStatus{job=~'$JobName',instance=~'$Device',diskSMARTAttrStatus!=\"OK\"}==1)",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "SMART Failures",
+          "refId": "B"
+        }
+      ],
+      "title": "S.M.A.R.T 状态",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "id": 29,
+      "panels": [],
+      "title": "Synology 总览",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 176
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Uptime"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "displayName",
+                "value": "启动时间（天）"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^.*状态$"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "text": "Normal"
+                      },
+                      "2": {
+                        "text": "FAILED"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 2
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Upgrades"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "text": "Update Available"
+                      },
+                      "2": {
+                        "text": "Up to Date"
+                      },
+                      "3": {
+                        "text": "Connecting"
+                      },
+                      "4": {
+                        "text": "Disconnected"
+                      },
+                      "5": {
+                        "text": "Others"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 2
+                    },
+                    {
+                      "color": "orange",
+                      "value": 3
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.width",
+                "value": 140
+              },
+              {
+                "id": "displayName",
+                "value": "版本更新"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "System Temp"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "max",
+                "value": 100
+              },
+              {
+                "id": "custom.width"
+              },
+              {
+                "id": "displayName",
+                "value": "系统温度"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-GrYlRd"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Model"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              },
+              {
+                "id": "displayName",
+                "value": "设备型号"
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "DSM Version"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 130
+              },
+              {
+                "id": "displayName",
+                "value": "DSM 版本"
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Serial Number"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 132
+              },
+              {
+                "id": "displayName",
+                "value": "序列号"
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "System Name"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "系统名称"
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 75
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "unit",
+                "value": "deckbytes"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "displayName",
+                "value": "内存"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Drives"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 75
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "displayName",
+                "value": "硬盘数"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 8,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "ssCpuUser{job=~'$JobName',instance=~'$Device'}",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "modelName{job=~'$JobName',instance=~'$Device'}",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "version{job=~'$JobName',instance=~'$Device'}",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "serialNumber{job=~'$JobName',instance=~'$Device'}",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "hrSystemUptime{job=~'$JobName',instance=~'$Device'} / 86400",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "UpTime",
+          "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "systemFanStatus{job=~'$JobName',instance=~'$Device'}",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "upgradeAvailable{job=~'$JobName',instance=~'$Device'}",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "G"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "systemFanStatus{job=~'$JobName',instance=~'$Device'}",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "H"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "systemFanStatus{job=~'$JobName',instance=~'$Device'}",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "I"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "cpuFanStatus{job=~'$JobName',instance=~'$Device'}",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "J"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "temperature{job=~'$JobName',instance=~'$Device'}",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "K"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "exemplar": true,
+          "expr": "memTotalReal{job=~'$JobName',instance=~'$Device'}",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "L"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "diskIndex{job=~'$JobName',instance=~'$Device',diskID=~'$DiskName'} + 1",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "M"
+        }
+      ],
+      "title": "系统信息",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "instance"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "instance",
+                "modelName",
+                "version",
+                "serialNumber",
+                "Value #E",
+                "Value #F",
+                "Value #G",
+                "Value #H",
+                "Value #I",
+                "Value #J",
+                "Value #K",
+                "Value #L",
+                "Value #M"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "Value #E": 6,
+              "Value #F": 7,
+              "Value #G": 8,
+              "Value #H": 9,
+              "Value #I": 10,
+              "Value #J": 11,
+              "Value #K": 12,
+              "Value #L": 4,
+              "Value #M": 5,
+              "instance": 0,
+              "modelName": 1,
+              "serialNumber": 3,
+              "version": 2
+            },
+            "renameByName": {
+              "Value #E": "Uptime",
+              "Value #F": "系统状态",
+              "Value #G": "Upgrades",
+              "Value #H": "电源状态",
+              "Value #I": "CPU风扇状态",
+              "Value #J": "系统风扇状态",
+              "Value #K": "System Temp",
+              "Value #L": "Memory",
+              "Value #M": "Drives",
+              "instance": "System Name",
+              "modelName": "Model",
+              "serialNumber": "Serial Number",
+              "version": "DSM Version"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 11
+      },
+      "id": 34,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "dark-red",
+                "mode": "fixed"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                },
+                "filterable": false,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 24,
+            "x": 0,
+            "y": 12
+          },
+          "id": 32,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "diskSMARTAttrStatus"
+              }
+            ]
+          },
+          "pluginVersion": "11.2.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "diskSMARTAttrStatus{job=~'$JobName',instance=~'$Device',diskSMARTAttrStatus!=\"OK\"}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "AttrStatus",
+              "refId": "F"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "diskSMARTInfoDevName{job=~'$JobName',instance=~'$Device'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "InfoDevName",
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "diskSMARTAttrName{job=~'$JobName',instance=~'$Device'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "AttrName",
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "diskSMARTAttrCurrent{job=~'$JobName',instance=~'$Device'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "AttrCurrent",
+              "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "diskSMARTAttrThreshold{job=~'$JobName',instance=~'$Device'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "AttrThreshold",
+              "refId": "D"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "diskSMARTAttrWorst{job=~'$JobName',instance=~'$Device'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "AttrWorst",
+              "refId": "E"
+            }
+          ],
+          "title": "S.M.A.R.T 磁盘故障",
+          "transformations": [
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {
+                  "names": [
+                    "diskSMARTAttrStatus",
+                    "instance",
+                    "Value #F",
+                    "diskSMARTInfoDevName",
+                    "Value #A",
+                    "diskSMARTAttrName",
+                    "Value #C",
+                    "Value #D",
+                    "Value #E"
+                  ]
+                }
+              }
+            },
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "filterByValue",
+              "options": {
+                "filters": [
+                  {
+                    "config": {
+                      "id": "equal",
+                      "options": {
+                        "value": 1
+                      }
+                    },
+                    "fieldName": "Value #F"
+                  }
+                ],
+                "match": "any",
+                "type": "include"
+              }
+            },
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {
+                  "names": [
+                    "diskSMARTAttrStatus",
+                    "instance",
+                    "diskSMARTInfoDevName",
+                    "diskSMARTAttrName",
+                    "Value #C",
+                    "Value #D",
+                    "Value #E"
+                  ]
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {
+                  "diskSMARTAttrName": 0,
+                  "diskSMARTAttrStatus": 1,
+                  "diskSMARTInfoDevName": 3,
+                  "instance": 2
+                },
+                "renameByName": {
+                  "Value #C": "Current",
+                  "Value #D": "Threshold",
+                  "Value #E": "Worst",
+                  "diskSMARTAttrName": "SMART Test",
+                  "diskSMARTAttrStatus": "Status",
+                  "diskSMARTInfoDevName": "Disk Name",
+                  "instance": "Device Name"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "S.M.A.R.T 磁盘故障",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 27,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": false,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Raid Status"
+                },
+                "properties": [
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "yellow",
+                          "value": 2
+                        },
+                        {
+                          "color": "dark-red",
+                          "value": 11
+                        },
+                        {
+                          "color": "#EAB839",
+                          "value": 13
+                        },
+                        {
+                          "color": "dark-red",
+                          "value": 21
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "1": {
+                            "text": "Normal"
+                          },
+                          "2": {
+                            "text": "Raid Repairing"
+                          },
+                          "3": {
+                            "text": "Raid Migrating"
+                          },
+                          "4": {
+                            "text": "Raid Expanding"
+                          },
+                          "5": {
+                            "text": "Raid Deleting"
+                          },
+                          "6": {
+                            "text": "Raid Creating"
+                          },
+                          "7": {
+                            "text": "Raid Syncing"
+                          },
+                          "8": {
+                            "text": "Raid Parity Checking"
+                          },
+                          "9": {
+                            "text": "Raid Assembling"
+                          },
+                          "10": {
+                            "text": "Raid Canceling"
+                          },
+                          "11": {
+                            "text": "Raid Degraded"
+                          },
+                          "12": {
+                            "text": "Raid Crashed"
+                          },
+                          "13": {
+                            "text": "Raid Data Scrubbing"
+                          },
+                          "14": {
+                            "text": "Raid Deploying"
+                          },
+                          "15": {
+                            "text": "Raid UnDeploying"
+                          },
+                          "16": {
+                            "text": "Raid Mount Cache"
+                          },
+                          "17": {
+                            "text": "Raid Unmount Cache"
+                          },
+                          "18": {
+                            "text": "Raid Expanding Unfinished SHR"
+                          },
+                          "20": {
+                            "text": "Raid Migrate SHR1 To SHR2"
+                          },
+                          "21": {
+                            "text": "Raid Unknown Status"
+                          }
+                        },
+                        "type": "value"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.width"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "Raid 状态"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Storage Size"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "bytes"
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "总容量"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "orange",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Storage Used"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "bytes"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 208
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "使用容量"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "semi-dark-red",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Storage Free"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "bytes"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "空闲容量"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "semi-dark-blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "System Name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "gradient",
+                      "type": "color-background"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "super-light-blue",
+                      "mode": "fixed"
+                    }
+                  },
+                  {
+                    "id": "custom.width"
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "系统名称"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Storage Name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "存储卷名称"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "semi-dark-purple",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Usage by Percentage"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "gradient",
+                      "type": "gauge"
+                    }
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 300
+                  },
+                  {
+                    "id": "decimals",
+                    "value": 2
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "yellow",
+                          "value": 80
+                        },
+                        {
+                          "color": "dark-orange",
+                          "value": 85
+                        },
+                        {
+                          "color": "dark-red",
+                          "value": 90
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "max",
+                    "value": 100
+                  },
+                  {
+                    "id": "min",
+                    "value": 0
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "存储容量使用百分比"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "mode": "continuous-GrYlRd"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 13
+          },
+          "id": 14,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "System Name"
+              }
+            ]
+          },
+          "pluginVersion": "11.2.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "raidTotalSize{job=~'$JobName',instance=~'$Device',raidName=~'$raidName'}",
+              "format": "table",
+              "instant": true,
+              "interval": "",
+              "legendFormat": "Total Size",
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "(raidTotalSize{job=~'$JobName',instance=~'$Device',raidName=~'$raidName'}-raidFreeSize{job=~'$JobName',instance=~'$Device',raidName=~'$raidName'})",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "Used",
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "raidFreeSize{job=~'$JobName',instance=~'$Device',raidName=~'$raidName'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "Free",
+              "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "raidStatus{job=~'$JobName',instance=~'$Device',raidName=~'$raidName'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "Free",
+              "refId": "D"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "((raidTotalSize{job=~'$JobName',instance=~'$Device',raidName=~'$raidName'}-raidFreeSize{job=~'$JobName',instance=~'$Device',raidName=~'$raidName'})/raidTotalSize{job=~'$JobName',instance=~'$Device',raidName=~'$raidName'})*100",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "Usage by Percent",
+              "refId": "E"
+            }
+          ],
+          "title": "存储信息",
+          "transformations": [
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {
+                  "names": [
+                    "instance",
+                    "raidName",
+                    "Value #A",
+                    "Value #B",
+                    "Value #C",
+                    "Value #D",
+                    "Value #E"
+                  ]
+                }
+              }
+            },
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "field": "instance"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "field": "raidName"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {
+                  "Value #A": 3,
+                  "Value #B": 4,
+                  "Value #C": 5,
+                  "Value #D": 2,
+                  "instance": 0,
+                  "raidName": 1
+                },
+                "renameByName": {
+                  "Value #A": "Storage Size",
+                  "Value #B": "Storage Used",
+                  "Value #C": "Storage Free",
+                  "Value #D": "Raid Status",
+                  "Value #E": "Usage by Percentage",
+                  "instance": "System Name",
+                  "raidName": "Storage Name"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "存储总览",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
+      "id": 25,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": false,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Temperature"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "gradient",
+                      "type": "gauge"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "mode": "continuous-GrYlRd"
+                    }
+                  },
+                  {
+                    "id": "unit",
+                    "value": "celsius"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "#EAB839",
+                          "value": 100
+                        },
+                        {
+                          "color": "red",
+                          "value": 138
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "max",
+                    "value": 140
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 300
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "温度"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Status"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "dark-yellow",
+                          "value": 2
+                        },
+                        {
+                          "color": "dark-red",
+                          "value": 4
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "1": {
+                            "text": "Normal"
+                          },
+                          "2": {
+                            "text": "Initialized"
+                          },
+                          "3": {
+                            "text": "Not Initialized"
+                          },
+                          "5": {
+                            "text": "Crashed"
+                          }
+                        },
+                        "type": "value"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "color"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 125
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "健康状态"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Disk"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 125
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "硬盘 ID"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "purple",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Type"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "硬盘类型"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "System Name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 220
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "gradient",
+                      "type": "color-background"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "super-light-blue",
+                      "mode": "fixed"
+                    }
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "系统名称"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Model"
+                },
+                "properties": [
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "orange",
+                      "mode": "fixed"
+                    }
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "序列号"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 5
+          },
+          "id": 10,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "frameIndex": 5,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "System Name"
+              }
+            ]
+          },
+          "pluginVersion": "11.2.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "diskIndex{job=~'$JobName',instance=~'$Device',diskID=~'$DiskName'} or diskIndex{job=~'$JobName',instance=~'$Device',diskID=~'$DiskNameSSD'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "F"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "diskID{job=~'$JobName',instance=~'$Device',diskID=~'$DiskName'} or diskID{job=~'$JobName',instance=~'$Device',diskID=~'$DiskNameSSD'} ",
+              "format": "table",
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "diskType{job=~'$JobName',instance=~'$Device',diskID=~'$DiskName'} or diskType{job=~'$JobName',instance=~'$Device',diskID=~'$DiskNameSSD'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "diskStatus{job=~'$JobName',instance=~'$Device',diskID=~'$DiskName'} or diskStatus{job=~'$JobName',instance=~'$Device',diskID=~'$DiskNameSSD'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "diskModel{job=~'$JobName',instance=~'$Device',diskID=~'$DiskName'} or diskModel{job=~'$JobName',instance=~'$Device',diskID=~'$DiskNameSSD'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "D"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "diskTemperature{job=~'$JobName',instance=~'$Device',diskID=~'$DiskName'} or diskTemperature{job=~'$JobName',instance=~'$Device',diskID=~'$DiskNameSSD'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "E"
+            }
+          ],
+          "title": "HDD和SSD信息",
+          "transformations": [
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {
+                  "names": [
+                    "diskID",
+                    "instance",
+                    "diskType",
+                    "Value #C",
+                    "diskModel",
+                    "Value #E"
+                  ]
+                }
+              }
+            },
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {
+                  "Value #C": 2,
+                  "Value #E": 5,
+                  "diskID": 1,
+                  "diskModel": 4,
+                  "diskType": 3,
+                  "instance": 0
+                },
+                "renameByName": {
+                  "Value #C": "Status",
+                  "Value #E": "Temperature",
+                  "diskID": "Disk",
+                  "diskModel": "Model",
+                  "diskType": "Type",
+                  "instance": "System Name"
+                }
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "field": "System Name"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "field": "Disk"
+                  }
+                ]
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "硬盘总览 ",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 21,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": false,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "System Name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "gradient",
+                      "type": "color-background"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "super-light-blue",
+                      "mode": "fixed"
+                    }
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 220
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "系统名称"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Admin Status"
+                },
+                "properties": [
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "1": {
+                            "color": "green",
+                            "index": 2,
+                            "text": "开启"
+                          },
+                          "2": {
+                            "color": "red",
+                            "index": 1,
+                            "text": "关闭"
+                          },
+                          "3": {
+                            "color": "yellow",
+                            "index": 0,
+                            "text": "测试"
+                          }
+                        },
+                        "type": "value"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "配置状态"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Speed"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "Mbits"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 90
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "接口速率"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "orange",
+                      "mode": "fixed"
+                    }
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Status"
+                },
+                "properties": [
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "1": {
+                            "text": "UP"
+                          },
+                          "2": {
+                            "text": "DOWN"
+                          },
+                          "3": {
+                            "text": "TESTING"
+                          },
+                          "4": {
+                            "text": "UNKNOWN"
+                          },
+                          "5": {
+                            "text": "DORMANT"
+                          },
+                          "6": {
+                            "text": "NOT PRESENT"
+                          },
+                          "7": {
+                            "text": "LOWER LAYER DOWN"
+                          }
+                        },
+                        "type": "value"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "dark-red",
+                          "value": 2
+                        },
+                        {
+                          "color": "#EAB839",
+                          "value": 3
+                        },
+                        {
+                          "color": "dark-red",
+                          "value": 7
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "工作状态"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Interface"
+                },
+                "properties": [
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 90
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "接口名称"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "purple",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "MTU"
+                },
+                "properties": [
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "yellow",
+                      "mode": "fixed"
+                    }
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "MTU"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "MAC Address"
+                },
+                "properties": [
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "MAC 地址"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 12,
+            "x": 0,
+            "y": 6
+          },
+          "id": 12,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "System Name"
+              }
+            ]
+          },
+          "pluginVersion": "11.2.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "ifPhysAddress{job=~'$JobName',instance=~'$Device',ifName=~'$InterfacePhysical'}",
+              "format": "table",
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "ifAdminStatus{job=~'$JobName',instance=~'$Device',ifName=~'$InterfacePhysical'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "ifHighSpeed{job=~'$JobName',instance=~'$Device',ifName=~'$InterfacePhysical'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "ifOperStatus{job=~'$JobName',instance=~'$Device',ifName=~'$InterfacePhysical'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "D"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "ifAlias{job=~'$JobName',instance=~'$Device',ifName=~'$InterfacePhysical'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "E"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "ifMtu{job=~'$JobName',instance=~'$Device',ifName=~'$InterfacePhysical'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "F"
+            }
+          ],
+          "title": "物理网络接口信息",
+          "transformations": [
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {
+                  "names": [
+                    "ifName",
+                    "instance",
+                    "Value #B",
+                    "Value #C",
+                    "Value #D",
+                    "Value #F",
+                    "ifPhysAddress"
+                  ]
+                }
+              }
+            },
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {
+                  "Value #B": 4,
+                  "Value #C": 2,
+                  "Value #D": 5,
+                  "Value #E": 6,
+                  "Value #F": 3,
+                  "ifName": 1,
+                  "ifPhysAddress": 7,
+                  "instance": 0
+                },
+                "renameByName": {
+                  "Value #A": "",
+                  "Value #B": "Admin Status",
+                  "Value #C": "Speed",
+                  "Value #D": "Status",
+                  "Value #E": "what",
+                  "Value #F": "MTU",
+                  "ifName": "Interface",
+                  "ifPhysAddress": "MAC Address",
+                  "instance": "System Name"
+                }
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "field": "System Name"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "field": "Interface"
+                  }
+                ]
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": false,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "System Name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "gradient",
+                      "type": "color-background"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "rgba(40, 33, 96, 0.78)",
+                      "mode": "fixed"
+                    }
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 220
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Admin Status"
+                },
+                "properties": [
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "1": {
+                            "text": "UP"
+                          },
+                          "2": {
+                            "text": "DOWN"
+                          },
+                          "3": {
+                            "text": "TESTING"
+                          }
+                        },
+                        "type": "value"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "dark-red",
+                          "value": 2
+                        },
+                        {
+                          "color": "#EAB839",
+                          "value": 3
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Speed"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "decbytes"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 90
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Status"
+                },
+                "properties": [
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "1": {
+                            "text": "UP"
+                          },
+                          "2": {
+                            "text": "DOWN"
+                          },
+                          "3": {
+                            "text": "TESTING"
+                          },
+                          "4": {
+                            "text": "UNKNOWN"
+                          },
+                          "5": {
+                            "text": "DORMANT"
+                          },
+                          "6": {
+                            "text": "NOT PRESENT"
+                          },
+                          "7": {
+                            "text": "LOWER LAYER DOWN"
+                          }
+                        },
+                        "type": "value"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "dark-red",
+                          "value": 2
+                        },
+                        {
+                          "color": "#EAB839",
+                          "value": 3
+                        },
+                        {
+                          "color": "dark-red",
+                          "value": 7
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "MAC Address"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 200
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Interface"
+                },
+                "properties": [
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 90
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 12,
+            "x": 12,
+            "y": 6
+          },
+          "id": 15,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "System Name"
+              }
+            ]
+          },
+          "pluginVersion": "11.2.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "ifPhysAddress{job=~'$JobName',instance=~'$Device',ifName=~'$InterfaceVirtual'}",
+              "format": "table",
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "ifAdminStatus{job=~'$JobName',instance=~'$Device',ifName=~'$InterfaceVirtual'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "ifSpeed{job=~'$JobName',instance=~'$Device',ifName=~'$InterfaceVirtual'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "ifOperStatus{job=~'$JobName',instance=~'$Device',ifName=~'$InterfaceVirtual'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "D"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "ifAlias{job=~'$JobName',instance=~'$Device',ifName=~'$InterfaceVirtual'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "E"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+              },
+              "exemplar": true,
+              "expr": "ifMtu{job=~'$JobName',instance=~'$Device',ifName=~'$InterfaceVirtual'}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "",
+              "refId": "F"
+            }
+          ],
+          "title": "Bond/虚拟网络接口信息",
+          "transformations": [
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {
+                  "names": [
+                    "ifName",
+                    "instance",
+                    "Value #B",
+                    "Value #C",
+                    "Value #D",
+                    "Value #F"
+                  ]
+                }
+              }
+            },
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {
+                  "Value #B": 4,
+                  "Value #C": 2,
+                  "Value #D": 5,
+                  "Value #E": 6,
+                  "Value #F": 3,
+                  "ifName": 1,
+                  "ifPhysAddress": 7,
+                  "instance": 0
+                },
+                "renameByName": {
+                  "Value #A": "",
+                  "Value #B": "Admin Status",
+                  "Value #C": "Speed",
+                  "Value #D": "Status",
+                  "Value #E": "what",
+                  "Value #F": "MTU",
+                  "ifName": "Interface",
+                  "ifPhysAddress": "MAC Address",
+                  "instance": "System Name"
+                }
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "field": "System Name"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "field": "Interface"
+                  }
+                ]
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "网络总览",
+      "type": "row"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "tags": [
+    "synology",
+    "snmp_exporter",
+    "prometheus"
+  ],
+  "templating": {
+    "list": [
+      {
+        "description": "Total Number of NAS Systems manually entered.",
+        "hide": 2,
+        "name": "NASDevices",
+        "query": "${VAR_NASDEVICES}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_NASDEVICES}",
+          "text": "${VAR_NASDEVICES}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_NASDEVICES}",
+            "text": "${VAR_NASDEVICES}",
+            "selected": false
+          }
+        ]
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+        },
+        "definition": "label_values(ssCpuUser, job)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "JobName",
+        "options": [],
+        "query": {
+          "query": "label_values(ssCpuUser, job)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+        },
+        "definition": "query_result(ssCpuUser{job=~'$JobName'})",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "Device",
+        "options": [],
+        "query": {
+          "query": "query_result(ssCpuUser{job=~'$JobName'})",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": ".*instance=\"(.*?)\".*",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+        },
+        "definition": "label_values(ifName{job=~'$JobName',instance=~'$Device'},ifName)",
+        "description": "Physical Network Interfaces",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Network Interface",
+        "multi": true,
+        "name": "InterfacePhysical",
+        "options": [],
+        "query": {
+          "query": "label_values(ifName{job=~'$JobName',instance=~'$Device'},ifName)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "^eth.*",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+        },
+        "definition": "label_values(ifType_info{job=~'$JobName',instance=~'$Device'},ifName)",
+        "description": "Bonds an VLans",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Virtual Interfaces",
+        "multi": true,
+        "name": "InterfaceVirtual",
+        "options": [],
+        "query": {
+          "query": "label_values(ifType_info{job=~'$JobName',instance=~'$Device'},ifName)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "^.*bond.*",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+        },
+        "definition": "label_values(raidName{job=~'$JobName',instance=~'$Device'},raidName)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Storage",
+        "multi": true,
+        "name": "raidName",
+        "options": [],
+        "query": {
+          "query": "label_values(raidName{job=~'$JobName',instance=~'$Device'},raidName)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "/^(?!Storage.*)/",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+        },
+        "definition": "label_values(diskID{job=~'$JobName',instance=~'$Device'},diskID)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Disk",
+        "multi": true,
+        "name": "DiskName",
+        "options": [],
+        "query": {
+          "query": "label_values(diskID{job=~'$JobName',instance=~'$Device'},diskID)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "/^(?!Cache.*)/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_VICTORIAMETRICS-SINGLE}"
+        },
+        "definition": "label_values(diskID{job=~'$JobName',instance=~'$Device'},diskID)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Cache",
+        "multi": true,
+        "name": "DiskNameSSD",
+        "options": [],
+        "query": {
+          "query": "label_values(diskID{job=~'$JobName',instance=~'$Device'},diskID)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "^Cache device.*",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Synology NAS Overview Dashboard for Prometheus",
+  "uid": "xiaofeinas002",
+  "version": 27,
+  "weekStart": ""
+}
