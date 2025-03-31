@@ -1,6 +1,0 @@
-h3c_common 
-h3c_interface
-h3c_stack
-
-h3c_ac_info
-h3c_ap_info
